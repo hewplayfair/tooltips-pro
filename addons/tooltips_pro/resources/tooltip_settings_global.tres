@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://fmex0mp7jdgn"]
+
+[ext_resource type="Script" uid="uid://lcf8uedn57am" path="res://addons/tooltips_pro/scripts/tooltip_settings.gd" id="1_gm4na"]
+
+[resource]
+script = ExtResource("1_gm4na")
+lock_mode = 1
+open_delay = 0.1
+timer_lock_delay = 1.5
+unlock_delay = 0.25

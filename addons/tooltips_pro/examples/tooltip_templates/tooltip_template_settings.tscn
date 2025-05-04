@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbuj1aarmc6hu"]
+
+[ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="1_313b4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_313b4"]
+draw_center = false
+
+[node name="TooltipTemplateSettings" type="PanelContainer" node_paths=PackedStringArray("content_labels")]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.5
+offset_top = -11.5
+offset_right = 82.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_313b4")
+script = ExtResource("1_313b4")
+content_labels = [NodePath("MarginContainer/Label")]
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Label" type="Label" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Lorem Ipsum"
+vertical_alignment = 1
+autowrap_mode = 3
