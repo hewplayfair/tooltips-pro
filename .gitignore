@@ -6,6 +6,8 @@
 .import/
 export.cfg
 export_presets.cfg
+project.godot
+.editorconfig
 
 # Imported translations (automatically generated from CSV files)
 *.translation
