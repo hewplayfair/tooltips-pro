@@ -8,8 +8,11 @@ extends Control
 ## The TextureProgressBar to be filled by a normalized time remaining of Timer Lock Delay.
 @export var timer_lock_progress_bar: TextureProgressBar
 var trigger: TooltipTrigger
+var child_trigger_nodes: Array[Node]
 
-var state:  TooltipEnums.TooltipState
+var state: TooltipEnums.TooltipState
+
+var stack_coroutine_manager = TooltipStackCoroutineManager.new()
 
 func _init(trigger_p: TooltipTrigger = null) -> void:
 	trigger = trigger_p
@@ -20,6 +23,8 @@ func _init(trigger_p: TooltipTrigger = null) -> void:
 	if timer_lock_progress_bar:
 		timer_lock_progress_bar.value = 0.0
 		
+	child_trigger_nodes = self.find_children("*", "TooltipTrigger", true, false)
+		
 	state =  TooltipEnums.TooltipState.READY
 
 
@@ -29,17 +34,20 @@ func init_lock_mode() -> void:
 		lock_mode = trigger.tooltip_settings_override.lock_mode
 	match lock_mode:
 		TooltipEnums.TooltipLockMode.AUTO_LOCK:
-			lock()
+			if trigger.can_lock:
+				lock()
 		TooltipEnums.TooltipLockMode.TIMER_LOCK:
-			begin_lock_delay()
+			if trigger.can_lock:
+				begin_lock_delay()
 
 
 func toggle_lock() -> void:
-	match state:
-		TooltipEnums.TooltipState.READY:
-			lock()
-		TooltipEnums.TooltipState.LOCKED:
-			unlock()
+	if trigger.can_lock:
+		match state:
+			TooltipEnums.TooltipState.READY:
+				lock()
+			TooltipEnums.TooltipState.LOCKED:
+				unlock()
 
 
 func begin_lock_delay() -> void:
@@ -58,14 +66,22 @@ func begin_lock_delay() -> void:
 func lock() -> void:
 	for element in lock_elements:
 		element.show()
-		
+	
+	self.mouse_filter = Control.MOUSE_FILTER_STOP
+	for trigger in child_trigger_nodes:
+		trigger.mouse_filter = Control.MOUSE_FILTER_PASS
+	
 	state =  TooltipEnums.TooltipState.LOCKED
 	
 
 func unlock() -> void:
 	for element in lock_elements:
 		element.hide()
-		
+	
+	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	for trigger in child_trigger_nodes:
+		trigger.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
 	state =  TooltipEnums.TooltipState.READY
 
 
@@ -93,17 +109,22 @@ func set_pivot(_alignment: TooltipEnums.TooltipAlignment) -> void:
 			self.pivot_offset = Vector2.ZERO
 
 func set_stack_position_modulate(index: int) -> void:
-	if index >= TooltipManager.singleton.tooltip_settings.darken_step_count:
+	if index == 0:
+		self.modulate = Color.WHITE
+	elif index >= TooltipManager.singleton.tooltip_settings.darken_step_count:
 		self.modulate = TooltipManager.singleton.tooltip_settings.step_limit_color
 	else:
 		var color_value = 1.0 - (TooltipManager.singleton.tooltip_settings.darken_step_value * (index + 1))
 		self.modulate = Color(color_value, color_value, color_value, 1.0)
 
 func _on_mouse_entered() -> void:
-	if state == TooltipEnums.TooltipState.UNLOCKING:
-		trigger.cancel_unlock_delay()
+	stack_coroutine_manager.free_coroutines()
+	match state:
+		TooltipEnums.TooltipState.LOCKED:
+			TooltipManager.singleton.collapse_tooltip_stack(TooltipManager.singleton.mouse_tooltip_stack.find(self))
+		TooltipEnums.TooltipState.UNLOCKING:
+			trigger.cancel_unlock_delay()
 
 
 func _on_mouse_exited() -> void:
-	if state == TooltipEnums.TooltipState.LOCKED:
-		trigger.try_await_unlock_delay()
+	stack_coroutine_manager.force_close_stack_run(self)

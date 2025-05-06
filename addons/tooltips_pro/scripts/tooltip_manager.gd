@@ -20,6 +20,7 @@ var mouse_tooltip_stack: Array[Tooltip]
 var focus_tooltip_stack: Array[Tooltip]
 
 var follow_mouse: bool
+var is_collapsing_stack: bool
 
 
 func _init() -> void:
@@ -51,19 +52,22 @@ func _process(delta: float) -> void:
 
 
 func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_pos: Vector2) -> Tooltip:
+	# If the tooltip stack is in process of collapsing with a delay it can cause
+	# this new tooltip to also be removed, so first force close all the tooltips.
+	if is_collapsing_stack:
+		is_collapsing_stack = false
+		force_close_stack()
+	
 	# Instantiate tooltip and add to Tooltip Stack
 	var tooltip_path = tooltip_template_paths[tooltip_trigger.tooltip_template]
 	var new_tooltip := load(tooltip_path).instantiate() as Tooltip
-		
-	for i in mouse_tooltip_stack.size():
-		mouse_tooltip_stack[i].set_stack_position_modulate(i)
 	
 	new_tooltip._init(tooltip_trigger)
 	if tooltip_trigger.trigger_on_focus:
 		focus_tooltip_stack.push_front(new_tooltip)
 	else:
 		mouse_tooltip_stack.push_front(new_tooltip)
-		
+				
 	if tooltip_trigger.origin == TooltipEnums.TooltipOrigin.TRIGGER_ELEMENT:
 		if is_collision:
 			add_child(new_tooltip)
@@ -85,6 +89,11 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_po
 	self.call_deferred("position_tooltip", new_tooltip, is_collision, screen_pos)
 	
 	new_tooltip.init_lock_mode()
+	var stack: Array[Tooltip]
+	stack.assign(mouse_tooltip_stack)
+	for i in stack.size():
+		stack[i].set_stack_position_modulate(i)
+		
 	return new_tooltip
 
 
@@ -378,24 +387,80 @@ func get_flipped_v_alignment(_old_alignment: TooltipEnums.TooltipAlignment) -> T
 		_:
 			return _old_alignment
 
-
-func collapse_tooltip_stack(collapse_focus_stack: bool = false) -> void:	
-	var stack_to_collapse := mouse_tooltip_stack
-	if collapse_focus_stack:
-		stack_to_collapse = focus_tooltip_stack
+func collapse_tooltip_stack(index: int = -1, collapse_focus_stack: bool = false) -> void:
+	if is_collapsing_stack:
+		return
+	else:
+		is_collapsing_stack = true
 	
-	# TODO: Collapse range of specific tooltips
-	#TODO: Unlock in sequence, don't delete all at once
-	while stack_to_collapse.size() > 0:
-		remove_tooltip(stack_to_collapse[0])
+	var stack: Array[Tooltip]
+	stack.assign(mouse_tooltip_stack)
+	if collapse_focus_stack:
+		stack.assign(focus_tooltip_stack)
+		
+	if stack.size() == 0:
+		is_collapsing_stack = false
+		return
+		
+	var size_to_stop = stack.size() - clampi(index, 0, stack.size())
+	if index == -1:
+		size_to_stop = 0
+	if stack[0].state != TooltipEnums.TooltipState.LOCKED:
+		size_to_stop -= 1
+	size_to_stop = clamp(size_to_stop, 0, stack.size())
+	while stack.size() > size_to_stop and is_collapsing_stack:
+		if stack[0] == null:
+			break
+			
+		if stack[0].state == TooltipEnums.TooltipState.LOCKED:
+			stack[0].state = TooltipEnums.TooltipState.UNLOCKING
+			
+			var wait_time = tooltip_settings.unlock_delay
+			if stack[0].trigger.tooltip_settings_override:
+				wait_time = stack[0].trigger.tooltip_settings_override.unlock_delay
+				
+			await get_tree().create_timer(wait_time).timeout
+		
+		if stack[0] == null:
+			break
+		
+		if stack.size() > size_to_stop and is_collapsing_stack:
+			remove_tooltip(stack[0])
+			stack.remove_at(0)
+			
+		await get_tree().process_frame
+			
+	is_collapsing_stack = false
+	
 
-func remove_tooltip(tooltip: Tooltip) -> void:
+func force_close_stack():
+	is_collapsing_stack = false
+	var stack_to_close: Array[Tooltip]
+	stack_to_close.assign(mouse_tooltip_stack)
+	for tooltip in stack_to_close:
+		remove_tooltip(tooltip, false)
+
+func remove_tooltip(tooltip: Tooltip, modulate: bool = true) -> void:
 	tooltip.trigger.on_tooltip_removed()
 	if tooltip.trigger.trigger_on_focus:
 		focus_tooltip_stack.erase(tooltip)
+		if focus_tooltip_stack.size() == 0:
+			is_collapsing_stack = false
+		if modulate:
+			for i in focus_tooltip_stack.size():
+				focus_tooltip_stack[i].set_stack_position_modulate(i)
 	else:
 		mouse_tooltip_stack.erase(tooltip)
+		if mouse_tooltip_stack.size() == 0:
+			is_collapsing_stack = false
+		if modulate:
+			for i in mouse_tooltip_stack.size():
+				mouse_tooltip_stack[i].set_stack_position_modulate(i)
 	
 	tooltip.queue_free()
 	
 	follow_mouse = false
+
+
+func _on_mouse_entered() -> void:
+	collapse_tooltip_stack()

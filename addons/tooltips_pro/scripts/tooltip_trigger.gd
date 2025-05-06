@@ -11,6 +11,8 @@ extends Node
 ## custom script.
 @export var trigger_on_focus: bool
 
+@export var can_lock: bool = true
+
 @export_group("Origin")
 ## The Origin, or anchor, of the tooltip.
 @export var origin: TooltipEnums.TooltipOrigin
@@ -58,29 +60,27 @@ func _init() -> void:
 
 func _ready() -> void:	
 	init_signals()
+	if TooltipManager.singleton.tooltip_settings.lock_mode == TooltipEnums.TooltipLockMode.NO_LOCK:
+		can_lock = false
 
 
-func _on_mouse_entered() -> void:
+func _on_mouse_entered() -> void:	
 	if state != TooltipEnums.TriggerState.READY:
 		return
-		
-	printerr("_on_mouse_entered ", self)
-	try_await_open_delay()
 	
-	# TODO: 
-	# if owner is at top of tooltip stack, cancel unlock delay. If owner is at any 
-	# other point in stack, collapse it to that point 
-	var owner_tooltip_template = self.owner as Tooltip
-	if owner_tooltip_template:
-		owner_tooltip_template.trigger.cancel_unlock_delay()
+	if TooltipManager.singleton.is_collapsing_stack:
+		return
+		
+	try_await_open_delay()
 
 
 func _on_mouse_exited() -> void:
-	printerr("_on_mouse_exited ", self)
 	cancel_open_delay()
 	
-	if active_tooltip:
-		try_await_unlock_delay()
+	if active_tooltip and active_tooltip.state == TooltipEnums.TooltipState.READY:
+		TooltipManager.singleton.remove_tooltip(active_tooltip)
+	else:
+		TooltipManager.singleton.collapse_tooltip_stack()
 
 
 func _on_focus_entered() -> void:
@@ -95,8 +95,10 @@ func _on_focus_entered() -> void:
 
 func _on_focus_exited() -> void:
 	cancel_open_delay()
-	# try_await_unlock_delay()
-	TooltipManager.singleton.collapse_tooltip_stack(true)
+	if active_tooltip and active_tooltip.state == TooltipEnums.TooltipState.READY:
+		TooltipManager.singleton.remove_tooltip(active_tooltip)
+	else:
+		TooltipManager.singleton.collapse_tooltip_stack(true)
 
 ## Used when needing to set a tooltip's position relative to a 2D object
 func _on_mouse_entered_2d() -> void:
@@ -191,31 +193,10 @@ func try_await_open_delay(is_collision := false, screen_pos := Vector2.ZERO):
 	state = TooltipEnums.TriggerState.ACTIVE
 	set_tooltip_content()
 
-func try_await_unlock_delay():
-	if active_tooltip and active_tooltip.state != TooltipEnums.TooltipState.LOCKED:
-		TooltipManager.singleton.collapse_tooltip_stack(trigger_on_focus)
-		return
-	
-	if active_tooltip:
-		active_tooltip.state = TooltipEnums.TooltipState.UNLOCKING
-	var wait_time = TooltipManager.singleton.tooltip_settings.unlock_delay
-	if tooltip_settings_override:
-		wait_time = tooltip_settings_override.unlock_delay
-	delay_timer.start(wait_time)
-	await delay_timer.timeout
-	
-	if not active_tooltip:
-		return
-	
-	if active_tooltip.state != TooltipEnums.TooltipState.UNLOCKING:
-		return
-		
-	TooltipManager.singleton.collapse_tooltip_stack(trigger_on_focus)
-
 
 func cancel_open_delay():
-	printerr("cancel_open_delay ", self)
 	delay_timer.stop()
+	TooltipManager.singleton.is_collapsing_stack = false
 	if active_tooltip:
 		state = TooltipEnums.TriggerState.ACTIVE
 	else:
@@ -223,8 +204,8 @@ func cancel_open_delay():
 
 
 func cancel_unlock_delay():
-	printerr("cancel_unlock_delay ", self)
 	delay_timer.stop()
+	TooltipManager.singleton.is_collapsing_stack = false
 	if active_tooltip and active_tooltip.state == TooltipEnums.TooltipState.UNLOCKING:
 		active_tooltip.state = TooltipEnums.TooltipState.LOCKED
 
