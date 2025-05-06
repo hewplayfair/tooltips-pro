@@ -295,6 +295,7 @@ text = "Test Button"
 script = ExtResource("1_253dj")
 tooltip_template = 1
 origin = 3
+offset = Vector2(10, 10)
 tooltip_alignment = 2
 overflow_mode = 1
 

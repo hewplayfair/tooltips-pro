@@ -7,14 +7,19 @@ static var singleton: TooltipManager:
 	get:
 		return _singleton
 
+## The default Tooltip Settings Resource is used to reset the settings to default in-game.
 @export var default_tooltip_settings: Resource
+## The Tooltip Settings Resource stores global tooltip settings. These can be 
+## overridden on Tooltip Triggers.
 @export var tooltip_settings: Resource
+## The paths to the Tooltip Template scenes that will be used. A Tooltip Template 
+## must be selected on a Tooltip Trigger, and the first will be used by default.
 @export var tooltip_template_paths: Array[String]
 
 var mouse_tooltip_stack: Array[Tooltip]
 var focus_tooltip_stack: Array[Tooltip]
 
-var follow_mouse := false
+var follow_mouse: bool
 
 
 func _init() -> void:
@@ -26,14 +31,14 @@ func _input(event):
 	if not mouse_tooltip_stack:
 		return
 	if (
-		mouse_tooltip_stack.back().state == TooltipEnums.TooltipState.LOCKED
-		or mouse_tooltip_stack.back().state == TooltipEnums.TooltipState.UNLOCKING
+		mouse_tooltip_stack[0].state == TooltipEnums.TooltipState.LOCKED
+		or mouse_tooltip_stack[0].state == TooltipEnums.TooltipState.UNLOCKING
 	):
 		return
 		
 	# Mouse in viewport coordinates.
 	if follow_mouse and event is InputEventMouseMotion:
-		position_tooltip(mouse_tooltip_stack.back(), false)
+		position_tooltip(mouse_tooltip_stack[0])
 
 
 func _process(delta: float) -> void:
@@ -42,24 +47,22 @@ func _process(delta: float) -> void:
 		and mouse_tooltip_stack.size() > 0
 	):
 		if Input.is_action_just_pressed("LockTooltip"):
-			mouse_tooltip_stack[-1].toggle_lock()
+			mouse_tooltip_stack[0].toggle_lock()
 
 
 func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_pos: Vector2) -> Tooltip:
 	# Instantiate tooltip and add to Tooltip Stack
 	var tooltip_path = tooltip_template_paths[tooltip_trigger.tooltip_template]
 	var new_tooltip := load(tooltip_path).instantiate() as Tooltip
-	
-	# HACK: Using Hide()/Show() prevents the tooltip from resizing correctly 
-	# to fit the content, so it's moved out of view until positioned correctly
-	# instead.
-	new_tooltip.set_position(Vector2(100000, 100000))
+		
+	for i in mouse_tooltip_stack.size():
+		mouse_tooltip_stack[i].set_stack_position_modulate(i)
 	
 	new_tooltip._init(tooltip_trigger)
 	if tooltip_trigger.trigger_on_focus:
-		focus_tooltip_stack.append(new_tooltip)
+		focus_tooltip_stack.push_front(new_tooltip)
 	else:
-		mouse_tooltip_stack.append(new_tooltip)
+		mouse_tooltip_stack.push_front(new_tooltip)
 		
 	if tooltip_trigger.origin == TooltipEnums.TooltipOrigin.TRIGGER_ELEMENT:
 		if is_collision:
@@ -74,27 +77,14 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_po
 			or tooltip_trigger.origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_FOLLOW
 	):
 		add_child(new_tooltip)
-	
-	# HACK: Most tooltips need to await process_frame and be positioned after
-	# content is set, but tooltips triggered on focus shouldn't to prevent a 
-	# flicker for a frame when tabbing between tooltip triggers.
-	if tooltip_trigger.trigger_on_focus:
-		position_tooltip(new_tooltip, is_collision, screen_pos)
-	
-	for i in tooltip_trigger.tooltip_strings.size():
-		if new_tooltip.content_labels.size() > i:
-			new_tooltip.content_labels[i].text = tooltip_trigger.tooltip_strings[i]
-		else:
-			print_debug(new_tooltip.name, " has fewer content labels than there are content strings on trigger ", tooltip_trigger.name)
 
-	# HACK: Must await one frame due to issues related to the tooltip resizing 
-	# to correctly fit the content. Don't ask...
-	if not tooltip_trigger.trigger_on_focus:
-		await get_tree().process_frame
-		position_tooltip(new_tooltip, is_collision, screen_pos)
+	# Positioning needs to be deferred due to tooltip sizing and positioning 
+	# order of operations that I don't understand. Without it, tooltip Controls 
+	# may be sized incorrectly, with, for example, a greater height than the 
+	# minimum expected.
+	self.call_deferred("position_tooltip", new_tooltip, is_collision, screen_pos)
 	
 	new_tooltip.init_lock_mode()
-	
 	return new_tooltip
 
 
@@ -389,15 +379,15 @@ func get_flipped_v_alignment(_old_alignment: TooltipEnums.TooltipAlignment) -> T
 			return _old_alignment
 
 
-func collapse_tooltip_stack(collapse_focus_stack: bool = false) -> void:
-	print("collapse_tooltip_stack")
-	# TODO: Collapse range of specific tooltips
+func collapse_tooltip_stack(collapse_focus_stack: bool = false) -> void:	
 	var stack_to_collapse := mouse_tooltip_stack
 	if collapse_focus_stack:
 		stack_to_collapse = focus_tooltip_stack
-		
-	for i in range(stack_to_collapse.size()-1, -1, -1):
-		remove_tooltip(stack_to_collapse[i])
+	
+	# TODO: Collapse range of specific tooltips
+	#TODO: Unlock in sequence, don't delete all at once
+	while stack_to_collapse.size() > 0:
+		remove_tooltip(stack_to_collapse[0])
 
 func remove_tooltip(tooltip: Tooltip) -> void:
 	tooltip.trigger.on_tooltip_removed()

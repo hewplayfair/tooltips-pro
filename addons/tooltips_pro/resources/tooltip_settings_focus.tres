@@ -8,3 +8,6 @@ lock_mode = 3
 open_delay = 0.0
 timer_lock_delay = 0.0
 unlock_delay = 0.0
+darken_step_count = 3
+darken_step_value = 0.25
+step_limit_color = Color(0.25, 0.25, 0.25, 0.15)

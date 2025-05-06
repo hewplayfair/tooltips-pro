@@ -2,39 +2,54 @@
 class_name TooltipTrigger
 extends Node
 
+## The [Tooltip] Template to use for the instantiated tooltip. These are defined 
+## on the [TooltipManager].
 @export var tooltip_template: int
-@export var trigger_on_focus := false
+## If [code]true[/code] and a [Control] node, the tooltip will trigger on [signal 
+## Control.focus_entered].[br][br]If [code]true[/code] and a [CollisionObject2D]/
+## [CollisionObject3D] node, the tooltip will need to be triggered manually with a 
+## custom script.
+@export var trigger_on_focus: bool
 
 @export_group("Origin")
-@export var origin := TooltipEnums.TooltipOrigin.TRIGGER_ELEMENT
+## The Origin, or anchor, of the tooltip.
+@export var origin: TooltipEnums.TooltipOrigin
+## The UI element to use to define the tooltip Origin, if origin is set to REMOTE_ELEMENT.
 @export var remote_element_node: Control
 
 @export_group("Offset")
-@export var offset := Vector2.ZERO
+## The amount to offset the tooltip from its Origin.
+@export var offset: Vector2
 
 @export_group("Layout")
-## The alignment of the Tooltip position relative to its TooltipAnchor
-@export var tooltip_alignment := TooltipEnums.TooltipAlignment.TOP_RIGHT
+## The alignment of the Tooltip position relative to its Origin.
+@export var tooltip_alignment: TooltipEnums.TooltipAlignment
 
 @export_group("Overflow")
-@export var overflow_mode := TooltipEnums.OverflowMode.CLAMP
-@export var overflow_bounds := TooltipEnums.OverflowBounds.WINDOW_SIZE
+## The mode for handling a tooltip overlapping its defined bounds.
+@export var overflow_mode: TooltipEnums.OverflowMode
+## The bounds to use for restricting tooltip positioning.
+@export var overflow_bounds: TooltipEnums.OverflowBounds
+## The UI element to use to define the tooltip bounds if overflow_bounds is set 
+## to CONTROL_NODE_SIZE.
 @export var overflow_element_node: Control
 
 @export_group("Tooltip Settings")
+## Override the global settings as defined by the resource set on the Tooltip Manager.
 @export var tooltip_settings_override: Resource
 
 @export_group("Content")
+## The text to apply to the Labels defined on the Tooltip Template.
 @export_multiline var tooltip_strings: Array[String]
 
 var control_node: Control
 var collision_object_2d_node: CollisionObject2D
 var collision_object_3d_node: CollisionObject3D
 
-var state := TooltipEnums.TriggerState.READY
+var state: TooltipEnums.TriggerState
 var active_tooltip: Tooltip
 
-var delay_timer := Timer.new()
+var delay_timer: Timer = Timer.new()
 
 
 func _init() -> void:
@@ -46,19 +61,23 @@ func _ready() -> void:
 
 
 func _on_mouse_entered() -> void:
-	print("_on_mouse_entered trigger: ", self.name)
-	print("trigger state: ", TooltipEnums.TriggerState.keys()[state])
 	if state != TooltipEnums.TriggerState.READY:
 		return
 		
+	printerr("_on_mouse_entered ", self)
 	try_await_open_delay()
+	
+	# TODO: 
+	# if owner is at top of tooltip stack, cancel unlock delay. If owner is at any 
+	# other point in stack, collapse it to that point 
+	var owner_tooltip_template = self.owner as Tooltip
+	if owner_tooltip_template:
+		owner_tooltip_template.trigger.cancel_unlock_delay()
 
 
 func _on_mouse_exited() -> void:
-	print("_on_mouse_exited trigger: ", self.name)
-	print("trigger state: ", TooltipEnums.TriggerState.keys()[state])
+	printerr("_on_mouse_exited ", self)
 	cancel_open_delay()
-	state = TooltipEnums.TriggerState.READY
 	
 	if active_tooltip:
 		try_await_unlock_delay()
@@ -76,7 +95,6 @@ func _on_focus_entered() -> void:
 
 func _on_focus_exited() -> void:
 	cancel_open_delay()
-	state = TooltipEnums.TriggerState.READY
 	# try_await_unlock_delay()
 	TooltipManager.singleton.collapse_tooltip_stack(true)
 
@@ -148,9 +166,6 @@ func init_signals() -> void:
 
 
 func try_await_open_delay(is_collision := false, screen_pos := Vector2.ZERO):
-	if active_tooltip:
-		return
-		
 	state = TooltipEnums.TriggerState.INITIALIZING
 	
 	var delay = TooltipManager.singleton.tooltip_settings.open_delay
@@ -160,6 +175,7 @@ func try_await_open_delay(is_collision := false, screen_pos := Vector2.ZERO):
 	if delay <= 0.0:
 		active_tooltip = await TooltipManager.singleton.init_tooltip(self, is_collision, screen_pos)
 		state = TooltipEnums.TriggerState.ACTIVE
+		set_tooltip_content()
 		return
 	
 	delay_timer.wait_time = delay
@@ -173,15 +189,15 @@ func try_await_open_delay(is_collision := false, screen_pos := Vector2.ZERO):
 	
 	active_tooltip = await TooltipManager.singleton.init_tooltip(self, is_collision, screen_pos)
 	state = TooltipEnums.TriggerState.ACTIVE
-
+	set_tooltip_content()
 
 func try_await_unlock_delay():
-	print("try_await_unlock_delay")
-	if active_tooltip.state != TooltipEnums.TooltipState.LOCKED:
+	if active_tooltip and active_tooltip.state != TooltipEnums.TooltipState.LOCKED:
 		TooltipManager.singleton.collapse_tooltip_stack(trigger_on_focus)
 		return
 	
-	active_tooltip.state = TooltipEnums.TooltipState.UNLOCKING
+	if active_tooltip:
+		active_tooltip.state = TooltipEnums.TooltipState.UNLOCKING
 	var wait_time = TooltipManager.singleton.tooltip_settings.unlock_delay
 	if tooltip_settings_override:
 		wait_time = tooltip_settings_override.unlock_delay
@@ -198,16 +214,27 @@ func try_await_unlock_delay():
 
 
 func cancel_open_delay():
+	printerr("cancel_open_delay ", self)
 	delay_timer.stop()
-	state = TooltipEnums.TriggerState.READY
+	if active_tooltip:
+		state = TooltipEnums.TriggerState.ACTIVE
+	else:
+		state = TooltipEnums.TriggerState.READY
 
 
 func cancel_unlock_delay():
-	print("cancel_unlock_delay")
+	printerr("cancel_unlock_delay ", self)
 	delay_timer.stop()
 	if active_tooltip and active_tooltip.state == TooltipEnums.TooltipState.UNLOCKING:
 		active_tooltip.state = TooltipEnums.TooltipState.LOCKED
 
+
+func set_tooltip_content():
+	for i in active_tooltip.trigger.tooltip_strings.size():
+		if active_tooltip.content_labels.size() > i:
+			active_tooltip.content_labels[i].text = active_tooltip.trigger.tooltip_strings[i]
+		else:
+			print_debug(active_tooltip.name, " has fewer content labels than there are content strings on trigger ", active_tooltip.trigger.name)
 
 func on_tooltip_removed() -> void:
 	state = TooltipEnums.TriggerState.READY

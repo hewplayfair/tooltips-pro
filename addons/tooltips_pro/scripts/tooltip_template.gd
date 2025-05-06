@@ -1,12 +1,15 @@
 class_name Tooltip
 extends Control
 
+## The Labels that have their text set by the tooltip_strings on a Tooltip Trigger.
 @export var content_labels: Array[Label]
+## UI elements that will hide() when the tooltip is unlocked and show() when locked.
 @export var lock_elements: Array[Control]
+## The TextureProgressBar to be filled by a normalized time remaining of Timer Lock Delay.
 @export var timer_lock_progress_bar: TextureProgressBar
 var trigger: TooltipTrigger
 
-var state :=  TooltipEnums.TooltipState.INIT
+var state:  TooltipEnums.TooltipState
 
 func _init(trigger_p: TooltipTrigger = null) -> void:
 	trigger = trigger_p
@@ -89,16 +92,18 @@ func set_pivot(_alignment: TooltipEnums.TooltipAlignment) -> void:
 		_:
 			self.pivot_offset = Vector2.ZERO
 
+func set_stack_position_modulate(index: int) -> void:
+	if index >= TooltipManager.singleton.tooltip_settings.darken_step_count:
+		self.modulate = TooltipManager.singleton.tooltip_settings.step_limit_color
+	else:
+		var color_value = 1.0 - (TooltipManager.singleton.tooltip_settings.darken_step_value * (index + 1))
+		self.modulate = Color(color_value, color_value, color_value, 1.0)
 
 func _on_mouse_entered() -> void:
-	print("_on_mouse_entered tooltip: ", self.name)
-	print("tooltip state: ", TooltipEnums.TooltipState.keys()[state])
 	if state == TooltipEnums.TooltipState.UNLOCKING:
 		trigger.cancel_unlock_delay()
 
 
 func _on_mouse_exited() -> void:
-	print("_on_mouse_exited tooltip: ", self.name)
-	print("tooltip state: ", TooltipEnums.TooltipState.keys()[state])
 	if state == TooltipEnums.TooltipState.LOCKED:
 		trigger.try_await_unlock_delay()

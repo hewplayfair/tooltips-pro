@@ -14,3 +14,8 @@ extends Resource
 ## The default delay (in seconds) until a locked Tooltip is unlocked and closes,
 ## upon the Tooltip losing focus.
 @export_range(0.0, 5.0) var unlock_delay: float
+
+@export_group("Stack Appearance")
+@export var darken_step_count: int
+@export_range(0.0, 1.0) var darken_step_value: float
+@export var step_limit_color: Color

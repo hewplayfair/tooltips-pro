@@ -29,7 +29,7 @@ border_width_bottom = 2
 [node name="TooltipTemplateNestingExample" type="PanelContainer" node_paths=PackedStringArray("content_labels", "lock_elements", "timer_lock_progress_bar")]
 custom_minimum_size = Vector2(384, 0)
 offset_right = 384.0
-offset_bottom = 39.0
+offset_bottom = 75.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_5tpya")
