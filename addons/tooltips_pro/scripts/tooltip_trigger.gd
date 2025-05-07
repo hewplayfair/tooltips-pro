@@ -2,46 +2,45 @@
 class_name TooltipTrigger
 extends Node
 
-## The [Tooltip] Template to use for the instantiated tooltip. These are defined 
-## on the [TooltipManager].
+## The [Tooltip] Template to use for the instantiated [Tooltip]. These are defined 
+## by setting the [code]tooltip_template_dir_path[/code] on the [TooltipManager].
 @export var tooltip_template: int
-## If [code]true[/code] and a [Control] node, the tooltip will trigger on [signal 
+## If [code]true[/code] and a [Control] node, the [Tooltip] will trigger on [signal 
 ## Control.focus_entered].[br][br]If [code]true[/code] and a [CollisionObject2D]/
-## [CollisionObject3D] node, the tooltip will need to be triggered manually with a 
+## [CollisionObject3D] node, the [Tooltip] will need to be triggered manually with a 
 ## custom script.
 @export var trigger_on_focus: bool
 
-@export var can_lock: bool = true
-
 @export_group("Origin")
-## The Origin, or anchor, of the tooltip.
+## The [b]origin[/b] of the [Tooltip] around which it is aligned and positioned.
 @export var origin: TooltipEnums.TooltipOrigin
-## The UI element to use to define the tooltip Origin, if origin is set to REMOTE_ELEMENT.
+## The UI element used to define the [Tooltip]'s [b]origin[/b], if [code]origin[/code] 
+## is set to [code]TooltipEnums.TooltipOrigin.REMOTE_ELEMENT[/code].
 @export var remote_element_node: Control
 
 @export_group("Offset")
-## The amount to offset the tooltip from its Origin.
+## The amount to offset the [Tooltip] from its [b]origin[/b].
 @export var offset: Vector2
 
 @export_group("Layout")
-## The alignment of the Tooltip position relative to its Origin.
+## The alignment of the [Tooltip] position relative to its [b]origin[/b].
 @export var tooltip_alignment: TooltipEnums.TooltipAlignment
 
 @export_group("Overflow")
-## The mode for handling a tooltip overlapping its defined bounds.
+## The mode for handling a [Tooltip] overlapping its defined bounds.
 @export var overflow_mode: TooltipEnums.OverflowMode
-## The bounds to use for restricting tooltip positioning.
+## The bounds to use for restricting [Tooltip] positioning.
 @export var overflow_bounds: TooltipEnums.OverflowBounds
-## The UI element to use to define the tooltip bounds if overflow_bounds is set 
-## to CONTROL_NODE_SIZE.
+## The UI element to use to define the [Tooltip] bounds if [code]overflow_bounds[/code]
+## is set to [code]TooltipEnums.OverflowBounds.CONTROL_NODE_SIZE[/code].
 @export var overflow_element_node: Control
 
 @export_group("Tooltip Settings")
-## Override the global settings as defined by the resource set on the Tooltip Manager.
+## Override the global settings as defined by the resource set on the [TooltipManager].
 @export var tooltip_settings_override: Resource
 
 @export_group("Content")
-## The text to apply to the Labels defined on the Tooltip Template.
+## The text to apply to the [Label]s defined on the [Tooltip] Template.
 @export_multiline var tooltip_strings: Array[String]
 
 var control_node: Control
@@ -58,10 +57,8 @@ func _init() -> void:
 	add_child(delay_timer)
 
 
-func _ready() -> void:	
+func _ready() -> void:
 	init_signals()
-	if TooltipManager.singleton.tooltip_settings.lock_mode == TooltipEnums.TooltipLockMode.NO_LOCK:
-		can_lock = false
 
 
 func _on_mouse_entered() -> void:	

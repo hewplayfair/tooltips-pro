@@ -119,11 +119,10 @@ current = true
 size = 10.541
 
 [node name="StaticBody3D_Prism" type="StaticBody3D" parent="CollisionObject3DExample"]
+process_priority = 10
 transform = Transform3D(0.751276, 0, -0.659989, 0, 1, 0, 0.659989, 0, 0.751276, 0, 0, 0)
 script = ExtResource("1_253dj")
-tooltip_template = 2
 trigger_on_focus = true
-can_lock = false
 offset = Vector2(0, 84)
 tooltip_alignment = 1
 overflow_mode = 1
@@ -138,10 +137,10 @@ mesh = SubResource("PrismMesh_mbkqn")
 shape = SubResource("BoxShape3D_wycvy")
 
 [node name="StaticBody3D_Cube" type="StaticBody3D" parent="CollisionObject3DExample"]
+process_priority = 10
 transform = Transform3D(0.751276, 0, -0.659989, 0, 1, 0, 0.659989, 0, 0.751276, -1.93495, 0, 0)
 script = ExtResource("1_253dj")
 tooltip_template = 2
-can_lock = false
 origin = 3
 tooltip_alignment = 1
 overflow_mode = 1
@@ -156,10 +155,10 @@ skeleton = NodePath("../../..")
 shape = SubResource("BoxShape3D_dafuq")
 
 [node name="StaticBody3D_Sphere" type="StaticBody3D" parent="CollisionObject3DExample"]
+process_priority = 10
 transform = Transform3D(0.751276, 0, -0.659989, 0, 1, 0, 0.659989, 0, 0.751276, -3.91643, 0, 0)
 script = ExtResource("1_253dj")
 tooltip_template = 2
-can_lock = false
 offset = Vector2(0, 72)
 tooltip_alignment = 7
 overflow_mode = 1
@@ -184,6 +183,7 @@ position = Vector2(1532, 624)
 metadata/_edit_group_ = true
 
 [node name="StaticBody2D_A" type="StaticBody2D" parent="CollisionObject2DExample"]
+process_priority = 10
 position = Vector2(9, -107)
 input_pickable = true
 script = ExtResource("1_253dj")
@@ -202,6 +202,7 @@ color = Color(1, 1, 1, 1)
 shape = SubResource("RectangleShape2D_mbkqn")
 
 [node name="StaticBody2D_B" type="StaticBody2D" parent="CollisionObject2DExample" node_paths=PackedStringArray("overflow_element_node")]
+process_priority = 10
 position = Vector2(116, -106)
 input_pickable = true
 script = ExtResource("1_253dj")
@@ -223,6 +224,7 @@ color = Color(1, 1, 0, 1)
 shape = SubResource("RectangleShape2D_mbkqn")
 
 [node name="StaticBody2D_C" type="StaticBody2D" parent="CollisionObject2DExample"]
+process_priority = 10
 position = Vector2(9, 0)
 input_pickable = true
 script = ExtResource("1_253dj")
@@ -242,6 +244,7 @@ color = Color(1, 0, 0, 1)
 shape = SubResource("RectangleShape2D_mbkqn")
 
 [node name="StaticBody2D_D" type="StaticBody2D" parent="CollisionObject2DExample"]
+process_priority = 10
 position = Vector2(116, 0)
 input_pickable = true
 script = ExtResource("1_253dj")
@@ -290,6 +293,7 @@ mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_faoux")
 
 [node name="Button" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainer2/FocusExample"]
+process_priority = 10
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -363,6 +367,7 @@ text = "Lock Mode"
 horizontal_alignment = 2
 
 [node name="LockModeOptionButton" type="OptionButton" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/LockModeContainer" node_paths=PackedStringArray("remote_element_node")]
+process_priority = 10
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 selected = 0
@@ -379,7 +384,7 @@ trigger_on_focus = true
 origin = 1
 remote_element_node = NodePath("../../../../TooltipPanel")
 tooltip_alignment = 4
-overflow_mode = 1
+overflow_mode = 2
 tooltip_settings_override = ExtResource("11_4nisf")
 tooltip_strings = Array[String](["Timer Lock: Tooltip will lock after a delay.
 Action Lock: Tooltip will lock on player input action (key press).
@@ -397,6 +402,7 @@ text = "Open Delay"
 horizontal_alignment = 2
 
 [node name="OpenDelayHSlider" type="HSlider" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/OpenDelayContainer" node_paths=PackedStringArray("remote_element_node")]
+process_priority = 10
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -430,6 +436,7 @@ text = "Timer Lock Delay"
 horizontal_alignment = 2
 
 [node name="TimerLockDelayHSlider" type="HSlider" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer" node_paths=PackedStringArray("remote_element_node")]
+process_priority = 10
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -463,6 +470,7 @@ text = "Unlock Delay"
 horizontal_alignment = 2
 
 [node name="UnlockDelayHSlider" type="HSlider" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer" node_paths=PackedStringArray("remote_element_node")]
+process_priority = 10
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2
 size_flags_vertical = 4
@@ -489,6 +497,7 @@ custom_minimum_size = Vector2(0, 4)
 layout_mode = 2
 
 [node name="ResetToDefaultButton" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer"]
+process_priority = 10
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
@@ -603,7 +612,7 @@ mouse_filter = 2
 script = ExtResource("1_ctohb")
 default_tooltip_settings = ExtResource("7_fupb4")
 tooltip_settings = ExtResource("8_xq3ja")
-tooltip_template_paths = Array[String](["res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_default.tscn", "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn", "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_object_label.tscn", "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"])
+tooltip_template_dir_path = "res://addons/tooltips_pro/examples/tooltip_templates/"
 
 [connection signal="input_event" from="CollisionObject3DExample/StaticBody3D_Prism" to="CollisionObject3DExample" method="_on_static_body_3d_input_event"]
 [connection signal="mouse_entered" from="CollisionObject3DExample/StaticBody3D_Cube" to="CollisionObject3DExample" method="_on_cube_mouse_entered"]

@@ -1,12 +1,17 @@
+@tool
 class_name Tooltip
 extends Control
 
-## The Labels that have their text set by the tooltip_strings on a Tooltip Trigger.
+## The [Label]s that have their text set by the [code]tooltip_strings[/code] on 
+## a [TooltipTrigger].
 @export var content_labels: Array[Label]
-## UI elements that will hide() when the tooltip is unlocked and show() when locked.
+## UI elements that will [code]hide()[/code] when the tooltip is unlocked and 
+## [code]show()[/code] when locked.
 @export var lock_elements: Array[Control]
-## The TextureProgressBar to be filled by a normalized time remaining of Timer Lock Delay.
+## The [TextureProgressBar] to be filled by a normalized time remaining of 
+## [code]timer_lock_delay[/code].
 @export var timer_lock_progress_bar: TextureProgressBar
+
 var trigger: TooltipTrigger
 var child_trigger_nodes: Array[Node]
 
@@ -34,11 +39,9 @@ func init_lock_mode() -> void:
 		lock_mode = trigger.tooltip_settings_override.lock_mode
 	match lock_mode:
 		TooltipEnums.TooltipLockMode.AUTO_LOCK:
-			if trigger.can_lock:
-				lock()
+			lock()
 		TooltipEnums.TooltipLockMode.TIMER_LOCK:
-			if trigger.can_lock:
-				begin_lock_delay()
+			begin_lock_delay()
 
 
 func toggle_lock() -> void:

@@ -1,6 +1,7 @@
 class_name TooltipEnums
 
 
+# Used by TooltipTrigger to set position relative to the Tooltip's Origin.
 enum TooltipAlignment {
 	TOP_LEFT,
 	TOP_CENTER,
@@ -14,45 +15,57 @@ enum TooltipAlignment {
 }
 
 
-## Used by OverflowMode to determine when a tooltip needs to be repositioned
+# Used with TooltipTrigger.overflow_mode to set what bounds Tooltips should be
+# constrained by when considering overflow positioning.
 enum OverflowBounds {
-	## Bounds are set to main viewport screen size
+	## Bounds are set to the main [Viewport]'s visible rect (window size).
 	WINDOW_SIZE,
-	## Bounds are set to a custom UI node size
+	## Bounds are set to a rect defined by a [Control] in the scene, set on
+	## [code]TooltipTrigger.overflow_element_node[/code].
 	CONTROL_NODE_SIZE,
 }
 
 
+# Used with TooltipTrigger.overflow_bounds to determine how a Tooltip should be 
+# positioned when overflowing the designated OverflowBounds.
 enum OverflowMode {
-	## Tooltip alignment changed to one not out of bounds
+	## [code]TooltipAlignment[/code] is flipped horizontally or vertically or both.
 	FLIPPED_ALIGNMENT,
-	## Tooltip position is clamped to the set bounds so it is always fully visible.
+	## [Tooltip] position is clamped to the set bounds.
 	CLAMP,
-	## Tooltip position will not be changed if it goes out of the set bounds.
+	## Allow [Tooltip] overflow and do not adjust its position.
 	OVERFLOW,
 }
 
 
+# A global setting on TooltipManager or override setting on TooltipTrigger that
+# sets how Tooltips are locked.
 enum TooltipLockMode {
-	## Tooltip locks after a delay of TooltipManager.TimerLockDelay (seconds).
+	## [Tooltip]s lock after a delay of [code]timer_lock_delay[/code].
 	TIMER_LOCK,
-	## Tooltip locks after TooltipActionButton is pressed by player.
+	## [Tooltip]s lock with [code]Input.is_action_just_pressed("LockTooltip")[/code].
+	## By default, the "LockTooltip" input action is [kbd]T[/kbd] or [kbd]Middle Mouse Button[/kbd].
 	ACTION_LOCK,
-	## Tooltip always opened in locked state.
+	## [Tooltip]s always open in locked state.
 	AUTO_LOCK,
-	## Tooltip cannot be locked.
+	## [Tooltip]s cannot be locked.
 	NO_LOCK,
 }
 
 
+# Used by TooltipTrigger.origin to set the origin, or pivot, around which the 
+# Tooltip is aligned and positioned.
 enum TooltipOrigin {
-	## Position the tooltip relative to the trigger node
+	## Position the [Tooltip] relative to the [TooltipTrigger] [Control].
 	TRIGGER_ELEMENT,
-	## Position the tooltip relative to a remote node
+	## Position the [Tooltip] relative to the [Control] assigned on 
+	## [code]TooltipTrigger.remote_element_node[/code].
 	REMOTE_ELEMENT,
-	## Position the tooltip relative to the mouse position at time of trigger
+	## Position the [Tooltip] relative to the [b]mouse position[b] at the time 
+	## of trigger.
 	MOUSE_POSITION_START,
-	## Position the tooltip relative to the mouse position and follow until lock/unlock
+	## Position the [Tooltip] relative to the [b]mouse position[b] and follow 
+	## its position unless the [Tooltip] is locked.
 	MOUSE_POSITION_FOLLOW,
 }
 

@@ -38,9 +38,10 @@ func _update_property():
 	updating = true
 	current_value = new_value
 	updating = false
-	
+	property_control.select(new_value)
+
 
 func init_options_array():
-	for template_path: String in TooltipManager.singleton.tooltip_template_paths:
-		var split_path := template_path.split("/")
-		property_control.add_item(split_path[-1])
+	var resources = ResourceLoader.list_directory(TooltipManager.singleton.tooltip_template_dir_path)
+	for resource in resources:
+		property_control.add_item(resource as String)

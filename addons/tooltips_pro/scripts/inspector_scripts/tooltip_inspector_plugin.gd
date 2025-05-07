@@ -2,7 +2,6 @@ extends EditorInspectorPlugin
 
 var TooltipTemplateEditor = preload("res://addons/tooltips_pro/scripts/inspector_scripts/tooltip_template_editor.gd")
 
-
 func _can_handle(object):
 	return true
 

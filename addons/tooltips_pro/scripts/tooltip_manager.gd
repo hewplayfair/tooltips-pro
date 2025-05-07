@@ -2,19 +2,29 @@
 class_name TooltipManager
 extends Node
 
+## The Tooltip Manager controls the instantiation and positioning of tooltips.
+##
+## [TooltipManager] is a singleton used to manage the [b]Tooltip Stack[/b], 
+## instantiating, removing, and positioning tooltips according to the settings 
+## selected on [TooltipManager], [TooltipTrigger]s, and [Tooltip] Templates.
+
 static var _singleton: TooltipManager = null
 static var singleton: TooltipManager:
 	get:
 		return _singleton
 
-## The default Tooltip Settings Resource is used to reset the settings to default in-game.
+## The [b]TooltipSettings Resource[/b] that can used to reset the settings 
+## to default in-game. This should be treated as read-only at runtime.
 @export var default_tooltip_settings: Resource
-## The Tooltip Settings Resource stores global tooltip settings. These can be 
-## overridden on Tooltip Triggers.
+## The [b]TooltipSettings Resource[/b] stores global tooltip settings. This can be 
+## overridden by assigning one on a [TooltipTrigger].
 @export var tooltip_settings: Resource
-## The paths to the Tooltip Template scenes that will be used. A Tooltip Template 
-## must be selected on a Tooltip Trigger, and the first will be used by default.
-@export var tooltip_template_paths: Array[String]
+## The path to the directory where [Tooltip] Template scenes are located. The 
+## [Tooltip] Template to be used for instantiating a [Tooltip] is selected on
+## a [TooltipTrigger].
+@export var tooltip_template_dir_path: String
+
+var tooltip_templates: Array[PackedScene]
 
 var mouse_tooltip_stack: Array[Tooltip]
 var focus_tooltip_stack: Array[Tooltip]
@@ -23,9 +33,19 @@ var follow_mouse: bool
 var is_collapsing_stack: bool
 
 
-func _init() -> void:
+func _init():
 	if singleton == null:
 		_singleton = self
+
+
+func _ready() -> void:
+	load_tooltip_templates()
+
+
+func load_tooltip_templates() -> void:
+	var resources = ResourceLoader.list_directory(tooltip_template_dir_path)
+	for resource in resources:
+		tooltip_templates.append(load(tooltip_template_dir_path + resource))
 
 
 func _input(event):
@@ -59,8 +79,7 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_po
 		force_close_stack()
 	
 	# Instantiate tooltip and add to Tooltip Stack
-	var tooltip_path = tooltip_template_paths[tooltip_trigger.tooltip_template]
-	var new_tooltip := load(tooltip_path).instantiate() as Tooltip
+	var new_tooltip := tooltip_templates[tooltip_trigger.tooltip_template].instantiate() as Tooltip
 	
 	new_tooltip._init(tooltip_trigger)
 	if tooltip_trigger.trigger_on_focus:
