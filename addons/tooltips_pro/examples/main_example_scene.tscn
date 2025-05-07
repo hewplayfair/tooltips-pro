@@ -386,9 +386,10 @@ remote_element_node = NodePath("../../../../TooltipPanel")
 tooltip_alignment = 4
 overflow_mode = 2
 tooltip_settings_override = ExtResource("11_4nisf")
-tooltip_strings = Array[String](["Timer Lock: Tooltip will lock after a delay.
-Action Lock: Tooltip will lock on player input action (key press).
-Auto Lock: Tooltip will open locked."])
+use_rich_text_labels = true
+tooltip_strings = Array[String](["[b]Timer Lock[/b]: Tooltip will lock after a delay.
+[b]Action Lock[/b]: Tooltip will lock on player input action (key press).
+[b]Auto Lock[/b]: Tooltip will open locked."])
 
 [node name="OpenDelayContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer"]
 layout_mode = 2
@@ -416,7 +417,8 @@ remote_element_node = NodePath("../../../../TooltipPanel")
 tooltip_alignment = 4
 overflow_mode = 1
 tooltip_settings_override = ExtResource("11_4nisf")
-tooltip_strings = Array[String](["Open Delay: The time in seconds before a tooltip opens on mouse_entered() or focus_entered()."])
+use_rich_text_labels = true
+tooltip_strings = Array[String](["[b]Open Delay[/b]: The time in seconds before a tooltip opens on [color=e8a3a5][code]mouse_entered()[/code][/color] or [color=e8a3a5][code]focus_entered()[/code][/color]."])
 
 [node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/OpenDelayContainer"]
 custom_minimum_size = Vector2(42, 0)
@@ -450,7 +452,8 @@ remote_element_node = NodePath("../../../../TooltipPanel")
 tooltip_alignment = 4
 overflow_mode = 1
 tooltip_settings_override = ExtResource("11_4nisf")
-tooltip_strings = Array[String](["Timer Lock Delay: The time in seconds before a tooltip locks when using Timer Lock Mode."])
+use_rich_text_labels = true
+tooltip_strings = Array[String](["[b]Timer Lock Delay[/b]: The time in seconds before a tooltip locks when the [i]Lock Mode[/i] is set to [i]Timer Lock[/i]."])
 
 [node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer"]
 custom_minimum_size = Vector2(42, 0)
@@ -484,7 +487,8 @@ remote_element_node = NodePath("../../../../TooltipPanel")
 tooltip_alignment = 4
 overflow_mode = 1
 tooltip_settings_override = ExtResource("11_4nisf")
-tooltip_strings = Array[String](["Unlock Delay: The time in seconds before a locked tooltip closes on mouse_exited()."])
+use_rich_text_labels = true
+tooltip_strings = Array[String](["[b]Unlock Delay[/b]: The time in seconds before a locked tooltip closes on [color=e8a3a5][code]mouse_exited()[/code][/color]."])
 
 [node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer"]
 custom_minimum_size = Vector2(42, 0)
@@ -534,6 +538,7 @@ theme_override_constants/separation = 16
 [node name="RichTextLabel" type="RichTextLabel" parent="UICanvasLayer/HBoxContainer/VBoxContainer/FocusExample/HBoxContainer"]
 custom_minimum_size = Vector2(384, 128)
 layout_mode = 2
+mouse_filter = 2
 bbcode_enabled = true
 text = "[b]Focus Tooltip Example[/b]: Use gamepad or keyboard to navigate the above Settings and see their tooltips.
 
@@ -559,7 +564,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_0dv7n")
 custom_minimum_size = Vector2(317.885, 0)
 layout_mode = 2
 size_flags_horizontal = 0
-mouse_filter = 1
+mouse_filter = 2
 bbcode_enabled = true
 text = "[b]CollisionObject2D Trigger Example[/b]
 Sprite2D and other 2D nodes can have the same tooltip trigger functionality as Control tooltips.
@@ -588,7 +593,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_0dv7n")
 custom_minimum_size = Vector2(512, 0)
 layout_mode = 2
 size_flags_horizontal = 0
-mouse_filter = 1
+mouse_filter = 2
 bbcode_enabled = true
 text = "[b]CollisionObject3D Trigger Example[/b]
 Same functionality as Control tooltips.

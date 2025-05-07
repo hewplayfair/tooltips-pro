@@ -23,6 +23,9 @@ static var singleton: TooltipManager:
 ## [Tooltip] Template to be used for instantiating a [Tooltip] is selected on
 ## a [TooltipTrigger].
 @export var tooltip_template_dir_path: String
+## the [InputMap] action name for the Input Action used to lock/unlock tooltips
+## while using [code]Action Lock[/code] mode.
+@export var lock_input_action_name: StringName = "LockTooltip"
 
 var tooltip_templates: Array[PackedScene]
 
@@ -67,7 +70,7 @@ func _process(delta: float) -> void:
 		tooltip_settings.lock_mode == TooltipEnums.TooltipLockMode.ACTION_LOCK 
 		and mouse_tooltip_stack.size() > 0
 	):
-		if Input.is_action_just_pressed("LockTooltip"):
+		if Input.is_action_just_pressed(lock_input_action_name):
 			mouse_tooltip_stack[0].toggle_lock()
 
 

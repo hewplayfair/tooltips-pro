@@ -1,11 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://dbuj1aarmc6hu"]
+[gd_scene load_steps=4 format=3 uid="uid://dbuj1aarmc6hu"]
 
 [ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="1_313b4"]
+[ext_resource type="FontFile" uid="uid://dtt2d32rueqpm" path="res://addons/tooltips_pro/examples/JetBrainsMonoNL-SemiBold.ttf" id="2_leusn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_313b4"]
 draw_center = false
 
-[node name="TooltipTemplateSettings" type="PanelContainer" node_paths=PackedStringArray("content_labels")]
+[node name="TooltipTemplateSettings" type="PanelContainer" node_paths=PackedStringArray("content_rich_text_labels")]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,7 +17,7 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_313b4")
 script = ExtResource("1_313b4")
-content_labels = [NodePath("MarginContainer/Label")]
+content_rich_text_labels = [NodePath("MarginContainer/RichTextLabel")]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -25,9 +26,9 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Label" type="Label" parent="MarginContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
 layout_mode = 2
-size_flags_vertical = 1
-text = "Lorem Ipsum"
+theme_override_fonts/mono_font = ExtResource("2_leusn")
+bbcode_enabled = true
+fit_content = true
 vertical_alignment = 1
-autowrap_mode = 3

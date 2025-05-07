@@ -5,6 +5,7 @@ extends Control
 ## The [Label]s that have their text set by the [code]tooltip_strings[/code] on 
 ## a [TooltipTrigger].
 @export var content_labels: Array[Label]
+@export var content_rich_text_labels: Array[RichTextLabel]
 ## UI elements that will [code]hide()[/code] when the tooltip is unlocked and 
 ## [code]show()[/code] when locked.
 @export var lock_elements: Array[Control]
@@ -45,12 +46,11 @@ func init_lock_mode() -> void:
 
 
 func toggle_lock() -> void:
-	if trigger.can_lock:
-		match state:
-			TooltipEnums.TooltipState.READY:
-				lock()
-			TooltipEnums.TooltipState.LOCKED:
-				unlock()
+	match state:
+		TooltipEnums.TooltipState.READY:
+			lock()
+		TooltipEnums.TooltipState.LOCKED:
+			unlock()
 
 
 func begin_lock_delay() -> void:

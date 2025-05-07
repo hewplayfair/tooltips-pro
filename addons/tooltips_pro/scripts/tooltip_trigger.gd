@@ -40,6 +40,7 @@ extends Node
 @export var tooltip_settings_override: Resource
 
 @export_group("Content")
+@export var use_rich_text_labels: bool
 ## The text to apply to the [Label]s defined on the [Tooltip] Template.
 @export_multiline var tooltip_strings: Array[String]
 
@@ -209,10 +210,17 @@ func cancel_unlock_delay():
 
 func set_tooltip_content():
 	for i in active_tooltip.trigger.tooltip_strings.size():
-		if active_tooltip.content_labels.size() > i:
-			active_tooltip.content_labels[i].text = active_tooltip.trigger.tooltip_strings[i]
+		if use_rich_text_labels:
+			if active_tooltip.content_rich_text_labels.size() > i:
+				active_tooltip.content_rich_text_labels[i].text = active_tooltip.trigger.tooltip_strings[i]
+			else:
+				printerr(active_tooltip.name, " has fewer content Rich Text Labels than there are content strings on trigger ", active_tooltip.trigger.name)
 		else:
-			print_debug(active_tooltip.name, " has fewer content labels than there are content strings on trigger ", active_tooltip.trigger.name)
+			if active_tooltip.content_labels.size() > i:
+				active_tooltip.content_labels[i].text = active_tooltip.trigger.tooltip_strings[i]
+			else:
+				printerr(active_tooltip.name, " has fewer content Labels than there are content strings on trigger ", active_tooltip.trigger.name)
+
 
 func on_tooltip_removed() -> void:
 	state = TooltipEnums.TriggerState.READY
