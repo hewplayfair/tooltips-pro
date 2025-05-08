@@ -26,9 +26,9 @@ func toggle_selection(toggle: bool) -> void:
 		prism_tooltip_trigger._on_focus_exited()
 
 
-func _on_cube_mouse_entered() -> void:
+func _on_3d_mouse_entered() -> void:
 	cube_mesh_instance.mesh.surface_get_material(0).next_pass.set_shader_parameter("outline_width", 3.0)
 
 
-func _on_cube_mouse_exited() -> void:
+func _on_3d_mouse_exited() -> void:
 	cube_mesh_instance.mesh.surface_get_material(0).next_pass.set_shader_parameter("outline_width", 0.0)

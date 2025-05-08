@@ -1,32 +1,33 @@
 [gd_scene load_steps=3 format=3 uid="uid://c456xky6op3fe"]
 
-[ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="1_sxygs"]
+[ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="1_uw7af"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oawa8"]
 bg_color = Color(0.133196, 0.133196, 0.133196, 1)
 
-[node name="TooltipTemplateDefault" type="PanelContainer" node_paths=PackedStringArray("content_labels")]
+[node name="TooltipTemplate3D" type="PanelContainer" node_paths=PackedStringArray("content_labels")]
 custom_minimum_size = Vector2(180, 0)
-offset_right = 17.0
+offset_right = 180.0
 offset_bottom = 39.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_oawa8")
-script = ExtResource("1_sxygs")
+script = ExtResource("1_uw7af")
 content_labels = [NodePath("MarginContainer/Label")]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
 [node name="Label" type="Label" parent="MarginContainer"]
-clip_contents = true
 layout_mode = 2
 size_flags_vertical = 0
 text = "Lorem Ipsum"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
+autowrap_trim_flags = 0

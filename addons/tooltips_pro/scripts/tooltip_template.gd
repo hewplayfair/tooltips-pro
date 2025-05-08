@@ -46,6 +46,13 @@ func init_lock_mode() -> void:
 
 
 func toggle_lock() -> void:
+	if trigger.tooltip_settings_override:
+		if trigger.tooltip_settings_override.lock_mode == TooltipEnums.TooltipLockMode.NO_LOCK:
+			return
+	elif TooltipManager.singleton.tooltip_settings.lock_mode == TooltipEnums.TooltipLockMode.NO_LOCK:
+		return
+	
+	
 	match state:
 		TooltipEnums.TooltipState.READY:
 			lock()

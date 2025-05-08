@@ -115,7 +115,10 @@ func _on_mouse_entered_3d() -> void:
 	var selection_node := self as Node
 	var camera = get_viewport().get_camera_3d()
 	if camera:
-		var screen_pos = camera.unproject_position(selection_node.global_position)
+		var screen_pos: Vector2i = camera.unproject_position(selection_node.global_position)
+		# This sets correct position when SubViewport is smaller than the main 
+		# viewport/screen size.
+		screen_pos += get_window().size - get_viewport().size
 		try_await_open_delay(true, screen_pos)
 	else:
 		print_debug("Camera3D not found in scene. Cannot get tooltip screen position from Node3D.")

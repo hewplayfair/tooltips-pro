@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dbuj1aarmc6hu"]
 
 [ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="1_313b4"]
-[ext_resource type="FontFile" uid="uid://dtt2d32rueqpm" path="res://addons/tooltips_pro/examples/JetBrainsMonoNL-SemiBold.ttf" id="2_leusn"]
+[ext_resource type="FontFile" uid="uid://dtt2d32rueqpm" path="res://addons/tooltips_pro/examples/resources/JetBrainsMonoNL-SemiBold.ttf" id="2_leusn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_313b4"]
 draw_center = false
