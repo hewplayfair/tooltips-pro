@@ -19,15 +19,11 @@ static var singleton: TooltipManager:
 ## The [b]TooltipSettings Resource[/b] stores global tooltip settings. This can be 
 ## overridden by assigning one on a [TooltipTrigger].
 @export var tooltip_settings: Resource
-## The path to the directory where [Tooltip] Template scenes are located. The 
-## [Tooltip] Template to be used for instantiating a [Tooltip] is selected on
-## a [TooltipTrigger].
-@export var tooltip_template_dir_path: String
+## The default [Tooltip] Template. Override this on [TooltipTrigger].
+@export var default_tooltip_template: PackedScene = preload("res://addons/tooltips_pro/resources/tooltip_templates/tooltip_template_default.tscn")
 ## the [InputMap] action name for the Input Action used to lock/unlock tooltips
 ## while using [code]Action Lock[/code] mode.
 @export var lock_input_action_name: StringName = "LockTooltip"
-
-var tooltip_templates: Array[PackedScene]
 
 var mouse_tooltip_stack: Array[Tooltip]
 var focus_tooltip_stack: Array[Tooltip]
@@ -39,16 +35,6 @@ var is_collapsing_stack: bool
 func _init():
 	if singleton == null:
 		_singleton = self
-
-
-func _ready() -> void:
-	load_tooltip_templates()
-
-
-func load_tooltip_templates() -> void:
-	var resources = ResourceLoader.list_directory(tooltip_template_dir_path)
-	for resource in resources:
-		tooltip_templates.append(load(tooltip_template_dir_path + resource))
 
 
 func _input(event):
@@ -82,7 +68,10 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_po
 		force_close_stack()
 	
 	# Instantiate tooltip and add to Tooltip Stack
-	var new_tooltip := tooltip_templates[tooltip_trigger.tooltip_template].instantiate() as Tooltip
+	var template := TooltipManager.singleton.default_tooltip_template
+	if tooltip_trigger.tooltip_template:
+		template = tooltip_trigger.tooltip_template
+	var new_tooltip := template.instantiate() as Tooltip
 	
 	new_tooltip._init(tooltip_trigger)
 	if tooltip_trigger.trigger_on_focus:
@@ -94,7 +83,7 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_po
 		if is_collision:
 			add_child(new_tooltip)
 		else:
-			tooltip_trigger.add_child(new_tooltip)
+			add_child(new_tooltip)
 	elif tooltip_trigger.origin == TooltipEnums.TooltipOrigin.REMOTE_ELEMENT:
 		if tooltip_trigger.remote_element_node:
 			tooltip_trigger.remote_element_node.add_child(new_tooltip)

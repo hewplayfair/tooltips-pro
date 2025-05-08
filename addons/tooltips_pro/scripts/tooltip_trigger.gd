@@ -2,9 +2,8 @@
 class_name TooltipTrigger
 extends Node
 
-## The [Tooltip] Template to use for the instantiated [Tooltip]. These are defined 
-## by setting the [code]tooltip_template_dir_path[/code] on the [TooltipManager].
-@export var tooltip_template: int
+## The [Tooltip] Template to use for the instantiated [Tooltip].
+@export var tooltip_template: PackedScene
 ## If [code]true[/code] and a [Control] node, the [Tooltip] will trigger on [signal 
 ## Control.focus_entered].[br][br]If [code]true[/code] and a [CollisionObject2D]/
 ## [CollisionObject3D] node, the [Tooltip] will need to be triggered manually with a 
