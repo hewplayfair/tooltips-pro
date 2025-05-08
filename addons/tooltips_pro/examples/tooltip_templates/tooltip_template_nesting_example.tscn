@@ -27,6 +27,7 @@ border_width_right = 2
 border_width_bottom = 2
 
 [node name="TooltipTemplateNestingExample" type="PanelContainer" node_paths=PackedStringArray("content_labels", "lock_elements", "timer_lock_progress_bar")]
+z_index = 1
 custom_minimum_size = Vector2(384, 0)
 offset_right = 384.0
 offset_bottom = 75.0
@@ -78,7 +79,6 @@ texture = ExtResource("2_losrq")
 expand_mode = 1
 stretch_mode = 4
 script = ExtResource("2_07d6w")
-tooltip_template = 1
 origin = 3
 offset = Vector2(10, 10)
 

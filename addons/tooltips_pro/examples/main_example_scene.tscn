@@ -270,7 +270,6 @@ offset_bottom = 47.0
 text = "D"
 
 [node name="UICanvasLayer" type="CanvasLayer" parent="."]
-layer = 128
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UICanvasLayer"]
 anchors_preset = 15
@@ -284,14 +283,6 @@ size_flags_vertical = 3
 [node name="VBoxContainer2" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="Button" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainer2"]
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-text = "Test"
-script = ExtResource("1_253dj")
-tooltip_alignment = 7
-tooltip_strings = Array[String](["Testing default template"])
 
 [node name="FocusExample" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2

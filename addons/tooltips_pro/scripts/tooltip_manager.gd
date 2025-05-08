@@ -83,7 +83,7 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_po
 		if is_collision:
 			add_child(new_tooltip)
 		else:
-			add_child(new_tooltip)
+			tooltip_trigger.add_child(new_tooltip)
 	elif tooltip_trigger.origin == TooltipEnums.TooltipOrigin.REMOTE_ELEMENT:
 		if tooltip_trigger.remote_element_node:
 			tooltip_trigger.remote_element_node.add_child(new_tooltip)
