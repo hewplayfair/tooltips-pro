@@ -19,11 +19,15 @@ static var singleton: TooltipManager:
 ## The [b]TooltipSettings Resource[/b] stores global tooltip settings. This can be 
 ## overridden by assigning one on a [TooltipTrigger].
 @export var tooltip_settings: Resource
+## Directory path for loading all the [Tooltip] Templates
+@export var tooltip_template_dir_path: String
 ## The default [Tooltip] Template. Override this on [TooltipTrigger].
 @export var default_tooltip_template: PackedScene = preload("res://addons/tooltips_pro/resources/tooltip_templates/tooltip_template_default.tscn")
 ## the [InputMap] action name for the Input Action used to lock/unlock tooltips
 ## while using [code]Action Lock[/code] mode.
 @export var lock_input_action_name: StringName = "LockTooltip"
+
+var tooltip_templates: Dictionary[String, PackedScene]
 
 var mouse_tooltip_stack: Array[Tooltip]
 var focus_tooltip_stack: Array[Tooltip]
@@ -32,9 +36,24 @@ var follow_mouse: bool
 var is_collapsing_stack: bool
 
 
+signal tooltips_initialized()
+
+
 func _init():
 	if singleton == null:
 		_singleton = self
+
+
+func _ready() -> void:
+	load_tooltip_templates()
+
+
+func load_tooltip_templates() -> void:
+	var resources := ResourceLoader.list_directory(tooltip_template_dir_path)
+	for resource in resources:
+		tooltip_templates.set(tooltip_template_dir_path + resource, load(tooltip_template_dir_path + resource))
+	
+	tooltips_initialized.emit()
 
 
 func _input(event):
@@ -60,7 +79,7 @@ func _process(delta: float) -> void:
 			mouse_tooltip_stack[0].toggle_lock()
 
 
-func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_pos: Vector2) -> Tooltip:
+func init_tooltip(tooltip_trigger: TooltipTrigger, screen_pos: Vector2) -> Tooltip:
 	# If the tooltip stack is in process of collapsing with a delay it can cause
 	# this new tooltip to also be removed, so first force close all the tooltips.
 	if is_collapsing_stack:
@@ -69,35 +88,37 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_po
 	
 	# Instantiate tooltip and add to Tooltip Stack
 	var template := TooltipManager.singleton.default_tooltip_template
-	if tooltip_trigger.tooltip_template:
-		template = tooltip_trigger.tooltip_template
+	if tooltip_trigger.tooltip_template_path:
+		template = TooltipManager.singleton.tooltip_templates[tooltip_trigger.tooltip_template_path]
 	var new_tooltip := template.instantiate() as Tooltip
 	
 	new_tooltip._init(tooltip_trigger)
-	if tooltip_trigger.trigger_on_focus:
+	if tooltip_trigger.trigger_mode == TooltipEnums.TriggerMode.FOCUS_ONLY:
 		focus_tooltip_stack.push_front(new_tooltip)
 	else:
 		mouse_tooltip_stack.push_front(new_tooltip)
-				
+			
+	var parent: Node = self
 	if tooltip_trigger.origin == TooltipEnums.TooltipOrigin.TRIGGER_ELEMENT:
-		if is_collision:
-			add_child(new_tooltip)
-		else:
-			tooltip_trigger.add_child(new_tooltip)
+		if screen_pos == Vector2.ZERO:
+			parent = tooltip_trigger
 	elif tooltip_trigger.origin == TooltipEnums.TooltipOrigin.REMOTE_ELEMENT:
 		if tooltip_trigger.remote_element_node:
-			tooltip_trigger.remote_element_node.add_child(new_tooltip)
+			parent = tooltip_trigger.remote_element_node
 	elif (
 			tooltip_trigger.origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_START 
 			or tooltip_trigger.origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_FOLLOW
 	):
-		add_child(new_tooltip)
+		if tooltip_trigger.state == TooltipEnums.TriggerState.INIT_FOCUS_ENTERED:
+			parent = tooltip_trigger
+			
+	parent.add_child(new_tooltip)
 
 	# Positioning needs to be deferred due to tooltip sizing and positioning 
 	# order of operations that I don't understand. Without it, tooltip Controls 
 	# may be sized incorrectly, with, for example, a greater height than the 
 	# minimum expected.
-	self.call_deferred("position_tooltip", new_tooltip, is_collision, screen_pos)
+	self.call_deferred("position_tooltip", new_tooltip, screen_pos)
 	
 	new_tooltip.init_lock_mode()
 	var stack: Array[Tooltip]
@@ -108,7 +129,7 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, is_collision: bool, screen_po
 	return new_tooltip
 
 
-func position_tooltip(tooltip: Tooltip, world_to_screen: bool = false, screen_pos = Vector2.ZERO) -> void:	
+func position_tooltip(tooltip: Tooltip, screen_pos = Vector2.ZERO) -> void:	
 	var offset := tooltip.trigger.offset
 	
 	# Position tooltip relative to origin element set on TooltipTrigger
@@ -118,23 +139,21 @@ func position_tooltip(tooltip: Tooltip, world_to_screen: bool = false, screen_po
 	var new_alignment := TooltipEnums.TooltipAlignment.TOP_LEFT
 				
 	if (
-		origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_START 
-		or origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_FOLLOW
+		origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_START or 
+		origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_FOLLOW
 	):
-		mouse_position = get_viewport().get_mouse_position()
-		if origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_FOLLOW:
-			follow_mouse = true
+		if (
+			tooltip.trigger.state == TooltipEnums.TriggerState.INIT_MOUSE_ENTERED or
+			tooltip.trigger.state == TooltipEnums.TriggerState.ACTIVE_MOUSE_ENTERED
+		):
+			mouse_position = get_viewport().get_mouse_position()
+			if origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_FOLLOW:
+				follow_mouse = true
 	
-	if world_to_screen and screen_pos != Vector2.ZERO:
-		tooltip.set_position(
-				get_alignment_position(tooltip, tooltip.trigger.tooltip_alignment, offset) 
-				+ screen_pos + mouse_position
-		)
-	else:
-		tooltip.set_position(
-				get_alignment_position(tooltip, tooltip.trigger.tooltip_alignment, offset) 
-				+ mouse_position
-		)
+	tooltip.set_position(
+		get_alignment_position(tooltip, tooltip.trigger.tooltip_alignment, offset) 
+		+ screen_pos + mouse_position
+	)
 	new_alignment = tooltip.trigger.tooltip_alignment
 
 	# Reposition tooltip if necessary based on selected OverflowMode
@@ -453,7 +472,7 @@ func force_close_stack():
 
 func remove_tooltip(tooltip: Tooltip, modulate: bool = true) -> void:
 	tooltip.trigger.on_tooltip_removed()
-	if tooltip.trigger.trigger_on_focus:
+	if tooltip.trigger.trigger_mode == TooltipEnums.TriggerMode.FOCUS_ONLY:
 		focus_tooltip_stack.erase(tooltip)
 		if focus_tooltip_stack.size() == 0:
 			is_collapsing_stack = false

@@ -1,6 +1,13 @@
 class_name TooltipEnums
 
 
+enum TriggerMode{
+	MOUSE_AND_FOCUS,
+	MOUSE_ONLY,
+	FOCUS_ONLY,
+}
+
+
 # Used by TooltipTrigger to set position relative to the Tooltip's Origin.
 enum TooltipAlignment {
 	TOP_LEFT,
@@ -79,8 +86,11 @@ enum TooltipState {
 	REMOVE,
 }
 
+
 enum TriggerState {
 	READY,
-	INITIALIZING,
-	ACTIVE,
+	INIT_MOUSE_ENTERED,
+	INIT_FOCUS_ENTERED,
+	ACTIVE_MOUSE_ENTERED,
+	ACTIVE_FOCUS_ENTERED
 }

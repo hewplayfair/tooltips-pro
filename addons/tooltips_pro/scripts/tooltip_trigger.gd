@@ -2,13 +2,11 @@
 class_name TooltipTrigger
 extends Node
 
-## The [Tooltip] Template to use for the instantiated [Tooltip].
-@export var tooltip_template: PackedScene
-## If [code]true[/code] and a [Control] node, the [Tooltip] will trigger on [signal 
-## Control.focus_entered].[br][br]If [code]true[/code] and a [CollisionObject2D]/
-## [CollisionObject3D] node, the [Tooltip] will need to be triggered manually with a 
-## custom script.
-@export var trigger_on_focus: bool
+## The [Tooltip] Template path to use for the instantiated [Tooltip]. This is 
+## used as a Key for the Dictionary which stores loaded tooltips on [TooltipManager]
+@export var tooltip_template_path: String
+
+@export var trigger_mode: TooltipEnums.TriggerMode = TooltipEnums.TriggerMode.MOUSE_AND_FOCUS
 
 @export_group("Layout")
 ## The alignment of the [Tooltip] position relative to its [b]origin[/b].
@@ -62,7 +60,8 @@ func _on_mouse_entered() -> void:
 	
 	if TooltipManager.singleton.is_collapsing_stack:
 		return
-		
+	
+	state = TooltipEnums.TriggerState.INIT_MOUSE_ENTERED
 	try_await_open_delay()
 
 
@@ -78,15 +77,13 @@ func _on_mouse_exited() -> void:
 func _on_focus_entered() -> void:
 	if state != TooltipEnums.TriggerState.READY:
 		return
-		
-	# Need to wait for process frame because if grab_focus is set in another
-	# script's _ready(), there's a tooltip positioning error.
-	await get_tree().process_frame
-	try_await_open_delay()
+	
+	state = TooltipEnums.TriggerState.INIT_FOCUS_ENTERED
+	try_await_open_delay(Vector2.ZERO, TooltipEnums.TriggerState.ACTIVE_FOCUS_ENTERED)
 
 
 func _on_focus_exited() -> void:
-	cancel_open_delay()
+	cancel_open_delay(TooltipEnums.TriggerState.ACTIVE_FOCUS_ENTERED)
 	if active_tooltip and active_tooltip.state == TooltipEnums.TooltipState.READY:
 		TooltipManager.singleton.remove_tooltip(active_tooltip)
 	else:
@@ -99,7 +96,9 @@ func _on_mouse_entered_2d() -> void:
 		
 	var selection_node := self as Node
 	var screen_pos = selection_node.get_global_transform_with_canvas().origin
-	try_await_open_delay(true, screen_pos)
+	
+	state = TooltipEnums.TriggerState.INIT_MOUSE_ENTERED
+	try_await_open_delay(screen_pos)
 
 ## Used when needing to set a tooltip's position relative to a 3D object
 func _on_mouse_entered_3d() -> void:
@@ -113,7 +112,9 @@ func _on_mouse_entered_3d() -> void:
 		# This sets correct position when SubViewport is smaller than the main 
 		# viewport/screen size.
 		screen_pos += get_window().size - get_viewport().size
-		try_await_open_delay(true, screen_pos)
+		
+		state = TooltipEnums.TriggerState.INIT_MOUSE_ENTERED
+		try_await_open_delay(screen_pos)
 	else:
 		print_debug("Camera3D not found in scene. Cannot get tooltip screen position from Node3D.")
 
@@ -121,20 +122,24 @@ func _on_mouse_entered_3d() -> void:
 func init_signals() -> void:
 	control_node = get_node(".") as Control
 	if control_node:
-		if trigger_on_focus:
-			control_node.focus_entered.connect(_on_focus_entered)
-			control_node.focus_exited.connect(_on_focus_exited)
-		else:
+		if(
+			trigger_mode == TooltipEnums.TriggerMode.MOUSE_AND_FOCUS or 
+			trigger_mode == TooltipEnums.TriggerMode.MOUSE_ONLY
+		):
 			control_node.mouse_entered.connect(_on_mouse_entered)
 			control_node.mouse_exited.connect(_on_mouse_exited)
+		if(
+			trigger_mode == TooltipEnums.TriggerMode.MOUSE_AND_FOCUS or 
+			trigger_mode == TooltipEnums.TriggerMode.FOCUS_ONLY
+		):
+			control_node.focus_entered.connect(_on_focus_entered)
+			control_node.focus_exited.connect(_on_focus_exited)
 			
 		return
 
 	collision_object_2d_node = get_node(".") as CollisionObject2D
 	if collision_object_2d_node:
-		# If trigger_on_focus, handle tooltip triggering in another game script
-		# along with object selection.
-		if not trigger_on_focus:
+		if trigger_mode == TooltipEnums.TriggerMode.MOUSE_ONLY:
 			if (
 				origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_START or
 				origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_FOLLOW
@@ -142,15 +147,14 @@ func init_signals() -> void:
 				collision_object_2d_node.mouse_entered.connect(_on_mouse_entered)
 			else:
 				collision_object_2d_node.mouse_entered.connect(_on_mouse_entered_2d)
+			
 			collision_object_2d_node.mouse_exited.connect(_on_mouse_exited)
 			
 		return
 
 	var collision_object_3d_node = get_node(".") as CollisionObject3D
 	if collision_object_3d_node:
-		# If trigger_on_focus, handle tooltip triggering in another game script
-		# along with object selection.
-		if not trigger_on_focus:
+		if trigger_mode == TooltipEnums.TriggerMode.MOUSE_ONLY:
 			if (
 				origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_START or
 				origin == TooltipEnums.TooltipOrigin.MOUSE_POSITION_FOLLOW
@@ -159,20 +163,19 @@ func init_signals() -> void:
 			else:
 				collision_object_3d_node.mouse_entered.connect(_on_mouse_entered_3d)
 			collision_object_3d_node.mouse_exited.connect(_on_mouse_exited)
+		
 		return
 
 
-func try_await_open_delay(is_collision := false, screen_pos := Vector2.ZERO):
-	state = TooltipEnums.TriggerState.INITIALIZING
-	
+func try_await_open_delay(screen_pos := Vector2.ZERO, active_state := TooltipEnums.TriggerState.ACTIVE_MOUSE_ENTERED):
 	var delay = TooltipManager.singleton.tooltip_settings.open_delay
 	if tooltip_settings_override:
 		delay = tooltip_settings_override.open_delay
 	
 	if delay <= 0.0:
-		active_tooltip = await TooltipManager.singleton.init_tooltip(self, is_collision, screen_pos)
-		state = TooltipEnums.TriggerState.ACTIVE
+		active_tooltip = await TooltipManager.singleton.init_tooltip(self, screen_pos)
 		active_tooltip.set_content(tooltip_strings)
+		state = active_state
 		return
 	
 	delay_timer.wait_time = delay
@@ -181,19 +184,22 @@ func try_await_open_delay(is_collision := false, screen_pos := Vector2.ZERO):
 	
 	# Because this is a coroutine the state may have changed while awaiting the
 	# Timer, so need to check it again to prevent multiple initializations.
-	if state != TooltipEnums.TriggerState.INITIALIZING:
+	if(
+		state != TooltipEnums.TriggerState.INIT_MOUSE_ENTERED and 
+		state != TooltipEnums.TriggerState.INIT_FOCUS_ENTERED
+	):
 		return
 	
-	active_tooltip = await TooltipManager.singleton.init_tooltip(self, is_collision, screen_pos)
-	state = TooltipEnums.TriggerState.ACTIVE
+	active_tooltip = await TooltipManager.singleton.init_tooltip(self, screen_pos)
 	active_tooltip.set_content(tooltip_strings)
+	state = active_state
 
 
-func cancel_open_delay():
+func cancel_open_delay(active_state := TooltipEnums.TriggerState.ACTIVE_MOUSE_ENTERED):
 	delay_timer.stop()
 	TooltipManager.singleton.is_collapsing_stack = false
 	if active_tooltip:
-		state = TooltipEnums.TriggerState.ACTIVE
+		state = active_state
 	else:
 		state = TooltipEnums.TriggerState.READY
 

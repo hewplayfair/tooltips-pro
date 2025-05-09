@@ -96,17 +96,17 @@ func unlock() -> void:
 	
 	state =  TooltipEnums.TooltipState.READY
 
-
+# TODO: Full localization support including placeholders, contexts, etc
 func set_content(tooltip_strings: Array[String]):
 	for i in tooltip_strings.size():
 		if use_rich_text_labels:
 			if content_rich_text_labels.size() > i:
-				content_rich_text_labels[i].text = tooltip_strings[i]
+				content_rich_text_labels[i].text = tr(tooltip_strings[i])
 			else:
 				printerr(name, " has fewer Rich Text Labels than there are content strings on trigger ", trigger.name)
 		else:
 			if content_labels.size() > i:
-				content_labels[i].text = tooltip_strings[i]
+				content_labels[i].text = tr(tooltip_strings[i])
 			else:
 				printerr(name, " has fewer Labels than there are content strings on trigger ", trigger.name)
 

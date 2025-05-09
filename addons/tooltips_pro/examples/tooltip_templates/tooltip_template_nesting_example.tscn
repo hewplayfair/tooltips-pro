@@ -81,7 +81,6 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 script = ExtResource("2_07d6w")
-tooltip_template = null
 origin = 3
 tooltip_strings = Array[String](["This is a nested tooltip."])
 

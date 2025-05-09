@@ -1,7 +1,5 @@
 extends Node
 
-@export var initial_focus_control: Control
-
 @export var lock_mode_option_button: OptionButton
 @export var open_delay_slider: Slider
 @export var open_delay_value: Label
@@ -11,12 +9,18 @@ extends Node
 @export var unlock_delay_value: Label
 
 func _ready() -> void:
-	initial_focus_control.grab_focus()
+	TooltipManager.singleton.tooltips_initialized.connect(on_tooltips_initialized)
 	
 	lock_mode_option_button.select(TooltipManager.singleton.tooltip_settings.lock_mode)
 	open_delay_slider.value = TooltipManager.singleton.tooltip_settings.open_delay
 	timer_lock_delay_slider.value = TooltipManager.singleton.tooltip_settings.timer_lock_delay
 	unlock_delay_slider.value = TooltipManager.singleton.tooltip_settings.unlock_delay
+
+
+func on_tooltips_initialized():
+	# Be sure to only grab focus on a control with a tooltip after the tooltips 
+	# have initialized
+	lock_mode_option_button.grab_focus()
 
 
 func _on_lock_mode_option_button_item_selected(index: int) -> void:

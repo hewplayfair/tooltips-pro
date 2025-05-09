@@ -73,7 +73,7 @@ autowrap_mode = 0
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
+size_flags_horizontal = 0
 size_flags_stretch_ratio = 20.0
 bbcode_enabled = true
 text = "Link"
@@ -81,7 +81,7 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 script = ExtResource("3_sb18b")
-tooltip_template = null
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example2.tscn"
 origin = 3
 tooltip_strings = Array[String](["This tooltip is infinitely recursive, 
 so you can get an idea of how the 

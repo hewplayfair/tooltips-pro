@@ -13,6 +13,7 @@ size_flags_vertical = 0
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("1_5a6es")
 script = ExtResource("1_nflo6")
+use_rich_text_labels = true
 content_rich_text_labels = [NodePath("MarginContainer/RichTextLabel")]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
