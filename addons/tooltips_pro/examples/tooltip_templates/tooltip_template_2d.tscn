@@ -1,42 +1,19 @@
-[gd_scene load_steps=6 format=3 uid="uid://6bfywjk118os"]
+[gd_scene load_steps=3 format=3 uid="uid://6bfywjk118os"]
 
+[ext_resource type="StyleBox" uid="uid://3lxjgekqranv" path="res://addons/tooltips_pro/examples/resources/styles/TooltipStyleBoxFlat.tres" id="1_5a6es"]
 [ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="1_nflo6"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5tpya"]
-bg_color = Color(0.0923971, 0.0923971, 0.092397, 1)
-
-[sub_resource type="Gradient" id="Gradient_5tpya"]
-offsets = PackedFloat32Array(0.867742, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_g68vc"]
-gradient = SubResource("Gradient_5tpya")
-width = 16
-height = 16
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-fill_to = Vector2(1, 0.5)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oawa8"]
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-
-[node name="TooltipTemplate2D" type="PanelContainer" node_paths=PackedStringArray("content_labels", "lock_elements", "timer_lock_progress_bar")]
+[node name="TooltipTemplate2D" type="PanelContainer" node_paths=PackedStringArray("content_rich_text_labels")]
 z_index = 1
-custom_minimum_size = Vector2(384, 0)
-offset_right = 384.0
+custom_minimum_size = Vector2(128, 0)
+offset_right = 128.0
 offset_bottom = 39.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_5tpya")
+theme_override_styles/panel = ExtResource("1_5a6es")
 script = ExtResource("1_nflo6")
-content_labels = [NodePath("MarginContainer/Label")]
-lock_elements = [NodePath("LockBorderPanel")]
-timer_lock_progress_bar = NodePath("MarginContainer/TimerLockTextureProgressBar")
+content_rich_text_labels = [NodePath("MarginContainer/RichTextLabel")]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -47,27 +24,15 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="Label" type="Label" parent="MarginContainer"]
-clip_contents = true
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
-text = "Lorem ipsum"
-autowrap_mode = 2
-
-[node name="TimerLockTextureProgressBar" type="TextureProgressBar" parent="MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 8
-mouse_filter = 2
-max_value = 1.0
-step = 0.01
-fill_mode = 4
-texture_progress = SubResource("GradientTexture2D_g68vc")
-
-[node name="LockBorderPanel" type="Panel" parent="."]
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_oawa8")
+bbcode_enabled = true
+text = "Lorem Ipsum"
+fit_content = true
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

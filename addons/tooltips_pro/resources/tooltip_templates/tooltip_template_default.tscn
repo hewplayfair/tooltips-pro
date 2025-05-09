@@ -1,9 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c5xftyatqbpdr"]
 
+[ext_resource type="StyleBox" uid="uid://3lxjgekqranv" path="res://addons/tooltips_pro/examples/resources/styles/TooltipStyleBoxFlat.tres" id="1_muffq"]
 [ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="1_oawa8"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5tpya"]
-bg_color = Color(0.0923971, 0.0923971, 0.092397, 1)
 
 [sub_resource type="Gradient" id="Gradient_5tpya"]
 offsets = PackedFloat32Array(0.867742, 1)
@@ -26,13 +24,13 @@ border_width_bottom = 2
 
 [node name="TooltipTemplateDefault" type="PanelContainer" node_paths=PackedStringArray("content_labels", "lock_elements", "timer_lock_progress_bar")]
 z_index = 1
-custom_minimum_size = Vector2(384, 0)
-offset_right = 384.0
+custom_minimum_size = Vector2(64, 0)
+offset_right = 118.0
 offset_bottom = 39.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
+size_flags_horizontal = 2
+size_flags_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_5tpya")
+theme_override_styles/panel = ExtResource("1_muffq")
 script = ExtResource("1_oawa8")
 content_labels = [NodePath("MarginContainer/Label")]
 lock_elements = [NodePath("LockBorderPanel")]
@@ -52,7 +50,6 @@ clip_contents = true
 layout_mode = 2
 size_flags_vertical = 0
 text = "Lorem ipsum"
-autowrap_mode = 2
 
 [node name="TimerLockTextureProgressBar" type="TextureProgressBar" parent="MarginContainer"]
 layout_mode = 2
