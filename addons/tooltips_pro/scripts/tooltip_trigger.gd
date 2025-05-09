@@ -10,20 +10,16 @@ extends Node
 ## custom script.
 @export var trigger_on_focus: bool
 
-@export_group("Origin")
+@export_group("Layout")
+## The alignment of the [Tooltip] position relative to its [b]origin[/b].
+@export var tooltip_alignment: TooltipEnums.TooltipAlignment
 ## The [b]origin[/b] of the [Tooltip] around which it is aligned and positioned.
 @export var origin: TooltipEnums.TooltipOrigin
 ## The UI element used to define the [Tooltip]'s [b]origin[/b], if [code]origin[/code] 
 ## is set to [code]TooltipEnums.TooltipOrigin.REMOTE_ELEMENT[/code].
 @export var remote_element_node: Control
-
-@export_group("Offset")
 ## The amount to offset the [Tooltip] from its [b]origin[/b].
 @export var offset: Vector2
-
-@export_group("Layout")
-## The alignment of the [Tooltip] position relative to its [b]origin[/b].
-@export var tooltip_alignment: TooltipEnums.TooltipAlignment
 
 @export_group("Overflow")
 ## The mode for handling a [Tooltip] overlapping its defined bounds.
@@ -39,8 +35,7 @@ extends Node
 @export var tooltip_settings_override: Resource
 
 @export_group("Content")
-@export var use_rich_text_labels: bool
-## The text to apply to the [Label]s defined on the [Tooltip] Template.
+## The text to apply to the [Label]s or [RichTextLabel]s defined on the [Tooltip] Template.
 @export_multiline var tooltip_strings: Array[String]
 
 var control_node: Control
@@ -61,7 +56,7 @@ func _ready() -> void:
 	init_signals()
 
 
-func _on_mouse_entered() -> void:	
+func _on_mouse_entered() -> void:
 	if state != TooltipEnums.TriggerState.READY:
 		return
 	
@@ -177,7 +172,7 @@ func try_await_open_delay(is_collision := false, screen_pos := Vector2.ZERO):
 	if delay <= 0.0:
 		active_tooltip = await TooltipManager.singleton.init_tooltip(self, is_collision, screen_pos)
 		state = TooltipEnums.TriggerState.ACTIVE
-		set_tooltip_content()
+		active_tooltip.set_content(tooltip_strings)
 		return
 	
 	delay_timer.wait_time = delay
@@ -191,7 +186,7 @@ func try_await_open_delay(is_collision := false, screen_pos := Vector2.ZERO):
 	
 	active_tooltip = await TooltipManager.singleton.init_tooltip(self, is_collision, screen_pos)
 	state = TooltipEnums.TriggerState.ACTIVE
-	set_tooltip_content()
+	active_tooltip.set_content(tooltip_strings)
 
 
 func cancel_open_delay():
@@ -208,20 +203,6 @@ func cancel_unlock_delay():
 	TooltipManager.singleton.is_collapsing_stack = false
 	if active_tooltip and active_tooltip.state == TooltipEnums.TooltipState.UNLOCKING:
 		active_tooltip.state = TooltipEnums.TooltipState.LOCKED
-
-
-func set_tooltip_content():
-	for i in active_tooltip.trigger.tooltip_strings.size():
-		if use_rich_text_labels:
-			if active_tooltip.content_rich_text_labels.size() > i:
-				active_tooltip.content_rich_text_labels[i].text = active_tooltip.trigger.tooltip_strings[i]
-			else:
-				printerr(active_tooltip.name, " has fewer content Rich Text Labels than there are content strings on trigger ", active_tooltip.trigger.name)
-		else:
-			if active_tooltip.content_labels.size() > i:
-				active_tooltip.content_labels[i].text = active_tooltip.trigger.tooltip_strings[i]
-			else:
-				printerr(active_tooltip.name, " has fewer content Labels than there are content strings on trigger ", active_tooltip.trigger.name)
 
 
 func on_tooltip_removed() -> void:

@@ -2,8 +2,10 @@
 class_name Tooltip
 extends Control
 
-## The [Label]s that have their text set by the [code]tooltip_strings[/code] on 
-## a [TooltipTrigger].
+@export var use_rich_text_labels: bool
+## The [Label]s or [RichTextLabel]s have their text set by the [code]tooltip_strings[/code] 
+## on a [TooltipTrigger]. They are mutually exclusive, specified using 
+## [code]use_rich_text_labels[/code]
 @export var content_labels: Array[Label]
 @export var content_rich_text_labels: Array[RichTextLabel]
 ## UI elements that will [code]hide()[/code] when the tooltip is unlocked and 
@@ -93,6 +95,20 @@ func unlock() -> void:
 		trigger.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
 	state =  TooltipEnums.TooltipState.READY
+
+
+func set_content(tooltip_strings: Array[String]):
+	for i in tooltip_strings.size():
+		if use_rich_text_labels:
+			if content_rich_text_labels.size() > i:
+				content_rich_text_labels[i].text = tooltip_strings[i]
+			else:
+				printerr(name, " has fewer Rich Text Labels than there are content strings on trigger ", trigger.name)
+		else:
+			if content_labels.size() > i:
+				content_labels[i].text = tooltip_strings[i]
+			else:
+				printerr(name, " has fewer Labels than there are content strings on trigger ", trigger.name)
 
 
 func set_pivot(_alignment: TooltipEnums.TooltipAlignment) -> void:
