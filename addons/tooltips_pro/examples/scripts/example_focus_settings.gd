@@ -20,7 +20,7 @@ func _ready() -> void:
 func on_tooltips_initialized():
 	# Be sure to only grab focus on a control with a tooltip after the tooltips 
 	# have initialized
-	lock_mode_option_button.grab_focus()
+	lock_mode_option_button.call_deferred("grab_focus")
 
 
 func _on_lock_mode_option_button_item_selected(index: int) -> void:

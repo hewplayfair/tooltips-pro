@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://bmsqett4rjuty"]
 
-[ext_resource type="StyleBox" uid="uid://3lxjgekqranv" path="res://addons/tooltips_pro/examples/resources/styles/TooltipStyleBoxFlat.tres" id="1_dgb3p"]
-[ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="2_w17o2"]
-[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="3_sb18b"]
+[ext_resource type="StyleBox" uid="uid://3lxjgekqranv" path="res://addons/tooltips_pro/examples/resources/styles/TooltipStyleBoxFlat.tres" id="1_iauw6"]
+[ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="2_sk6ue"]
+[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="3_ssion"]
 
 [sub_resource type="Gradient" id="Gradient_5tpya"]
 offsets = PackedFloat32Array(0.867742, 1)
@@ -23,15 +23,15 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 
-[node name="TooltipTemplateNestingExample" type="PanelContainer" node_paths=PackedStringArray("content_rich_text_labels", "lock_elements", "timer_lock_progress_bar")]
+[node name="TooltipTemplateInfiniteNestingExample" type="PanelContainer" node_paths=PackedStringArray("content_rich_text_labels", "lock_elements", "timer_lock_progress_bar")]
 z_index = 1
 offset_right = 130.0
 offset_bottom = 45.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
-theme_override_styles/panel = ExtResource("1_dgb3p")
-script = ExtResource("2_w17o2")
+theme_override_styles/panel = ExtResource("1_iauw6")
+script = ExtResource("2_sk6ue")
 use_rich_text_labels = true
 content_rich_text_labels = [NodePath("MarginContainer/VBoxContainer/RichTextLabel"), NodePath("MarginContainer/VBoxContainer/RichTextLabel2")]
 lock_elements = [NodePath("LockBorderPanel")]
@@ -80,8 +80,8 @@ text = "Link"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
-script = ExtResource("3_sb18b")
-tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example2.tscn"
+script = ExtResource("3_ssion")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_infinite_nesting_example.tscn"
 origin = 3
 tooltip_strings = Array[String](["This tooltip is infinitely recursive, 
 so you can get an idea of how the 

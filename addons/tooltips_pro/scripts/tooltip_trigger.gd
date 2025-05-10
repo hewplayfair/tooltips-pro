@@ -77,6 +77,9 @@ func _on_mouse_exited() -> void:
 func _on_focus_entered() -> void:
 	if state != TooltipEnums.TriggerState.READY:
 		return
+		
+	if TooltipManager.singleton.is_collapsing_stack:
+		return
 	
 	state = TooltipEnums.TriggerState.INIT_FOCUS_ENTERED
 	try_await_open_delay(Vector2.ZERO, TooltipEnums.TriggerState.ACTIVE_FOCUS_ENTERED)
@@ -84,10 +87,11 @@ func _on_focus_entered() -> void:
 
 func _on_focus_exited() -> void:
 	cancel_open_delay(TooltipEnums.TriggerState.ACTIVE_FOCUS_ENTERED)
+	
 	if active_tooltip and active_tooltip.state == TooltipEnums.TooltipState.READY:
 		TooltipManager.singleton.remove_tooltip(active_tooltip)
 	else:
-		TooltipManager.singleton.collapse_tooltip_stack(true)
+		TooltipManager.singleton.collapse_tooltip_stack(-1, true)
 
 ## Used when needing to set a tooltip's position relative to a 2D object
 func _on_mouse_entered_2d() -> void:
