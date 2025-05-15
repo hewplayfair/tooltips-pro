@@ -1,5 +1,5 @@
 # Tooltips Pro
-Advanced tooltip functionality for Godot 4.x
+Advanced tooltip functionality for Godot 4.4+
 ## Features
 - **Tooltips Everywhere**: Tooltips can be attached to any **Control** node, as well as **2D** and **3D** nodes.
 - **Customizable Layout**: Set **Alignment**, **Offset**, and **Overflow Mode** to fully control how tooltips should be positioned, and adjust to overflowing the screen bounds.
