@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=3 uid="uid://dtsfk5tkw0v2i"]
+
+[ext_resource type="StyleBox" uid="uid://3lxjgekqranv" path="res://addons/tooltips_pro/examples/resources/styles/TooltipStyleBoxFlat.tres" id="1_ubxsd"]
+[ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="2_bs5gj"]
+[ext_resource type="Texture2D" uid="uid://ceqwrw7lmm8c6" path="res://addons/tooltips_pro/examples/resources/styles/ProgressBarTexture.tres" id="3_j7mo2"]
+[ext_resource type="StyleBox" uid="uid://c2a0e1tu4ajov" path="res://addons/tooltips_pro/examples/resources/styles/LockBorderStyleBoxFlat.tres" id="4_jbuev"]
+
+[node name="TooltipTemplate2D" type="PanelContainer" node_paths=PackedStringArray("content_labels", "lock_elements", "timer_lock_progress_bar") groups=["tooltips"]]
+z_index = 1
+custom_minimum_size = Vector2(128, 0)
+offset_right = 64.0
+offset_bottom = 38.0
+size_flags_horizontal = 2
+size_flags_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("1_ubxsd")
+script = ExtResource("2_bs5gj")
+content_labels = [NodePath("MarginContainer/RichTextLabel")]
+lock_elements = [NodePath("LockBorderPanel")]
+timer_lock_progress_bar = NodePath("TimerLockTextureProgressBar")
+use_tween_in = true
+
+[node name="TimerLockTextureProgressBar" type="TextureProgressBar" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+fill_mode = 4
+texture_progress = ExtResource("3_j7mo2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+horizontal_alignment = 1
+
+[node name="LockBorderPanel" type="Panel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("4_jbuev")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

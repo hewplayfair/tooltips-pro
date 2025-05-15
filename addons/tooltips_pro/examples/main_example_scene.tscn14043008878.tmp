@@ -1,0 +1,606 @@
+[gd_scene load_steps=27 format=3 uid="uid://hqukdxyemyvu"]
+
+[ext_resource type="Script" uid="uid://c7aqh1k1lpowr" path="res://addons/tooltips_pro/examples/scripts/example_collision_object_3d.gd" id="1_0dv7n"]
+[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="1_253dj"]
+[ext_resource type="Script" uid="uid://brqdjqtp7oci6" path="res://addons/tooltips_pro/scripts/tooltip_manager.gd" id="1_ctohb"]
+[ext_resource type="Shader" uid="uid://d4f3ueu1r8qvs" path="res://addons/tooltips_pro/examples/shaders/outline.gdshader" id="3_faoux"]
+[ext_resource type="Texture2D" uid="uid://bfc4ms5ndq2vm" path="res://addons/tooltips_pro/examples/icon.svg" id="3_mbkqn"]
+[ext_resource type="Script" uid="uid://beg0gmkmyjp2g" path="res://addons/tooltips_pro/examples/scripts/example_focus_settings.gd" id="4_wecet"]
+[ext_resource type="Resource" uid="uid://2vrq4eedftjd" path="res://addons/tooltips_pro/resources/tooltip_settings_default.tres" id="7_fupb4"]
+[ext_resource type="Script" uid="uid://qivs7yiu2htr" path="res://addons/tooltips_pro/examples/scripts/modulate_sprite.gd" id="8_dafuq"]
+[ext_resource type="Resource" uid="uid://fmex0mp7jdgn" path="res://addons/tooltips_pro/resources/tooltip_settings_global.tres" id="8_xq3ja"]
+[ext_resource type="Resource" uid="uid://colo1bdg23i7a" path="res://addons/tooltips_pro/resources/tooltip_settings_focus.tres" id="11_4nisf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0dv7n"]
+render_priority = 0
+shader = ExtResource("3_faoux")
+shader_parameter/outline_color = Color(0.196078, 0.662745, 0.960784, 1)
+shader_parameter/outline_width = 0.0
+shader_parameter/constant_width = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mbkqn"]
+next_pass = SubResource("ShaderMaterial_0dv7n")
+albedo_color = Color(0.933097, 0.544836, 3.85046e-07, 1)
+
+[sub_resource type="PrismMesh" id="PrismMesh_mbkqn"]
+material = SubResource("StandardMaterial3D_mbkqn")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wycvy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wycvy"]
+render_priority = 0
+shader = ExtResource("3_faoux")
+shader_parameter/outline_color = Color(0.196078, 0.662745, 0.960784, 1)
+shader_parameter/outline_width = 0.0
+shader_parameter/constant_width = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wycvy"]
+next_pass = SubResource("ShaderMaterial_wycvy")
+albedo_color = Color(0.349208, 0.506586, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wycvy"]
+material = SubResource("StandardMaterial3D_wycvy")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dafuq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dafuq"]
+albedo_color = Color(0.302653, 0.575951, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_2okdw"]
+material = SubResource("StandardMaterial3D_dafuq")
+radius = 0.75
+height = 1.5
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hp33l"]
+radius = 0.6
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mbkqn"]
+size = Vector2(96, 96)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_faoux"]
+bg_color = Color(1, 1, 1, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wecet"]
+bg_color = Color(0.142858, 0.142858, 0.142858, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mbkqn"]
+bg_color = Color(0.188371, 0.188371, 0.188371, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0dv7n"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 8.0
+expand_margin_top = 8.0
+expand_margin_right = 8.0
+expand_margin_bottom = 8.0
+
+[node name="MainExampleScene" type="Node"]
+
+[node name="CollisionObject3DExample" type="Node3D" parent="." node_paths=PackedStringArray("selection_object", "prism_mesh_instance", "cube_mesh_instance", "prism_tooltip_trigger")]
+script = ExtResource("1_0dv7n")
+selection_object = NodePath("StaticBody3D_Prism")
+prism_mesh_instance = NodePath("StaticBody3D_Prism/MeshInstance3D")
+cube_mesh_instance = NodePath("StaticBody3D_Cube/MeshInstance3D")
+prism_tooltip_trigger = NodePath("StaticBody3D_Prism")
+
+[node name="Camera3D" type="Camera3D" parent="CollisionObject3DExample"]
+transform = Transform3D(1, 0, 0, 0, 0.734536, 0.67857, 0, -0.67857, 0.734536, -8.50289, 7.74391, 2.12674)
+projection = 1
+current = true
+size = 10.541
+
+[node name="StaticBody3D_Prism" type="StaticBody3D" parent="CollisionObject3DExample"]
+transform = Transform3D(0.751276, 0, -0.659989, 0, 1, 0, 0.659989, 0, 0.751276, 0, 0, 0)
+script = ExtResource("1_253dj")
+tooltip_template = 2
+trigger_on_focus = true
+offset = Vector2(0, 84)
+tooltip_alignment = 1
+overflow_mode = 1
+tooltip_settings_override = ExtResource("11_4nisf")
+tooltip_strings = Array[String](["InputEvent.pressed() on prism"])
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionObject3DExample/StaticBody3D_Prism"]
+mesh = SubResource("PrismMesh_mbkqn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionObject3DExample/StaticBody3D_Prism"]
+shape = SubResource("BoxShape3D_wycvy")
+
+[node name="StaticBody3D_Cube" type="StaticBody3D" parent="CollisionObject3DExample"]
+transform = Transform3D(0.751276, 0, -0.659989, 0, 1, 0, 0.659989, 0, 0.751276, -1.93495, 0, 0)
+script = ExtResource("1_253dj")
+tooltip_template = 2
+origin = 3
+tooltip_alignment = 1
+overflow_mode = 1
+tooltip_strings = Array[String](["mouse_over() on cube"])
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionObject3DExample/StaticBody3D_Cube"]
+mesh = SubResource("BoxMesh_wycvy")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionObject3DExample/StaticBody3D_Cube"]
+shape = SubResource("BoxShape3D_dafuq")
+
+[node name="StaticBody3D_Sphere" type="StaticBody3D" parent="CollisionObject3DExample"]
+transform = Transform3D(0.751276, 0, -0.659989, 0, 1, 0, 0.659989, 0, 0.751276, -3.91643, 0, 0)
+script = ExtResource("1_253dj")
+tooltip_template = 2
+offset = Vector2(0, 72)
+tooltip_alignment = 7
+overflow_mode = 1
+tooltip_strings = Array[String](["mouse_over() on sphere"])
+metadata/_edit_group_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionObject3DExample/StaticBody3D_Sphere"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0989974, 0, 0.0869684)
+mesh = SubResource("SphereMesh_2okdw")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CollisionObject3DExample/StaticBody3D_Sphere"]
+shape = SubResource("SphereShape3D_hp33l")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="CollisionObject3DExample"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.99681, 1.11883)
+light_energy = 2.0
+omni_range = 10.0
+
+[node name="CollisionObject2DExample" type="Node2D" parent="."]
+position = Vector2(1532, 624)
+metadata/_edit_group_ = true
+
+[node name="StaticBody2D_A" type="StaticBody2D" parent="CollisionObject2DExample"]
+position = Vector2(9, -107)
+input_pickable = true
+script = ExtResource("1_253dj")
+origin = 3
+offset = Vector2(5, 5)
+tooltip_alignment = 2
+tooltip_strings = Array[String](["This Tooltip Trigger's Overflow Mode is set to Flipped Alignment."])
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionObject2DExample/StaticBody2D_A"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_mbkqn")
+script = ExtResource("8_dafuq")
+color = Color(1, 1, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionObject2DExample/StaticBody2D_A"]
+shape = SubResource("RectangleShape2D_mbkqn")
+
+[node name="StaticBody2D_B" type="StaticBody2D" parent="CollisionObject2DExample" node_paths=PackedStringArray("overflow_element_node")]
+position = Vector2(116, -106)
+input_pickable = true
+script = ExtResource("1_253dj")
+origin = 3
+offset = Vector2(5, 5)
+tooltip_alignment = 2
+overflow_mode = 1
+overflow_bounds = 1
+overflow_element_node = NodePath("../../UICanvasLayer/HBoxContainer/VBoxContainer/2DTriggerExample/Panel")
+tooltip_strings = Array[String](["This Tooltip Trigger's Overflow Mode is set to Clamped and the Overflow Bounds set to this example's panel."])
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionObject2DExample/StaticBody2D_B"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_mbkqn")
+script = ExtResource("8_dafuq")
+color = Color(1, 1, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionObject2DExample/StaticBody2D_B"]
+shape = SubResource("RectangleShape2D_mbkqn")
+
+[node name="StaticBody2D_C" type="StaticBody2D" parent="CollisionObject2DExample"]
+position = Vector2(9, 0)
+input_pickable = true
+script = ExtResource("1_253dj")
+origin = 3
+offset = Vector2(5, 5)
+tooltip_alignment = 2
+overflow_mode = 1
+tooltip_strings = Array[String](["This Tooltip Trigger's Overflow Mode is set to Clamped."])
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionObject2DExample/StaticBody2D_C"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_mbkqn")
+script = ExtResource("8_dafuq")
+color = Color(1, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionObject2DExample/StaticBody2D_C"]
+shape = SubResource("RectangleShape2D_mbkqn")
+
+[node name="StaticBody2D_D" type="StaticBody2D" parent="CollisionObject2DExample"]
+position = Vector2(116, 0)
+input_pickable = true
+script = ExtResource("1_253dj")
+origin = 3
+offset = Vector2(5, 5)
+tooltip_alignment = 2
+overflow_mode = 2
+tooltip_strings = Array[String](["This Tooltip Trigger's Overflow Mode.................. is set to Overflow."])
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionObject2DExample/StaticBody2D_D"]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("3_mbkqn")
+script = ExtResource("8_dafuq")
+color = Color(1, 0, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionObject2DExample/StaticBody2D_D"]
+shape = SubResource("RectangleShape2D_mbkqn")
+
+[node name="UICanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UICanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FocusExample" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+metadata/_edit_group_ = true
+
+[node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainer2/FocusExample"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_faoux")
+
+[node name="Button" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainer2/FocusExample"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_mode = 0
+text = "Test Button"
+script = ExtResource("1_253dj")
+tooltip_template = 1
+origin = 3
+offset = Vector2(10, 10)
+tooltip_alignment = 2
+overflow_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer"]
+custom_minimum_size = Vector2(768, 0)
+layout_mode = 2
+
+[node name="MarginContainerSettings" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wecet")
+
+[node name="MarginContainer" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="SettingsContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer" node_paths=PackedStringArray("initial_focus_control", "lock_mode_option_button", "open_delay_slider", "open_delay_value", "timer_lock_delay_slider", "timer_lock_delay_value", "unlock_delay_slider", "unlock_delay_value")]
+layout_mode = 2
+theme_override_constants/separation = 8
+script = ExtResource("4_wecet")
+initial_focus_control = NodePath("LockModeContainer/LockModeOptionButton")
+lock_mode_option_button = NodePath("LockModeContainer/LockModeOptionButton")
+open_delay_slider = NodePath("OpenDelayContainer/OpenDelayHSlider")
+open_delay_value = NodePath("OpenDelayContainer/ValueLabel")
+timer_lock_delay_slider = NodePath("TimerLockDelayContainer/TimerLockDelayHSlider")
+timer_lock_delay_value = NodePath("TimerLockDelayContainer/ValueLabel")
+unlock_delay_slider = NodePath("UnlockDelayContainer/UnlockDelayHSlider")
+unlock_delay_value = NodePath("UnlockDelayContainer/ValueLabel")
+
+[node name="LockModeContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/LockModeContainer"]
+custom_minimum_size = Vector2(133, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Lock Mode"
+horizontal_alignment = 2
+
+[node name="LockModeOptionButton" type="OptionButton" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/LockModeContainer" node_paths=PackedStringArray("remote_element_node")]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Timer Lock"
+popup/item_0/id = 0
+popup/item_1/text = "Action Lock"
+popup/item_1/id = 1
+popup/item_2/text = "Auto Lock"
+popup/item_2/id = 2
+script = ExtResource("1_253dj")
+tooltip_template = 3
+trigger_on_focus = true
+origin = 1
+remote_element_node = NodePath("../../../../TooltipPanel")
+tooltip_alignment = 4
+overflow_mode = 1
+tooltip_settings_override = ExtResource("11_4nisf")
+tooltip_strings = Array[String](["Timer Lock: Tooltip will lock after a delay.
+Action Lock: Tooltip will lock on player input action (key press).
+Auto Lock: Tooltip will open locked."])
+
+[node name="OpenDelayContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/OpenDelayContainer"]
+custom_minimum_size = Vector2(133, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Open Delay"
+horizontal_alignment = 2
+
+[node name="OpenDelayHSlider" type="HSlider" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/OpenDelayContainer" node_paths=PackedStringArray("remote_element_node")]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+script = ExtResource("1_253dj")
+tooltip_template = 3
+trigger_on_focus = true
+origin = 1
+remote_element_node = NodePath("../../../../TooltipPanel")
+tooltip_alignment = 4
+overflow_mode = 1
+tooltip_settings_override = ExtResource("11_4nisf")
+tooltip_strings = Array[String](["Open Delay: The time in seconds before a tooltip opens on mouse_entered() or focus_entered()."])
+
+[node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/OpenDelayContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "0.0s"
+
+[node name="TimerLockDelayContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer"]
+custom_minimum_size = Vector2(133, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Timer Lock Delay"
+horizontal_alignment = 2
+
+[node name="TimerLockDelayHSlider" type="HSlider" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer" node_paths=PackedStringArray("remote_element_node")]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 3.0
+step = 0.05
+script = ExtResource("1_253dj")
+tooltip_template = 3
+trigger_on_focus = true
+origin = 1
+remote_element_node = NodePath("../../../../TooltipPanel")
+tooltip_alignment = 4
+overflow_mode = 1
+tooltip_settings_override = ExtResource("11_4nisf")
+tooltip_strings = Array[String](["Timer Lock Delay: The time in seconds before a tooltip locks when using Timer Lock Mode."])
+
+[node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "0.0s"
+
+[node name="UnlockDelayContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer"]
+custom_minimum_size = Vector2(133, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Unlock Delay"
+horizontal_alignment = 2
+
+[node name="UnlockDelayHSlider" type="HSlider" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer" node_paths=PackedStringArray("remote_element_node")]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+script = ExtResource("1_253dj")
+tooltip_template = 3
+trigger_on_focus = true
+origin = 1
+remote_element_node = NodePath("../../../../TooltipPanel")
+tooltip_alignment = 4
+overflow_mode = 1
+tooltip_settings_override = ExtResource("11_4nisf")
+tooltip_strings = Array[String](["Unlock Delay: The time in seconds before a locked tooltip closes on mouse_exited()."])
+
+[node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "0.0s"
+
+[node name="Spacer" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="ResetToDefaultButton" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+text = "Reset to Default"
+script = ExtResource("1_253dj")
+trigger_on_focus = true
+tooltip_alignment = 2
+overflow_mode = 1
+
+[node name="TooltipPanel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.45
+theme_override_styles/panel = SubResource("StyleBoxFlat_mbkqn")
+
+[node name="FocusExample" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+metadata/_edit_group_ = true
+
+[node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainer/FocusExample"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_faoux")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer/FocusExample"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UICanvasLayer/HBoxContainer/VBoxContainer/FocusExample/HBoxContainer"]
+custom_minimum_size = Vector2(384, 128)
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Focus Tooltip Example[/b]: Use gamepad or keyboard to navigate the above Settings and see their tooltips.
+
+[ul]
+ Tooltips can appear on focus_entered() (useful for gamepad tooltips) as well as mouse_entered()
+ Tooltips can be instantiated relative to a remote layout Control, not just the mouse or triggering Control (ie. for Settings descriptions in a fixed position)"
+fit_content = true
+
+[node name="2DTriggerExample" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(512, 256)
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainer/2DTriggerExample"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_0dv7n")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UICanvasLayer/HBoxContainer/VBoxContainer/2DTriggerExample"]
+custom_minimum_size = Vector2(317.885, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 1
+bbcode_enabled = true
+text = "[b]CollisionObject2D Trigger Example[/b]
+Sprite2D and other 2D nodes can have the same tooltip trigger functionality as Control tooltips.
+
+[ul]
+ Tooltips can follow mouse position.
+ Move the mouse around the sprites to see different Overflow behaviour that prevents the tooltip going out of bounds."
+fit_content = true
+scroll_active = false
+
+[node name="3DTriggerExample" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(512, 256)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainer/3DTriggerExample"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_0dv7n")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UICanvasLayer/HBoxContainer/VBoxContainer/3DTriggerExample"]
+custom_minimum_size = Vector2(512, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 1
+bbcode_enabled = true
+text = "[b]CollisionObject3D Trigger Example[/b]
+Same functionality as Control tooltips.
+
+[ul]
+ Tooltips can be triggered in code (ie. on item selection)
+ Tooltips can be positioned relative to a Node2D or Node3D's global position."
+fit_content = true
+scroll_active = false
+
+[node name="TooltipManager" type="Control" parent="UICanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_ctohb")
+default_tooltip_settings = ExtResource("7_fupb4")
+tooltip_settings = ExtResource("8_xq3ja")
+tooltip_template_paths = Array[String](["res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_default.tscn", "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn", "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_object_label.tscn", "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"])
+
+[connection signal="input_event" from="CollisionObject3DExample/StaticBody3D_Prism" to="CollisionObject3DExample" method="_on_static_body_3d_input_event"]
+[connection signal="mouse_entered" from="CollisionObject3DExample/StaticBody3D_Cube" to="CollisionObject3DExample" method="_on_cube_mouse_entered"]
+[connection signal="mouse_exited" from="CollisionObject3DExample/StaticBody3D_Cube" to="CollisionObject3DExample" method="_on_cube_mouse_exited"]
+[connection signal="item_selected" from="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/LockModeContainer/LockModeOptionButton" to="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer" method="_on_lock_mode_option_button_item_selected"]
+[connection signal="value_changed" from="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/OpenDelayContainer/OpenDelayHSlider" to="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer" method="_on_open_delay_slider_value_changed"]
+[connection signal="value_changed" from="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer/TimerLockDelayHSlider" to="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer" method="_on_timer_lock_delay_slider_value_changed"]
+[connection signal="value_changed" from="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer/UnlockDelayHSlider" to="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer" method="_on_unlock_delay_slider_value_changed"]
+[connection signal="pressed" from="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer/ResetToDefaultButton" to="UICanvasLayer/HBoxContainer/VBoxContainer/MarginContainerSettings/MarginContainer/HBoxContainer/VBoxContainer/SettingsContainer" method="_on_reset_to_default_button_pressed"]

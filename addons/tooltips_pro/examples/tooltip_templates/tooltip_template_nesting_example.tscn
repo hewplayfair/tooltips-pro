@@ -1,0 +1,78 @@
+[gd_scene load_steps=6 format=3 uid="uid://cas6t0egnfl5x"]
+
+[ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="1_bnkh0"]
+[ext_resource type="StyleBox" uid="uid://3lxjgekqranv" path="res://addons/tooltips_pro/examples/resources/styles/TooltipStyleBoxFlat.tres" id="1_s5850"]
+[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="2_07d6w"]
+[ext_resource type="Texture2D" uid="uid://ceqwrw7lmm8c6" path="res://addons/tooltips_pro/examples/resources/styles/ProgressBarTexture.tres" id="3_s5850"]
+[ext_resource type="StyleBox" uid="uid://c2a0e1tu4ajov" path="res://addons/tooltips_pro/examples/resources/styles/LockBorderStyleBoxFlat.tres" id="5_21goc"]
+
+[node name="TooltipTemplateNestingExample" type="PanelContainer" node_paths=PackedStringArray("content_labels", "lock_elements", "timer_lock_progress_bar") groups=["tooltips"]]
+z_index = 1
+offset_right = 130.0
+offset_bottom = 45.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("1_s5850")
+script = ExtResource("1_bnkh0")
+content_labels = [NodePath("MarginContainer/HBoxContainer/RichTextLabel"), NodePath("MarginContainer/HBoxContainer/RichTextLabel2")]
+lock_elements = [NodePath("LockBorderPanel")]
+timer_lock_progress_bar = NodePath("TimerLockTextureProgressBar")
+use_tween_in = true
+use_tween_out = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer"]
+clip_contents = false
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+text = "Lorem Ipsum"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 20.0
+mouse_filter = 2
+bbcode_enabled = true
+text = "Link"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+script = ExtResource("2_07d6w")
+origin = 3
+tooltip_strings = Array[String](["This is a nested tooltip."])
+
+[node name="TimerLockTextureProgressBar" type="TextureProgressBar" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+mouse_filter = 2
+max_value = 1.0
+step = 0.01
+fill_mode = 4
+texture_progress = ExtResource("3_s5850")
+
+[node name="LockBorderPanel" type="Panel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("5_21goc")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
