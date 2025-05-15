@@ -14,7 +14,9 @@ Advanced tooltip functionality for Godot 4.x
 
 After enabling the plugin in your Godot project, you should reload the editor using **Project > Reload Current Project**.
 
-The **res:\\addons\tooltips_pro\examples** folder is not required, but it's strongly recommended that you keep it for reference. 
+The **res:\\addons\tooltips_pro\examples** folder is not required, but it's strongly recommended that you keep it for reference.
+
+To keep up to date with the latest version of **Tooltips Pro**, clone the repository at [https://github.com/hewplayfair/tooltips-pro/](https://github.com/hewplayfair/tooltips-pro/)
 
 ## Tutorials
 The included example scenes have tooltips set up in most configurations.
