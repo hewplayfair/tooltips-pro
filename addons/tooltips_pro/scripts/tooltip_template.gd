@@ -220,7 +220,8 @@ func _on_mouse_entered() -> void:
 		TooltipEnums.TooltipState.LOCKED:
 			TooltipManager.collapse_tooltip_stack(TooltipManager.mouse_tooltip_stack.find(self))
 		TooltipEnums.TooltipState.UNLOCKING:
-			trigger.cancel_unlock_delay()
+			if trigger:
+				trigger.cancel_unlock_delay()
 
 
 func _on_mouse_exited() -> void:
