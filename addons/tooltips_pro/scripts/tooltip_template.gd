@@ -215,6 +215,9 @@ func tween_out():
 
 
 func _on_mouse_entered() -> void:
+	if state == TooltipEnums.TooltipState.REMOVE:
+		return
+	
 	stack_coroutine_manager.free_coroutines()
 	match state:
 		TooltipEnums.TooltipState.LOCKED:
