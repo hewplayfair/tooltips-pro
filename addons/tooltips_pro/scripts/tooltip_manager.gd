@@ -435,9 +435,9 @@ func collapse_tooltip_stack(index: int = -1, collapse_focus_stack: bool = false)
 			stack[0].state = TooltipEnums.TooltipState.UNLOCKING
 			
 			var wait_time = tooltip_settings.unlock_delay
-			if stack[0].trigger.tooltip_settings_override:
+			if stack[0].trigger && stack[0].trigger.tooltip_settings_override:
 				wait_time = stack[0].trigger.tooltip_settings_override.unlock_delay
-				
+			
 			await get_tree().create_timer(wait_time).timeout
 		
 		if stack[0] == null:
@@ -460,8 +460,16 @@ func force_close_stack():
 		remove_tooltip(tooltip, false)
 
 func remove_tooltip(tooltip: Tooltip, modulate: bool = true) -> void:
-	tooltip.trigger.on_tooltip_removed()
-	if tooltip.trigger.trigger_mode == TooltipEnums.TriggerMode.FOCUS_ONLY:
+	if tooltip.state == TooltipEnums.TooltipState.REMOVE:
+		return
+	else:
+		tooltip.state = TooltipEnums.TooltipState.REMOVE
+	
+	follow_mouse = false
+	if tooltip.trigger:
+		tooltip.trigger.on_tooltip_removed()
+	
+	if tooltip.trigger && tooltip.trigger.trigger_mode == TooltipEnums.TriggerMode.FOCUS_ONLY:
 		focus_tooltip_stack.erase(tooltip)
 		if focus_tooltip_stack.size() == 0:
 			is_collapsing_stack = false
@@ -476,8 +484,9 @@ func remove_tooltip(tooltip: Tooltip, modulate: bool = true) -> void:
 			for i in mouse_tooltip_stack.size():
 				mouse_tooltip_stack[i].set_stack_position_modulate(i)
 	
+	for child_trigger in tooltip.child_trigger_nodes:
+		child_trigger.disconnect_signals()
+	
 	await tooltip.tween_out()
 	
 	tooltip.queue_free()
-	
-	follow_mouse = false

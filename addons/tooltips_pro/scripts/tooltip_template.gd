@@ -205,7 +205,7 @@ func tween_in():
 func tween_out():
 	if not use_tween_out:
 		return
-		
+	
 	if tween:
 		tween.kill()
 	tween = create_tween()
@@ -215,6 +215,9 @@ func tween_out():
 
 
 func _on_mouse_entered() -> void:
+	if state == TooltipEnums.TooltipState.REMOVE:
+		return
+	
 	stack_coroutine_manager.free_coroutines()
 	match state:
 		TooltipEnums.TooltipState.LOCKED:
@@ -225,6 +228,9 @@ func _on_mouse_entered() -> void:
 
 
 func _on_mouse_exited() -> void:
+	if state == TooltipEnums.TooltipState.REMOVE:
+		return
+		
 	stack_coroutine_manager.force_close_stack_run(self)
 	
 	

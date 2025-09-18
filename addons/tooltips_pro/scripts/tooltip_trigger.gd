@@ -187,6 +187,26 @@ func init_signals() -> void:
 		return
 
 
+func disconnect_signals() -> void:
+	if control_node:
+		if control_node.mouse_entered.is_connected(_on_mouse_entered):
+			control_node.mouse_entered.disconnect(_on_mouse_entered)
+		if control_node.mouse_exited.is_connected(_on_mouse_exited):
+			control_node.mouse_exited.disconnect(_on_mouse_exited)
+	if collision_object_2d_node:
+		if collision_object_2d_node.mouse_entered.is_connected(_on_mouse_entered):
+			collision_object_2d_node.mouse_entered.disconnect(_on_mouse_entered)
+		if collision_object_2d_node.mouse_entered.is_connected(_on_mouse_entered_2d):
+			collision_object_2d_node.mouse_entered.disconnect(_on_mouse_entered_2d)
+		if collision_object_2d_node.mouse_exited.is_connected(_on_mouse_exited):
+			collision_object_2d_node.mouse_exited.disconnect(_on_mouse_exited)
+	if collision_object_3d_node:
+		if collision_object_3d_node.mouse_entered.is_connected(_on_mouse_entered):
+			collision_object_3d_node.mouse_entered.disconnect(_on_mouse_entered)
+		if collision_object_3d_node.mouse_exited.is_connected(_on_mouse_exited):
+			collision_object_3d_node.mouse_exited.disconnect(_on_mouse_exited)
+
+
 func try_await_open_delay(screen_pos := Vector2.ZERO, active_state := TooltipEnums.TriggerState.ACTIVE_MOUSE_ENTERED):
 	var delay = TooltipManager.tooltip_settings.open_delay
 	if tooltip_settings_override:
