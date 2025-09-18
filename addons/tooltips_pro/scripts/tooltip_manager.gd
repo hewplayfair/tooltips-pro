@@ -484,6 +484,9 @@ func remove_tooltip(tooltip: Tooltip, modulate: bool = true) -> void:
 			for i in mouse_tooltip_stack.size():
 				mouse_tooltip_stack[i].set_stack_position_modulate(i)
 	
+	for child_trigger in tooltip.child_trigger_nodes:
+		child_trigger.disconnect_signals()
+	
 	await tooltip.tween_out()
 	
 	tooltip.queue_free()
