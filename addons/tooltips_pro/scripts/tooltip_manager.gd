@@ -17,6 +17,8 @@ var tooltip_templates: Dictionary[String, PackedScene]
 var mouse_tooltip_stack: Array[Tooltip]
 var focus_tooltip_stack: Array[Tooltip]
 
+var size_to_stop: int
+
 var follow_mouse: bool
 var is_collapsing_stack: bool
 
@@ -421,12 +423,7 @@ func collapse_tooltip_stack(index: int = -1, collapse_focus_stack: bool = false)
 		is_collapsing_stack = false
 		return
 		
-	var size_to_stop = stack.size() - clampi(index, 0, stack.size())
-	if index == -1:
-		size_to_stop = 0
-	if stack[0].state != TooltipEnums.TooltipState.LOCKED:
-		size_to_stop -= 1
-	size_to_stop = clamp(size_to_stop, 0, stack.size())
+	set_collapse_stop_size(index, stack)
 	while stack.size() > size_to_stop and is_collapsing_stack:
 		if stack[0] == null:
 			break
@@ -450,7 +447,16 @@ func collapse_tooltip_stack(index: int = -1, collapse_focus_stack: bool = false)
 		await get_tree().process_frame
 			
 	is_collapsing_stack = false
-	
+
+
+func set_collapse_stop_size(index: int, stack: Array[Tooltip]) -> void:
+	size_to_stop = stack.size() - clampi(index, 0, stack.size())
+	if index == -1:
+		size_to_stop = 0
+	if stack[0].state != TooltipEnums.TooltipState.LOCKED:
+		size_to_stop -= 1
+	size_to_stop = clamp(size_to_stop, 0, stack.size())
+
 
 func force_close_stack():
 	is_collapsing_stack = false
@@ -487,6 +493,7 @@ func remove_tooltip(tooltip: Tooltip, modulate: bool = true) -> void:
 	for child_trigger in tooltip.child_trigger_nodes:
 		child_trigger.disconnect_signals()
 	
-	await tooltip.tween_out()
+	if not is_collapsing_stack:
+		await tooltip.tween_out()
 	
 	tooltip.queue_free()

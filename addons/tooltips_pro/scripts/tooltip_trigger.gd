@@ -68,9 +68,6 @@ func _on_mouse_entered() -> void:
 	if state != TooltipEnums.TriggerState.READY:
 		return
 	
-	if TooltipManager.is_collapsing_stack:
-		return
-	
 	state = TooltipEnums.TriggerState.INIT_MOUSE_ENTERED
 	try_await_open_delay()
 
@@ -81,7 +78,10 @@ func _on_mouse_exited() -> void:
 	if active_tooltip and active_tooltip.state == TooltipEnums.TooltipState.READY:
 		TooltipManager.remove_tooltip(active_tooltip)
 	else:
-		TooltipManager.collapse_tooltip_stack()
+		if TooltipManager.mouse_tooltip_stack.size() > 1:
+			TooltipManager.collapse_tooltip_stack(1)
+		else:
+			TooltipManager.collapse_tooltip_stack()
 
 
 func _on_focus_entered() -> void:
