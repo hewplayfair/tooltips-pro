@@ -13,9 +13,15 @@ extends Control
 ## The [RichTextLabel]s have their text set by the [code]tooltip_strings[/code] 
 ## on a [TooltipTrigger].
 @export var content_labels: Array[RichTextLabel]
-## UI elements that will [code]hide()[/code] when the tooltip is unlocked and 
+## UI elements that will [code]hide()[/code] when the tooltip is locking or unlocked and 
 ## [code]show()[/code] when locked.
-@export var lock_elements: Array[Control]
+@export var locked_elements: Array[Control]
+## UI elements that will [code]hide()[/code] when the tooltip is locked or unlocked and 
+## [code]show()[/code] when locking.
+@export var locking_elements: Array[Control]
+## UI elements that will [code]hide()[/code] when the tooltip is locked or locking and 
+## [code]show()[/code] when unlocked.
+@export var unlocked_elements: Array[Control]
 ## The [TextureProgressBar] to be filled by a normalized time remaining of 
 ## [code]timer_lock_delay[/code].
 @export var timer_lock_progress_bar: TextureProgressBar
@@ -51,12 +57,15 @@ var placeholder_dictionaries: Array[Dictionary]
 func _init(trigger_p: TooltipTrigger = null) -> void:
 	trigger = trigger_p
 			
-	for element in lock_elements:
+	for element in locked_elements:
 		element.hide()
+	for element in locking_elements:
+		element.hide()
+	for element in unlocked_elements:
+		element.show()
 	
 	if timer_lock_progress_bar:
 		timer_lock_progress_bar.value = 0.0
-		timer_lock_progress_bar.hide()
 		
 	child_trigger_nodes = self.find_children("*", "TooltipTrigger", true, false)
 		
@@ -94,8 +103,12 @@ func begin_lock_delay() -> void:
 	if trigger.tooltip_settings_override:
 		lock_delay = trigger.tooltip_settings_override.timer_lock_delay
 		
-	if timer_lock_progress_bar:
-		timer_lock_progress_bar.show()
+	for element in locked_elements:
+		element.hide()
+	for element in locking_elements:
+		element.show()
+	for element in unlocked_elements:
+		element.hide()
 	
 	var t = 0.0
 	while t < lock_delay:
@@ -107,10 +120,12 @@ func begin_lock_delay() -> void:
 	lock()
 
 func lock() -> void:
-	for element in lock_elements:
+	for element in locked_elements:
 		element.show()
-	if timer_lock_progress_bar:
-		timer_lock_progress_bar.hide()
+	for element in locking_elements:
+		element.hide()
+	for element in unlocked_elements:
+		element.hide()
 	
 	self.mouse_filter = Control.MOUSE_FILTER_STOP
 	for trigger in child_trigger_nodes:
@@ -120,8 +135,12 @@ func lock() -> void:
 	
 
 func unlock() -> void:
-	for element in lock_elements:
+	for element in locked_elements:
 		element.hide()
+	for element in locking_elements:
+		element.hide()
+	for element in unlocked_elements:
+		element.show()
 	
 	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for trigger in child_trigger_nodes:
