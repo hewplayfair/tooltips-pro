@@ -38,10 +38,6 @@ extends Node
 ## is set to [code]TooltipEnums.OverflowBounds.CONTROL_NODE_SIZE[/code].
 @export var overflow_element_node: Control
 
-@export_group("Tooltip Settings")
-## Override the global settings as defined by the resource set on the [TooltipManager].
-@export var tooltip_settings_override: Resource
-
 @export_group("Content")
 ## The text to apply to the [Label]s or [RichTextLabel]s defined on the [Tooltip] Template.
 @export_multiline var tooltip_strings: Array[String]
@@ -67,19 +63,31 @@ func _ready() -> void:
 func _on_mouse_entered() -> void:
 	if state != TooltipEnums.TriggerState.READY:
 		return
+		
+	# Block tooltip from triggering if there's a pinned tooltip, but allow
+	# nested tooltip triggers in the pinned tooltip.
+	if TooltipManager.has_pinned_tooltip and not (self.get_owner() as Tooltip):
+		return
+	
+	TooltipManager.last_mouse_entered_trigger = self
 	
 	state = TooltipEnums.TriggerState.INIT_MOUSE_ENTERED
 	try_await_open_delay()
 
 
 func _on_mouse_exited() -> void:
+	TooltipManager.last_mouse_entered_trigger = null
+	
 	cancel_open_delay()
+	
+	if TooltipManager.has_pinned_tooltip:
+		return
 	
 	if active_tooltip and active_tooltip.state == TooltipEnums.TooltipState.READY:
 		TooltipManager.remove_tooltip(active_tooltip)
 	else:
-		if TooltipManager.mouse_tooltip_stack.size() > 1:
-			TooltipManager.collapse_tooltip_stack(1)
+		if TooltipManager.last_mouse_entered_tooltip:
+			TooltipManager.collapse_tooltip_stack(TooltipManager.mouse_tooltip_stack.find(TooltipManager.last_mouse_entered_tooltip))
 		else:
 			TooltipManager.collapse_tooltip_stack()
 
@@ -103,19 +111,32 @@ func _on_focus_exited() -> void:
 	else:
 		TooltipManager.collapse_tooltip_stack(-1, true)
 
+
+func _on_focus_entered_2d() -> void:
+	_on_mouse_entered_2d(TooltipEnums.TriggerState.INIT_FOCUS_ENTERED)
+
+
 ## Used when needing to set a tooltip's position relative to a 2D object
-func _on_mouse_entered_2d() -> void:
+func _on_mouse_entered_2d(trigger_state := TooltipEnums.TriggerState.INIT_MOUSE_ENTERED) -> void:
 	if state != TooltipEnums.TriggerState.READY:
 		return
 		
 	var selection_node := self as Node
 	var screen_pos = selection_node.get_global_transform_with_canvas().origin
 	
-	state = TooltipEnums.TriggerState.INIT_MOUSE_ENTERED
-	try_await_open_delay(screen_pos)
+	state = trigger_state
+	if state == TooltipEnums.TriggerState.INIT_MOUSE_ENTERED:
+		try_await_open_delay(screen_pos)
+	elif state == TooltipEnums.TriggerState.INIT_FOCUS_ENTERED:
+		try_await_open_delay(screen_pos, TooltipEnums.TriggerState.ACTIVE_FOCUS_ENTERED)
+
+
+func _on_focus_entered_3d() -> void:
+	_on_mouse_entered_3d(TooltipEnums.TriggerState.INIT_FOCUS_ENTERED)
+
 
 ## Used when needing to set a tooltip's position relative to a 3D object
-func _on_mouse_entered_3d() -> void:
+func _on_mouse_entered_3d(trigger_state := TooltipEnums.TriggerState.INIT_MOUSE_ENTERED) -> void:
 	if state != TooltipEnums.TriggerState.READY:
 		return
 		
@@ -127,8 +148,11 @@ func _on_mouse_entered_3d() -> void:
 		# viewport/screen size.
 		screen_pos += get_window().size - get_viewport().size
 		
-		state = TooltipEnums.TriggerState.INIT_MOUSE_ENTERED
-		try_await_open_delay(screen_pos)
+		state = trigger_state
+		if state == TooltipEnums.TriggerState.INIT_MOUSE_ENTERED:
+			try_await_open_delay(screen_pos)
+		elif state == TooltipEnums.TriggerState.INIT_FOCUS_ENTERED:
+			try_await_open_delay(screen_pos, TooltipEnums.TriggerState.ACTIVE_FOCUS_ENTERED)
 	else:
 		print_debug("Camera3D not found in scene. Cannot get tooltip screen position from Node3D.")
 
@@ -209,8 +233,9 @@ func disconnect_signals() -> void:
 
 func try_await_open_delay(screen_pos := Vector2.ZERO, active_state := TooltipEnums.TriggerState.ACTIVE_MOUSE_ENTERED):
 	var delay = TooltipManager.tooltip_settings.open_delay
-	if tooltip_settings_override:
-		delay = tooltip_settings_override.open_delay
+	
+	if active_state == TooltipEnums.TriggerState.ACTIVE_FOCUS_ENTERED:
+		delay = 0.0
 	
 	if delay <= 0.0:
 		active_tooltip = await TooltipManager.init_tooltip(self, screen_pos)

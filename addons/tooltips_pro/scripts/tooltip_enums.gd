@@ -9,8 +9,9 @@ enum TriggerMode{
 	MOUSE_ONLY,
 	## [code]focus_entered[/code] only if [TooltipTrigger] inherits from [Control].
 	## [code]FOCUS_ONLY[/code] should be used on 2D or 3D nodes when you have a
-	## custom script determining when these nodes are "selected." See the prism 
-	## example and [code]/examples/scripts/example_collision_object_3d.gd[/code]
+	## custom script determining when these nodes are "selected." This overrides
+	## the open_delay to be 0.0s. See the prism example and 
+	## [code]/examples/scripts/example_collision_object_3d.gd[/code]
 	FOCUS_ONLY,
 }
 

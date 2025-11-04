@@ -17,6 +17,10 @@ var tooltip_templates: Dictionary[String, PackedScene]
 var mouse_tooltip_stack: Array[Tooltip]
 var focus_tooltip_stack: Array[Tooltip]
 
+var has_pinned_tooltip: bool
+var last_mouse_entered_tooltip: Tooltip
+var last_mouse_entered_trigger: TooltipTrigger
+
 var size_to_stop: int
 
 var follow_mouse: bool
@@ -25,9 +29,13 @@ var is_collapsing_stack: bool
 var mouse_tooltips_parent: Node
 
 signal action_lock_input
+signal pin_tooltip_input
+
+var stack_coroutine_manager = TooltipStackCoroutineManager.new()
 
 func _ready() -> void:
 	action_lock_input.connect(on_action_lock_input)
+	pin_tooltip_input.connect(on_pin_tooltip_input)
 	load_tooltip_templates()
 	
 	var canvas_layer = CanvasLayer.new()
@@ -41,7 +49,7 @@ func load_tooltip_templates() -> void:
 	var resources := ResourceLoader.list_directory(tooltip_settings.tooltip_template_dir_path)
 	for resource in resources:
 		tooltip_templates.set(tooltip_settings.tooltip_template_dir_path + resource, load(tooltip_settings.tooltip_template_dir_path + resource))
-	
+
 
 func _input(event):
 	if not mouse_tooltip_stack:
@@ -64,12 +72,37 @@ func on_action_lock_input() -> void:
 	):
 		mouse_tooltip_stack[0].toggle_lock()
 
+
+func on_pin_tooltip_input(toggle: bool) -> void:
+	if mouse_tooltip_stack.size() > 0:
+		if toggle and mouse_tooltip_stack[0].can_lock:
+			has_pinned_tooltip = true
+			mouse_tooltip_stack[0].pin()
+		else:
+			has_pinned_tooltip = false
+			mouse_tooltip_stack[0].unpin()
+			
+			if not last_mouse_entered_tooltip:
+				if not last_mouse_entered_trigger:
+					collapse_tooltip_stack()
+			else:
+				if last_mouse_entered_trigger and last_mouse_entered_trigger.active_tooltip:
+					return
+				collapse_tooltip_stack(TooltipManager.mouse_tooltip_stack.find(last_mouse_entered_tooltip))
+
+
 func init_tooltip(tooltip_trigger: TooltipTrigger, screen_pos: Vector2) -> Tooltip:
 	# If the tooltip stack is in process of collapsing with a delay it can cause
 	# this new tooltip to also be removed, so first force close all the tooltips.
 	if is_collapsing_stack:
 		is_collapsing_stack = false
 		force_close_stack()
+	
+	# If there's a pinned tooltip when opening a new one, unpin it so that
+	# there's never more than one potentially pinned tooltip
+	if has_pinned_tooltip and mouse_tooltip_stack.size() > 0:
+		has_pinned_tooltip = false
+		mouse_tooltip_stack[0].unpin()
 	
 	# Instantiate tooltip and add to Tooltip Stack
 	var template := tooltip_templates.values()[0] as PackedScene
@@ -408,14 +441,14 @@ func get_flipped_v_alignment(_old_alignment: TooltipEnums.TooltipAlignment) -> T
 		_:
 			return _old_alignment
 
-func collapse_tooltip_stack(index: int = -1, collapse_focus_stack: bool = false) -> void:
+func collapse_tooltip_stack(index: int = -1, collapse_focus_stack: bool = false, override_wait_time = -1.0) -> void:
 	if is_collapsing_stack:
-		return
-	else:
-		is_collapsing_stack = true
+		is_collapsing_stack = false
+		await get_tree().process_frame
+	is_collapsing_stack = true
 	
 	var stack: Array[Tooltip]
-	stack.assign(mouse_tooltip_stack)
+	stack.assign(mouse_tooltip_stack) 
 	if collapse_focus_stack:
 		stack.assign(focus_tooltip_stack)
 		
@@ -432,8 +465,12 @@ func collapse_tooltip_stack(index: int = -1, collapse_focus_stack: bool = false)
 			stack[0].state = TooltipEnums.TooltipState.UNLOCKING
 			
 			var wait_time = tooltip_settings.unlock_delay
-			if stack[0].trigger && stack[0].trigger.tooltip_settings_override:
-				wait_time = stack[0].trigger.tooltip_settings_override.unlock_delay
+			
+			# When collapsing stack to another tooltip in the stack, in order to
+			# do so accurately, we need to set wait_time to 0.0 from
+			# tooltip_template._on_mouse_entered
+			if override_wait_time != -1.0:
+				wait_time = override_wait_time
 			
 			await get_tree().create_timer(wait_time).timeout
 		
@@ -453,8 +490,6 @@ func set_collapse_stop_size(index: int, stack: Array[Tooltip]) -> void:
 	size_to_stop = stack.size() - clampi(index, 0, stack.size())
 	if index == -1:
 		size_to_stop = 0
-	if stack[0].state != TooltipEnums.TooltipState.LOCKED:
-		size_to_stop -= 1
 	size_to_stop = clamp(size_to_stop, 0, stack.size())
 
 

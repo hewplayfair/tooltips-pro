@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://hqukdxyemyvu"]
+[gd_scene load_steps=20 format=3 uid="uid://hqukdxyemyvu"]
 
 [ext_resource type="Script" uid="uid://c7aqh1k1lpowr" path="res://addons/tooltips_pro/examples/scripts/example_collision_object_3d.gd" id="1_0dv7n"]
 [ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="1_253dj"]
@@ -7,7 +7,6 @@
 [ext_resource type="Script" uid="uid://beg0gmkmyjp2g" path="res://addons/tooltips_pro/examples/scripts/example_focus_settings.gd" id="4_wecet"]
 [ext_resource type="StyleBox" uid="uid://d2esi4ulp5w30" path="res://addons/tooltips_pro/examples/resources/styles/PanelStyleBoxFlat.tres" id="6_iigk5"]
 [ext_resource type="Script" uid="uid://o4l2kbmriymr" path="res://addons/tooltips_pro/examples/scripts/example_input_manager.gd" id="10_iigk5"]
-[ext_resource type="Resource" uid="uid://colo1bdg23i7a" path="res://addons/tooltips_pro/examples/tooltip_settings/tooltip_settings_focus.tres" id="11_4nisf"]
 [ext_resource type="FontFile" uid="uid://dtt2d32rueqpm" path="res://addons/tooltips_pro/examples/resources/fonts/JetBrainsMonoNL-SemiBold.ttf" id="12_1bsmh"]
 [ext_resource type="StyleBox" uid="uid://nkoaeghwqefd" path="res://addons/tooltips_pro/examples/resources/styles/PanelInsetStyleBoxFlat.tres" id="13_eb75w"]
 
@@ -112,7 +111,6 @@ trigger_mode = 1
 tooltip_alignment = 1
 origin = 3
 overflow_mode = 1
-tooltip_settings_override = ExtResource("11_4nisf")
 tooltip_strings = Array[String](["[color=c6e3fd]mouse_over[/color] on cube"])
 metadata/_edit_group_ = true
 
@@ -132,7 +130,6 @@ trigger_mode = 2
 tooltip_alignment = 1
 offset = Vector2(0, 64)
 overflow_mode = 2
-tooltip_settings_override = ExtResource("11_4nisf")
 tooltip_strings = Array[String](["[color=c6e3fd]InputEvent.pressed[/color] on prism"])
 metadata/_edit_group_ = true
 
@@ -662,7 +659,6 @@ tooltip_alignment = 4
 origin = 1
 remote_element_node = NodePath("../../../../../../TooltipPanel")
 overflow_mode = 2
-tooltip_settings_override = ExtResource("11_4nisf")
 tooltip_strings = Array[String](["[b]Timer Lock[/b]: Tooltip will lock after a delay.
 
 [b]Action Lock[/b]: Tooltip will lock on player input action ([bgcolor=242424][color=9ec4e6]T[/color][/bgcolor] or  [bgcolor=242424][color=9ec4e6]Middle Mouse Button[/color][/bgcolor], by default).
@@ -699,7 +695,6 @@ tooltip_alignment = 4
 origin = 1
 remote_element_node = NodePath("../../../../../../TooltipPanel")
 overflow_mode = 1
-tooltip_settings_override = ExtResource("11_4nisf")
 tooltip_strings = Array[String](["[b]Open Delay[/b]: The time in seconds before a tooltip opens on [color=c6e3fd][code]mouse_entered[/code][/color] or [color=c6e3fd][code]focus_entered[/code][/color] signals."])
 
 [node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/OpenDelayContainer"]
@@ -738,7 +733,6 @@ tooltip_alignment = 4
 origin = 1
 remote_element_node = NodePath("../../../../../../TooltipPanel")
 overflow_mode = 1
-tooltip_settings_override = ExtResource("11_4nisf")
 tooltip_strings = Array[String](["[b]Timer Lock Delay[/b]: The time in seconds before a tooltip locks when the [b]Lock Mode[/b] is set to [bgcolor=21262e][color=e8a3a5][code]Timer Lock[/code][/color][/bgcolor]."])
 
 [node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer"]
@@ -777,7 +771,6 @@ tooltip_alignment = 4
 origin = 1
 remote_element_node = NodePath("../../../../../../TooltipPanel")
 overflow_mode = 1
-tooltip_settings_override = ExtResource("11_4nisf")
 tooltip_strings = Array[String](["[b]Unlock Delay[/b]: The time in seconds before a locked tooltip closes on [color=c6e3fd][code]mouse_exited[/code][/color]."])
 
 [node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer"]

@@ -10,12 +10,28 @@ extends Control
 ## The first [code].tscn[/code] in the directory will be used as the default template, used 
 ## when [b]Tooltip Template Path[/b] on a [TooltipTrigger] is empty.
 
+@export var can_lock: bool = true
+
 ## The [RichTextLabel]s have their text set by the [code]tooltip_strings[/code] 
 ## on a [TooltipTrigger].
 @export var content_labels: Array[RichTextLabel]
-## UI elements that will [code]hide()[/code] when the tooltip is unlocked and 
+## UI elements that will [code]hide()[/code] when the tooltip is locking or unlocked and 
 ## [code]show()[/code] when locked.
-@export var lock_elements: Array[Control]
+@export var locked_elements: Array[Control]
+## UI elements that will [code]hide()[/code] when the tooltip is locked or unlocked and 
+## [code]show()[/code] when locking.
+@export var locking_elements: Array[Control]
+## UI elements that will [code]hide()[/code] when the tooltip is locked or locking and 
+## [code]show()[/code] when unlocked.
+@export var unlocked_elements: Array[Control]
+
+## UI elements that will [code]hide()[/code] when the tooltip is pinned in place and 
+## [code]show()[/code] when not pinned.
+@export var unpinned_elements: Array[Control]
+## UI elements that will [code]hide()[/code] when the tooltip is not pinned in place and 
+## [code]show()[/code] when pinned.
+@export var pinned_elements: Array[Control]
+
 ## The [TextureProgressBar] to be filled by a normalized time remaining of 
 ## [code]timer_lock_delay[/code].
 @export var timer_lock_progress_bar: TextureProgressBar
@@ -51,12 +67,20 @@ var placeholder_dictionaries: Array[Dictionary]
 func _init(trigger_p: TooltipTrigger = null) -> void:
 	trigger = trigger_p
 			
-	for element in lock_elements:
+	for element in locked_elements:
+		element.hide()
+	for element in locking_elements:
+		element.hide()
+	for element in unlocked_elements:
+		element.show()
+		
+	for element in pinned_elements:
+		element.hide()
+	for element in unpinned_elements:
 		element.hide()
 	
 	if timer_lock_progress_bar:
 		timer_lock_progress_bar.value = 0.0
-		timer_lock_progress_bar.hide()
 		
 	child_trigger_nodes = self.find_children("*", "TooltipTrigger", true, false)
 		
@@ -65,8 +89,6 @@ func _init(trigger_p: TooltipTrigger = null) -> void:
 
 func init_lock_mode() -> void:
 	var lock_mode = TooltipManager.tooltip_settings.lock_mode
-	if trigger.tooltip_settings_override:
-		lock_mode = trigger.tooltip_settings_override.lock_mode
 	match lock_mode:
 		TooltipEnums.TooltipLockMode.AUTO_LOCK:
 			lock()
@@ -75,12 +97,8 @@ func init_lock_mode() -> void:
 
 
 func toggle_lock() -> void:
-	if trigger.tooltip_settings_override:
-		if trigger.tooltip_settings_override.lock_mode == TooltipEnums.TooltipLockMode.NO_LOCK:
-			return
-	elif TooltipManager.tooltip_settings.lock_mode == TooltipEnums.TooltipLockMode.NO_LOCK:
+	if TooltipManager.tooltip_settings.lock_mode == TooltipEnums.TooltipLockMode.NO_LOCK:
 		return
-	
 	
 	match state:
 		TooltipEnums.TooltipState.READY:
@@ -90,12 +108,17 @@ func toggle_lock() -> void:
 
 
 func begin_lock_delay() -> void:
+	if not can_lock:
+		return
+	
 	var lock_delay = TooltipManager.tooltip_settings.timer_lock_delay
-	if trigger.tooltip_settings_override:
-		lock_delay = trigger.tooltip_settings_override.timer_lock_delay
 		
-	if timer_lock_progress_bar:
-		timer_lock_progress_bar.show()
+	for element in locked_elements:
+		element.hide()
+	for element in locking_elements:
+		element.show()
+	for element in unlocked_elements:
+		element.hide()
 	
 	var t = 0.0
 	while t < lock_delay:
@@ -107,10 +130,15 @@ func begin_lock_delay() -> void:
 	lock()
 
 func lock() -> void:
-	for element in lock_elements:
+	if not can_lock:
+		return
+		
+	for element in locked_elements:
 		element.show()
-	if timer_lock_progress_bar:
-		timer_lock_progress_bar.hide()
+	for element in locking_elements:
+		element.hide()
+	for element in unlocked_elements:
+		element.hide()
 	
 	self.mouse_filter = Control.MOUSE_FILTER_STOP
 	for trigger in child_trigger_nodes:
@@ -120,8 +148,12 @@ func lock() -> void:
 	
 
 func unlock() -> void:
-	for element in lock_elements:
+	for element in locked_elements:
 		element.hide()
+	for element in locking_elements:
+		element.hide()
+	for element in unlocked_elements:
+		element.show()
 	
 	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	for trigger in child_trigger_nodes:
@@ -129,6 +161,22 @@ func unlock() -> void:
 	
 	state =  TooltipEnums.TooltipState.READY
 
+
+func pin() -> void:
+	for element in pinned_elements:
+		element.show()
+	for element in unpinned_elements:
+		element.hide()
+		
+	lock()
+
+
+func unpin() -> void:
+	for element in pinned_elements:
+		element.hide()
+	for element in unpinned_elements:
+		element.show()
+	
 
 func set_content(tooltip_strings: Array[String]):
 	placeholder_dictionaries.clear()
@@ -215,13 +263,18 @@ func tween_out():
 
 
 func _on_mouse_entered() -> void:
+	TooltipManager.last_mouse_entered_tooltip = self
+	
+	if TooltipManager.has_pinned_tooltip:
+		return
+		
 	if state == TooltipEnums.TooltipState.REMOVE:
 		return
 	
 	stack_coroutine_manager.free_coroutines()
 	match state:
 		TooltipEnums.TooltipState.LOCKED:
-			TooltipManager.collapse_tooltip_stack(TooltipManager.mouse_tooltip_stack.find(self))
+			TooltipManager.collapse_tooltip_stack(TooltipManager.mouse_tooltip_stack.find(self), false, 0.0)
 		TooltipEnums.TooltipState.UNLOCKING:
 			if trigger:
 				trigger.cancel_unlock_delay()
@@ -230,7 +283,12 @@ func _on_mouse_entered() -> void:
 func _on_mouse_exited() -> void:
 	if state == TooltipEnums.TooltipState.REMOVE:
 		return
-		
+	
+	TooltipManager.last_mouse_entered_tooltip = null
+	
+	if TooltipManager.has_pinned_tooltip:
+		return
+	
 	stack_coroutine_manager.force_close_stack_run(self)
 	
 	

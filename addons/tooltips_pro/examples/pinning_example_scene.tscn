@@ -1,0 +1,393 @@
+[gd_scene load_steps=9 format=3 uid="uid://1b05q8u8k6w6"]
+
+[ext_resource type="StyleBox" uid="uid://d2esi4ulp5w30" path="res://addons/tooltips_pro/examples/resources/styles/PanelStyleBoxFlat.tres" id="2_4b0ja"]
+[ext_resource type="StyleBox" uid="uid://nkoaeghwqefd" path="res://addons/tooltips_pro/examples/resources/styles/PanelInsetStyleBoxFlat.tres" id="3_4xtv5"]
+[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="4_1fagb"]
+[ext_resource type="FontFile" uid="uid://dtt2d32rueqpm" path="res://addons/tooltips_pro/examples/resources/fonts/JetBrainsMonoNL-SemiBold.ttf" id="5_gg88q"]
+[ext_resource type="Script" uid="uid://beg0gmkmyjp2g" path="res://addons/tooltips_pro/examples/scripts/example_focus_settings.gd" id="6_uq0vd"]
+[ext_resource type="Resource" uid="uid://colo1bdg23i7a" path="res://addons/tooltips_pro/examples/tooltip_settings/tooltip_settings_focus.tres" id="7_kafdv"]
+[ext_resource type="Script" uid="uid://o4l2kbmriymr" path="res://addons/tooltips_pro/examples/scripts/example_input_manager.gd" id="8_83esg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xs4m1"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+draw_center = false
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="StringPlaceholdersExampleScene" type="Node"]
+
+[node name="UICanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UICanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="VBoxContainerLeft" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="PinningExample" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+metadata/_edit_group_ = true
+
+[node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample"]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("2_4b0ja")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample"]
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer"]
+custom_minimum_size = Vector2(512, 0)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_4xtv5")
+
+[node name="MarginContainer" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="Spacer" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_constants/separation = 12
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Open a remote tooltip:[/b]"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="Button4" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" node_paths=PackedStringArray("remote_element_node")]
+layout_mode = 2
+text = "Hold Shift to Pin Tooltip"
+script = ExtResource("4_1fagb")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_pinning_example.tscn"
+tooltip_alignment = 2
+origin = 1
+remote_element_node = NodePath("../../../RemoteAnchor")
+overflow_mode = 1
+tooltip_strings = Array[String](["In order to trigger this nested tooltip 
+link before it closes, you may need to 
+Pin the tooltip.", "[color=9ec4e6][b][u]Nested Tooltip Link[/u][/b][/color]"])
+
+[node name="Spacer2" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+
+[node name="RemoteAnchor" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer"]
+custom_minimum_size = Vector2(384, 128)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_fonts/mono_font = ExtResource("5_gg88q")
+bbcode_enabled = true
+text = "[b]Pinned Tooltip Example[/b]
+
+[ul]
+[b]Pinning[/b] a tooltip is a feature used to allow moving the mouse to a distant tooltip without it closing. A pinned tooltip will not close until the [b]Pin Modifier Key[/b] ([bgcolor=242424][color=9ec4e6]Shift[/color][/bgcolor], by default) is released.
+[/ul]
+
+[ul]
+When a tooltip is pinned, only its nested tooltip triggers will be active. In other words, the pinned tooltip and its contents take focus, and you cannot open other tooltips.
+[/ul]
+
+[ul]
+The pinned tooltip will unpin once a nested tooltip is triggered, even if you're still holding [bgcolor=242424][color=9ec4e6]Shift[/color][/bgcolor]. This is by design, as only the top-most tooltip in a stack of nested tooltips should ever be allowed to be pinned.
+[/ul]"
+fit_content = true
+
+[node name="Spacer3" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer"]
+custom_minimum_size = Vector2(0, 512)
+layout_mode = 2
+
+[node name="VBoxContainerRight" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer"]
+custom_minimum_size = Vector2(768, 0)
+layout_mode = 2
+
+[node name="MarginContainerSettings" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_4b0ja")
+
+[node name="MarginContainer" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TooltipPanel2" type="PanelContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.45
+theme_override_styles/panel = ExtResource("3_4xtv5")
+
+[node name="MarginContainer" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.45
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="Label" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="SettingsContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer" node_paths=PackedStringArray("lock_mode_option_button", "open_delay_slider", "open_delay_value", "timer_lock_delay_slider", "timer_lock_delay_value", "unlock_delay_slider", "unlock_delay_value")]
+layout_mode = 2
+theme_override_constants/separation = 8
+script = ExtResource("6_uq0vd")
+lock_mode_option_button = NodePath("LockModeContainer/LockModeOptionButton")
+open_delay_slider = NodePath("OpenDelayContainer/OpenDelayHSlider")
+open_delay_value = NodePath("OpenDelayContainer/ValueLabel")
+timer_lock_delay_slider = NodePath("TimerLockDelayContainer/TimerLockDelayHSlider")
+timer_lock_delay_value = NodePath("TimerLockDelayContainer/ValueLabel")
+unlock_delay_slider = NodePath("UnlockDelayContainer/UnlockDelayHSlider")
+unlock_delay_value = NodePath("UnlockDelayContainer/ValueLabel")
+
+[node name="LockModeContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/LockModeContainer"]
+custom_minimum_size = Vector2(133, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Lock Mode"
+horizontal_alignment = 2
+
+[node name="LockModeOptionButton" type="OptionButton" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/LockModeContainer" node_paths=PackedStringArray("remote_element_node")]
+process_priority = 10
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../../OpenDelayContainer/OpenDelayHSlider")
+focus_next = NodePath("../../OpenDelayContainer/OpenDelayHSlider")
+selected = 0
+item_count = 3
+popup/item_0/text = "Timer Lock"
+popup/item_0/id = 0
+popup/item_1/text = "Action Lock"
+popup/item_1/id = 1
+popup/item_2/text = "Auto Lock"
+popup/item_2/id = 2
+script = ExtResource("4_1fagb")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
+trigger_mode = 2
+tooltip_alignment = 4
+origin = 1
+remote_element_node = NodePath("../../../../../../TooltipPanel")
+overflow_mode = 2
+tooltip_settings_override = ExtResource("7_kafdv")
+tooltip_strings = Array[String](["[b]Timer Lock[/b]: Tooltip will lock after a delay.
+
+[b]Action Lock[/b]: Tooltip will lock on player input action ([bgcolor=242424][color=9ec4e6]T[/color][/bgcolor] or  [bgcolor=242424][color=9ec4e6]Middle Mouse Button[/color][/bgcolor], by default).
+
+[b]Auto Lock[/b]: Tooltip will open locked."])
+
+[node name="OpenDelayContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/OpenDelayContainer"]
+custom_minimum_size = Vector2(133, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Open Delay"
+horizontal_alignment = 2
+
+[node name="OpenDelayHSlider" type="HSlider" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/OpenDelayContainer" node_paths=PackedStringArray("remote_element_node")]
+process_priority = 10
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../../LockModeContainer/LockModeOptionButton")
+focus_neighbor_bottom = NodePath("../../TimerLockDelayContainer/TimerLockDelayHSlider")
+focus_next = NodePath("../../TimerLockDelayContainer/TimerLockDelayHSlider")
+focus_previous = NodePath("../../LockModeContainer/LockModeOptionButton")
+max_value = 1.0
+step = 0.05
+script = ExtResource("4_1fagb")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
+trigger_mode = 2
+tooltip_alignment = 4
+origin = 1
+remote_element_node = NodePath("../../../../../../TooltipPanel")
+overflow_mode = 1
+tooltip_settings_override = ExtResource("7_kafdv")
+tooltip_strings = Array[String](["[b]Open Delay[/b]: The time in seconds before a tooltip opens on [color=c6e3fd][code]mouse_entered[/code][/color] or [color=c6e3fd][code]focus_entered[/code][/color] signals."])
+
+[node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/OpenDelayContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "0.0s"
+
+[node name="TimerLockDelayContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer"]
+custom_minimum_size = Vector2(133, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Timer Lock Delay"
+horizontal_alignment = 2
+
+[node name="TimerLockDelayHSlider" type="HSlider" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer" node_paths=PackedStringArray("remote_element_node")]
+process_priority = 10
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../../OpenDelayContainer/OpenDelayHSlider")
+focus_neighbor_bottom = NodePath("../../UnlockDelayContainer/UnlockDelayHSlider")
+focus_next = NodePath("../../UnlockDelayContainer/UnlockDelayHSlider")
+focus_previous = NodePath("../../OpenDelayContainer/OpenDelayHSlider")
+max_value = 3.0
+step = 0.05
+script = ExtResource("4_1fagb")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
+trigger_mode = 2
+tooltip_alignment = 4
+origin = 1
+remote_element_node = NodePath("../../../../../../TooltipPanel")
+overflow_mode = 1
+tooltip_settings_override = ExtResource("7_kafdv")
+tooltip_strings = Array[String](["[b]Timer Lock Delay[/b]: The time in seconds before a tooltip locks when the [b]Lock Mode[/b] is set to [bgcolor=21262e][color=e8a3a5][code]Timer Lock[/code][/color][/bgcolor]."])
+
+[node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "0.0s"
+
+[node name="UnlockDelayContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer"]
+custom_minimum_size = Vector2(133, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Unlock Delay"
+horizontal_alignment = 2
+
+[node name="UnlockDelayHSlider" type="HSlider" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer" node_paths=PackedStringArray("remote_element_node")]
+process_priority = 10
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+focus_neighbor_top = NodePath("../../TimerLockDelayContainer/TimerLockDelayHSlider")
+focus_neighbor_bottom = NodePath("../../ResetToDefaultButton")
+focus_next = NodePath("../../ResetToDefaultButton")
+focus_previous = NodePath("../../TimerLockDelayContainer/TimerLockDelayHSlider")
+max_value = 1.0
+step = 0.05
+script = ExtResource("4_1fagb")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
+trigger_mode = 2
+tooltip_alignment = 4
+origin = 1
+remote_element_node = NodePath("../../../../../../TooltipPanel")
+overflow_mode = 1
+tooltip_settings_override = ExtResource("7_kafdv")
+tooltip_strings = Array[String](["[b]Unlock Delay[/b]: The time in seconds before a locked tooltip closes on [color=c6e3fd][code]mouse_exited[/code][/color]."])
+
+[node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer"]
+custom_minimum_size = Vector2(42, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+text = "0.0s"
+
+[node name="Spacer" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="ResetToDefaultButton" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer"]
+process_priority = 10
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../UnlockDelayContainer/UnlockDelayHSlider")
+focus_previous = NodePath("../UnlockDelayContainer/UnlockDelayHSlider")
+text = "Reset to Default"
+
+[node name="TooltipPanel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.45
+theme_override_styles/panel = SubResource("StyleBoxFlat_xs4m1")
+
+[node name="InputManager" type="Node" parent="."]
+script = ExtResource("8_83esg")
+
+[connection signal="item_selected" from="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/LockModeContainer/LockModeOptionButton" to="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer" method="_on_lock_mode_option_button_item_selected"]
+[connection signal="value_changed" from="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/OpenDelayContainer/OpenDelayHSlider" to="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer" method="_on_open_delay_slider_value_changed"]
+[connection signal="value_changed" from="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer/TimerLockDelayHSlider" to="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer" method="_on_timer_lock_delay_slider_value_changed"]
+[connection signal="value_changed" from="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer/UnlockDelayHSlider" to="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer" method="_on_unlock_delay_slider_value_changed"]
+[connection signal="pressed" from="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/ResetToDefaultButton" to="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer" method="_on_reset_to_default_button_pressed"]
