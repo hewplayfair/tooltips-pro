@@ -645,13 +645,15 @@ focus_neighbor_left = NodePath("../../../../../../../../../../../VBoxContainerLe
 focus_neighbor_bottom = NodePath("../../OpenDelayContainer/OpenDelayHSlider")
 focus_next = NodePath("../../OpenDelayContainer/OpenDelayHSlider")
 selected = 0
-item_count = 3
-popup/item_0/text = "Timer Lock"
+item_count = 4
+popup/item_0/text = "Timer and Action Lock"
 popup/item_0/id = 0
-popup/item_1/text = "Action Lock"
+popup/item_1/text = "Timer Lock"
 popup/item_1/id = 1
-popup/item_2/text = "Auto Lock"
+popup/item_2/text = "Action Lock"
 popup/item_2/id = 2
+popup/item_3/text = "Auto Lock"
+popup/item_3/id = 3
 script = ExtResource("1_253dj")
 tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
 trigger_mode = 2
@@ -659,7 +661,9 @@ tooltip_alignment = 4
 origin = 1
 remote_element_node = NodePath("../../../../../../TooltipPanel")
 overflow_mode = 2
-tooltip_strings = Array[String](["[b]Timer Lock[/b]: Tooltip will lock after a delay.
+tooltip_strings = Array[String](["[b]Timer and Action Lock[/b]: Tooltip will lock after a delay, or player input action.
+
+[b]Timer Lock[/b]: Tooltip will lock after a delay.
 
 [b]Action Lock[/b]: Tooltip will lock on player input action ([bgcolor=242424][color=9ec4e6]T[/color][/bgcolor] or  [bgcolor=242424][color=9ec4e6]Middle Mouse Button[/color][/bgcolor], by default).
 

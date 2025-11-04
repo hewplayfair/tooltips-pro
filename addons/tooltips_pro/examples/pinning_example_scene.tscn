@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://1b05q8u8k6w6"]
+[gd_scene load_steps=8 format=3 uid="uid://1b05q8u8k6w6"]
 
 [ext_resource type="StyleBox" uid="uid://d2esi4ulp5w30" path="res://addons/tooltips_pro/examples/resources/styles/PanelStyleBoxFlat.tres" id="2_4b0ja"]
 [ext_resource type="StyleBox" uid="uid://nkoaeghwqefd" path="res://addons/tooltips_pro/examples/resources/styles/PanelInsetStyleBoxFlat.tres" id="3_4xtv5"]
 [ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="4_1fagb"]
 [ext_resource type="FontFile" uid="uid://dtt2d32rueqpm" path="res://addons/tooltips_pro/examples/resources/fonts/JetBrainsMonoNL-SemiBold.ttf" id="5_gg88q"]
 [ext_resource type="Script" uid="uid://beg0gmkmyjp2g" path="res://addons/tooltips_pro/examples/scripts/example_focus_settings.gd" id="6_uq0vd"]
-[ext_resource type="Resource" uid="uid://colo1bdg23i7a" path="res://addons/tooltips_pro/examples/tooltip_settings/tooltip_settings_focus.tres" id="7_kafdv"]
 [ext_resource type="Script" uid="uid://o4l2kbmriymr" path="res://addons/tooltips_pro/examples/scripts/example_input_manager.gd" id="8_83esg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xs4m1"]
@@ -229,13 +228,15 @@ layout_mode = 2
 focus_neighbor_bottom = NodePath("../../OpenDelayContainer/OpenDelayHSlider")
 focus_next = NodePath("../../OpenDelayContainer/OpenDelayHSlider")
 selected = 0
-item_count = 3
-popup/item_0/text = "Timer Lock"
+item_count = 4
+popup/item_0/text = "Timer and Action Lock"
 popup/item_0/id = 0
-popup/item_1/text = "Action Lock"
+popup/item_1/text = "Timer Lock"
 popup/item_1/id = 1
-popup/item_2/text = "Auto Lock"
+popup/item_2/text = "Action Lock"
 popup/item_2/id = 2
+popup/item_3/text = "Auto Lock"
+popup/item_3/id = 3
 script = ExtResource("4_1fagb")
 tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
 trigger_mode = 2
@@ -243,8 +244,9 @@ tooltip_alignment = 4
 origin = 1
 remote_element_node = NodePath("../../../../../../TooltipPanel")
 overflow_mode = 2
-tooltip_settings_override = ExtResource("7_kafdv")
-tooltip_strings = Array[String](["[b]Timer Lock[/b]: Tooltip will lock after a delay.
+tooltip_strings = Array[String](["[b]Timer and Action Lock[/b]: Tooltip will lock after a delay, or player input action.
+
+[b]Timer Lock[/b]: Tooltip will lock after a delay.
 
 [b]Action Lock[/b]: Tooltip will lock on player input action ([bgcolor=242424][color=9ec4e6]T[/color][/bgcolor] or  [bgcolor=242424][color=9ec4e6]Middle Mouse Button[/color][/bgcolor], by default).
 
@@ -279,7 +281,6 @@ tooltip_alignment = 4
 origin = 1
 remote_element_node = NodePath("../../../../../../TooltipPanel")
 overflow_mode = 1
-tooltip_settings_override = ExtResource("7_kafdv")
 tooltip_strings = Array[String](["[b]Open Delay[/b]: The time in seconds before a tooltip opens on [color=c6e3fd][code]mouse_entered[/code][/color] or [color=c6e3fd][code]focus_entered[/code][/color] signals."])
 
 [node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/OpenDelayContainer"]
@@ -317,7 +318,6 @@ tooltip_alignment = 4
 origin = 1
 remote_element_node = NodePath("../../../../../../TooltipPanel")
 overflow_mode = 1
-tooltip_settings_override = ExtResource("7_kafdv")
 tooltip_strings = Array[String](["[b]Timer Lock Delay[/b]: The time in seconds before a tooltip locks when the [b]Lock Mode[/b] is set to [bgcolor=21262e][color=e8a3a5][code]Timer Lock[/code][/color][/bgcolor]."])
 
 [node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/TimerLockDelayContainer"]
@@ -355,7 +355,6 @@ tooltip_alignment = 4
 origin = 1
 remote_element_node = NodePath("../../../../../../TooltipPanel")
 overflow_mode = 1
-tooltip_settings_override = ExtResource("7_kafdv")
 tooltip_strings = Array[String](["[b]Unlock Delay[/b]: The time in seconds before a locked tooltip closes on [color=c6e3fd][code]mouse_exited[/code][/color]."])
 
 [node name="ValueLabel" type="Label" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/UnlockDelayContainer"]

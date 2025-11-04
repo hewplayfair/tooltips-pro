@@ -94,12 +94,11 @@ func init_lock_mode() -> void:
 			lock()
 		TooltipEnums.TooltipLockMode.TIMER_LOCK:
 			begin_lock_delay()
+		TooltipEnums.TooltipLockMode.TIMER_AND_ACTION_LOCK:
+			begin_lock_delay()
 
 
 func toggle_lock() -> void:
-	if TooltipManager.tooltip_settings.lock_mode == TooltipEnums.TooltipLockMode.NO_LOCK:
-		return
-	
 	match state:
 		TooltipEnums.TooltipState.READY:
 			lock()

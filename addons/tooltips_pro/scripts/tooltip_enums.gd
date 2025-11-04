@@ -56,6 +56,9 @@ enum OverflowMode {
 # A global setting on TooltipManager or override setting on TooltipTrigger that
 # sets how Tooltips are locked.
 enum TooltipLockMode {
+	## [Tooltip]s lock after a delay of [code]timer_lock_delay[/code], or as
+	## soon as the "LockTooltip" input action is pressed.
+	TIMER_AND_ACTION_LOCK,
 	## [Tooltip]s lock after a delay of [code]timer_lock_delay[/code].
 	TIMER_LOCK,
 	## [Tooltip]s lock with [code]Input.is_action_just_pressed("LockTooltip")[/code].
@@ -63,8 +66,6 @@ enum TooltipLockMode {
 	ACTION_LOCK,
 	## [Tooltip]s always open in locked state.
 	AUTO_LOCK,
-	## [Tooltip]s cannot be locked.
-	NO_LOCK,
 }
 
 
