@@ -5,6 +5,7 @@ Advanced tooltip functionality for Godot 4.4+
 - **Customizable Layout**: Set **Alignment**, **Offset**, and **Overflow Mode** to fully control how tooltips should be positioned, and adjust to overflowing the screen bounds.
 - **Origin Options**: Anchor a tooltip to the node that triggered it, the mouse position, or any arbitrary position with a remote node.
 - **Nesting Tooltips**: Put tooltips within tooltips, and trigger them through a fully featured locking system of the kind established in *Crusader Kings III*.
+- **Pin Tooltips**: Pin a tooltip so you can freely move the mouse to it without the tooltip closing prematurely. Inspired by a feature in *Endless Legend 2*.
 - **Dynamic Content**: Use String placeholders to insert variables into tooltips and see the text update while they're open.
 - **Template Appearances**: Customize tooltip templates using the full power of Godot's UI system, for reuse or unique one-offs.
 - **Localization support, animations, and more!**
