@@ -1,13 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://bmsqett4rjuty"]
+[gd_scene load_steps=9 format=3 uid="uid://c5kv1ab2n0btj"]
 
-[ext_resource type="StyleBox" uid="uid://3lxjgekqranv" path="res://addons/tooltips_pro/examples/resources/styles/TooltipStyleBoxFlat.tres" id="1_iauw6"]
-[ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="2_sk6ue"]
-[ext_resource type="Texture2D" uid="uid://ceqwrw7lmm8c6" path="res://addons/tooltips_pro/examples/resources/styles/ProgressBarTexture.tres" id="3_sk6ue"]
-[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="3_ssion"]
-[ext_resource type="Texture2D" uid="uid://nk5oqxxq4y1f" path="res://addons/tooltips_pro/examples/resources/styles/LockTexture.png" id="3_v444y"]
-[ext_resource type="Texture2D" uid="uid://bsdao5logxp22" path="res://addons/tooltips_pro/examples/resources/styles/LockOpenTexture.png" id="4_3x1j5"]
-[ext_resource type="Texture2D" uid="uid://b87xbl54atafo" path="res://addons/tooltips_pro/examples/resources/styles/PinTexture.png" id="5_3x1j5"]
-[ext_resource type="StyleBox" uid="uid://c2a0e1tu4ajov" path="res://addons/tooltips_pro/examples/resources/styles/LockBorderStyleBoxFlat.tres" id="5_ssion"]
+[ext_resource type="StyleBox" uid="uid://3lxjgekqranv" path="res://addons/tooltips_pro/examples/resources/styles/TooltipStyleBoxFlat.tres" id="1_yphga"]
+[ext_resource type="Script" uid="uid://ixs2o0jr6jjg" path="res://addons/tooltips_pro/scripts/tooltip_template.gd" id="2_djjlr"]
+[ext_resource type="Texture2D" uid="uid://ceqwrw7lmm8c6" path="res://addons/tooltips_pro/examples/resources/styles/ProgressBarTexture.tres" id="3_xfn53"]
+[ext_resource type="Texture2D" uid="uid://b87xbl54atafo" path="res://addons/tooltips_pro/examples/resources/styles/PinTexture.png" id="4_2uxs8"]
+[ext_resource type="Texture2D" uid="uid://nk5oqxxq4y1f" path="res://addons/tooltips_pro/examples/resources/styles/LockTexture.png" id="5_bp3oo"]
+[ext_resource type="Texture2D" uid="uid://bsdao5logxp22" path="res://addons/tooltips_pro/examples/resources/styles/LockOpenTexture.png" id="6_ef4kd"]
+[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="7_y0i17"]
+[ext_resource type="StyleBox" uid="uid://c2a0e1tu4ajov" path="res://addons/tooltips_pro/examples/resources/styles/LockBorderStyleBoxFlat.tres" id="8_kx7lf"]
 
 [node name="TooltipTemplateInfiniteNestingExample" type="PanelContainer" node_paths=PackedStringArray("content_labels", "locked_elements", "locking_elements", "unlocked_elements", "pinned_elements", "timer_lock_progress_bar") groups=["tooltips"]]
 z_index = 1
@@ -16,8 +16,8 @@ offset_bottom = 45.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_filter = 2
-theme_override_styles/panel = ExtResource("1_iauw6")
-script = ExtResource("2_sk6ue")
+theme_override_styles/panel = ExtResource("1_yphga")
+script = ExtResource("2_djjlr")
 content_labels = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/RichTextLabel"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/RichTextLabel2")]
 locked_elements = [NodePath("LockBorderPanel"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LockedTextureRect")]
 locking_elements = [NodePath("MarginContainer/Control/TimerLockTextureProgressBar"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/LockingTextureRect")]
@@ -53,7 +53,7 @@ max_value = 1.0
 step = 0.01
 fill_mode = 4
 nine_patch_stretch = true
-texture_progress = ExtResource("3_sk6ue")
+texture_progress = ExtResource("3_xfn53")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
@@ -77,7 +77,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("5_3x1j5")
+texture = ExtResource("4_2uxs8")
 expand_mode = 1
 
 [node name="LockedTextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -86,7 +86,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("3_v444y")
+texture = ExtResource("5_bp3oo")
 expand_mode = 1
 
 [node name="LockingTextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -95,7 +95,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("4_3x1j5")
+texture = ExtResource("6_ef4kd")
 expand_mode = 1
 
 [node name="UnlockedTextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -104,7 +104,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 mouse_filter = 2
-texture = ExtResource("4_3x1j5")
+texture = ExtResource("6_ef4kd")
 expand_mode = 1
 
 [node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
@@ -134,17 +134,15 @@ text = "Link"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
-script = ExtResource("3_ssion")
-tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_infinite_nesting_example.tscn"
+script = ExtResource("7_y0i17")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
 origin = 3
-tooltip_strings = Array[String](["This tooltip is infinitely recursive, 
-so you can get an idea of how the 
-tooltip stack works.", "[color=9ec4e6][b][u]See next tooltip.[/u][/b][/color]"])
+tooltip_strings = Array[String](["This is a nested tooltip.", ""])
 
 [node name="LockBorderPanel" type="Panel" parent="."]
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = ExtResource("5_ssion")
+theme_override_styles/panel = ExtResource("8_kx7lf")
 
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

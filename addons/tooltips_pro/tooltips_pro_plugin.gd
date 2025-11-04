@@ -14,7 +14,6 @@ func _enable_plugin() -> void:
 	var secondary_key = InputEventMouseButton.new()
 	secondary_key.device = -1
 	secondary_key.button_index = MOUSE_BUTTON_MIDDLE
-
 	var input = {
 		"deadzone": 0.2,
 		"events": [
@@ -23,6 +22,17 @@ func _enable_plugin() -> void:
 		]
 	}
 	ProjectSettings.set_setting("input/lock_tooltip", input)
+	
+	primary_key = InputEventKey.new()
+	primary_key.physical_keycode = KEY_SHIFT
+	input = {
+		"deadzone": 0.2,
+		"events": [
+			primary_key,
+		]
+	}
+	ProjectSettings.set_setting("input/pin_tooltip", input)
+	
 	ProjectSettings.save()
 
 
@@ -31,4 +41,5 @@ func _disable_plugin() -> void:
 	remove_autoload_singleton(PLACEHOLDER_VARIABLES)
 	
 	ProjectSettings.set_setting("input/lock_tooltip", null)
+	ProjectSettings.set_setting("input/pin_tooltip", null)
 	ProjectSettings.save()

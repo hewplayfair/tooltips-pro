@@ -20,7 +20,7 @@ func toggle_selection(toggle: bool) -> void:
 	is_selected = toggle
 	if toggle:
 		prism_mesh_instance.mesh.surface_get_material(0).next_pass.set_shader_parameter("outline_width", 3.0)
-		prism_tooltip_trigger._on_mouse_entered_3d()
+		prism_tooltip_trigger._on_focus_entered_3d()
 	else:
 		prism_mesh_instance.mesh.surface_get_material(0).next_pass.set_shader_parameter("outline_width", 0.0)
 		prism_tooltip_trigger._on_focus_exited()
