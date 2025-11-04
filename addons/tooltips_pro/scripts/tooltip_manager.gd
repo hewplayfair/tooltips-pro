@@ -71,6 +71,12 @@ func on_action_lock_input() -> void:
 		and mouse_tooltip_stack.size() > 0
 	):
 		mouse_tooltip_stack[0].toggle_lock()
+		
+	if (
+		tooltip_settings.lock_mode == TooltipEnums.TooltipLockMode.TIMER_AND_ACTION_LOCK 
+		and mouse_tooltip_stack.size() > 0
+	):
+		mouse_tooltip_stack[0].lock()
 
 
 func on_pin_tooltip_input(toggle: bool) -> void:

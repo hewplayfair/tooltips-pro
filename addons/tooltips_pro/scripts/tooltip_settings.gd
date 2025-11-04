@@ -6,7 +6,7 @@ extends Resource
 @export_group("Lock")
 ## The mode used to set tooltips into a Locked state. While locked, Tooltips  
 ## will not automatically close when the cursor moves off of the [TooltipTrigger]
-@export var lock_mode: TooltipEnums.TooltipLockMode = TooltipEnums.TooltipLockMode.TIMER_LOCK
+@export var lock_mode: TooltipEnums.TooltipLockMode = TooltipEnums.TooltipLockMode.TIMER_AND_ACTION_LOCK
 @export_group("Delay")
 ## The default delay (in seconds) until a [Tooltip] is opened,
 ## upon the [TooltipTrigger] being activated.
