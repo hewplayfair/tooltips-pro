@@ -24,6 +24,7 @@ locking_elements = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxCo
 unlocked_elements = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/UnlockedTextureRect")]
 pinned_elements = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/PinnedTextureRect")]
 timer_lock_progress_bar = NodePath("MarginContainer/Control/TimerLockTextureProgressBar")
+link_color = Color(0.61960787, 0.76862746, 0.9019608, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2

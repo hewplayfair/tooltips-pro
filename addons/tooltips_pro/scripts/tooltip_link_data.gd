@@ -14,13 +14,14 @@ var tooltip_meta_dictionary: Dictionary[String, Array] = {
 	"example_infinite":
 	["This tooltip is infinitely recursive, so you can get
 an idea of how the tooltip stack works.
-[color=9ec4e6][b][url=example_infinite]See next tooltip.[/url][/b][/color]"],
+[tooltip=example_infinite]See next tooltip.[/tooltip]"],
 	"example_rtl":
 	["If the text link is not working, make sure the [b]RichTextLabel[/b]'s 
 [i]Mouse > Filter[/i] is not set to [bgcolor=21262e][color=e8a3a5][code]Ignore[/code][/color][/bgcolor] or being stopped by other 
 UI elements."],
-	"example_bbcode":
-	["[lb]color=9ec4e6[rb][lb]b[rb][lb]url=example_bbcode[rb]BBCode[lb]/url[rb][lb]/b[rb][lb]/color[rb]"],
+	"example_settings":
+	["The link settings you can change are: bold, italic, color, 
+background color, font, and font size"],
 	"example_url":
 	["The [lb]url[rb] tag is also known as a [b]meta tag[/b]. Mousing 
 over it triggers the [color=c6e3fd][code]meta_hover_started[/code][/color] signal on the [b]TooltipTrigger[/b]."],

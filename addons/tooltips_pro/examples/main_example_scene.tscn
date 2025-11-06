@@ -530,7 +530,7 @@ tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/to
 trigger_mode = 1
 tooltip_alignment = 2
 origin = 3
-tooltip_strings = Array[String](["When this tooltip is locked, try opening [color=9ec4e6][b][url=example_nested]this tooltip link.[/url][/b][/color]"])
+tooltip_strings = Array[String](["When this tooltip is locked, try opening [tooltip=example_nested]this tooltip link.[/tooltip]"])
 
 [node name="Button" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/LockingExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -544,7 +544,7 @@ tooltip_alignment = 2
 origin = 3
 tooltip_strings = Array[String](["This tooltip is infinitely recursive, so you can get
 an idea of how the tooltip stack works.
-[color=9ec4e6][b][url=example_infinite]See next tooltip.[/url][/b][/color]"])
+[tooltip=example_infinite]See next tooltip.[/tooltip]"])
 
 [node name="Spacer2" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/LockingExample/HBoxContainer/Panel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(128, 0)

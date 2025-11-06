@@ -94,7 +94,8 @@ trigger_mode = 1
 tooltip_alignment = 2
 origin = 3
 overflow_mode = 1
-tooltip_strings = Array[String](["The text link in this tooltip is styled with [color=9ec4e6][b][url=example_bbcode]BBCode[/url][/b][/color]."])
+tooltip_strings = Array[String](["The text link in this tooltip is styled from [tooltip=example_settings]Text Link
+settings[/tooltip] on the [b]TooltipTemplate[/b]. "])
 
 [node name="Button6" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -105,9 +106,9 @@ trigger_mode = 1
 tooltip_alignment = 2
 origin = 3
 overflow_mode = 1
-tooltip_strings = Array[String](["Only one [b]TooltipTrigger[/b] on the [color=9ec4e6][b][url=example_rtl]RichTextLabel[/url][/b][/color] is 
+tooltip_strings = Array[String](["Only one [b]TooltipTrigger[/b] on the [tooltip=example_rtl]RichTextLabel[/tooltip] is 
 needed for multiple text links, since they are 
-created through [color=9ec4e6][b][url=example_url][lb]url[rb][/url][/b][/color] tags."])
+created through [tooltip=example_url][lb]tooltip[rb][/tooltip] tags."])
 
 [node name="Button7" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -118,7 +119,7 @@ trigger_mode = 1
 tooltip_alignment = 2
 origin = 3
 overflow_mode = 1
-tooltip_strings = Array[String](["[b]Multiple Strings[/b]", "You can pass a [color=9ec4e6][b][url=example_strings]string of content[/url][/b][/color] to a text link's tooltip
+tooltip_strings = Array[String](["[b]Multiple Strings[/b]", "You can pass a [tooltip=example_strings]string of content[/tooltip] to a text link's tooltip
 for each [b]RichTextLabel[/b] that the [b]TooltipTemplate[/b] has
 set up."])
 
@@ -141,7 +142,7 @@ bbcode_enabled = true
 text = "[b]Text Link Example[/b]
 
 [ul]
-Tooltip [b]Text Links[/b] are created by adding a [b]TooltipTrigger[/b] to a [b]RichTextLabel[/b], and then using the meta tag [lb]url[rb] around the link text.
+Tooltip [b]Text Links[/b] are created by adding a [b]TooltipTrigger[/b] to a [b]RichTextLabel[/b], and then using the meta tag [lb]tooltip[rb] around the link text.
 [/ul]
 
 [ul]
@@ -149,7 +150,7 @@ The Autoload script [i]tooltip_link_data.gd[/i] contains a dictionary of every t
 [/ul]
 
 [ul]
-For example, a text link is created like so: [code]\"[lb]url=my_link_id[rb]my text link[lb]/url[rb]\"[/code]. In the [i]tooltip_link_data.gd[/i] dictionary add a new entry for \"[code]my_link_id[/code]\" with the string(s) you want to apply to the tooltip.
+For example, a text link is created like so: [code]\"[lb]tooltip=my_link_id[rb]my text link[lb]/tooltip[rb]\"[/code]. In the [i]tooltip_link_data.gd[/i] dictionary add a new entry for \"[code]my_link_id[/code]\" with the string(s) you want to apply to the tooltip.
 [/ul]"
 fit_content = true
 
