@@ -159,6 +159,10 @@ func _on_mouse_entered_3d(trigger_state := TooltipEnums.TriggerState.INIT_MOUSE_
 
 func init_signals() -> void:
 	control_node = get_node(".") as Control
+	if control_node as RichTextLabel:
+		control_node.meta_hover_started.connect(_on_meta_hover_started)
+		control_node.meta_hover_ended.connect(_on_meta_hover_ended)
+		return
 	if control_node:
 		if(
 			trigger_mode == TooltipEnums.TriggerMode.MOUSE_AND_FOCUS or 
@@ -279,3 +283,17 @@ func cancel_unlock_delay():
 func on_tooltip_removed() -> void:
 	state = TooltipEnums.TriggerState.READY
 	active_tooltip = null
+
+
+func _on_meta_hover_started(meta: Variant) -> void:
+	if TooltipLinkData.tooltip_meta_dictionary.has(meta):
+		tooltip_strings.clear()
+		for i in TooltipLinkData.tooltip_meta_dictionary[meta].size():
+			if tooltip_strings.size() == i:
+				tooltip_strings.append("")
+			tooltip_strings.set(i, TooltipLinkData.tooltip_meta_dictionary[meta][i])
+		_on_mouse_entered()
+
+
+func _on_meta_hover_ended(meta: Variant) -> void:
+	_on_mouse_exited()

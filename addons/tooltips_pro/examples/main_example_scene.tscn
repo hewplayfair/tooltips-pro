@@ -520,16 +520,17 @@ theme_override_constants/separation = 12
 
 [node name="Button2" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/LockingExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-focus_neighbor_top = NodePath("../../../../../../../OverflowExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Button4")
 focus_neighbor_bottom = NodePath("../Button")
 focus_next = NodePath("../Button")
 focus_previous = NodePath("../../../../../../../OverflowExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer/Button4")
+mouse_filter = 1
 text = "Simple Nested Tooltip"
 script = ExtResource("1_253dj")
 tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
+trigger_mode = 1
 tooltip_alignment = 2
 origin = 3
-tooltip_strings = Array[String](["When this tooltip is locked, try opening", "[color=9ec4e6][b][u]this tooltip[/u][/b][/color]"])
+tooltip_strings = Array[String](["When this tooltip is locked, try opening [color=9ec4e6][b][url=example_nested]this tooltip link.[/url][/b][/color]"])
 
 [node name="Button" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/LockingExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -537,12 +538,13 @@ focus_neighbor_top = NodePath("../Button2")
 focus_previous = NodePath("../Button2")
 text = "Infinite Nesting Tooltips"
 script = ExtResource("1_253dj")
-tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_infinite_nesting_example.tscn"
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
+trigger_mode = 1
 tooltip_alignment = 2
 origin = 3
-tooltip_strings = Array[String](["This tooltip is infinitely recursive, 
-so you can get an idea of how the 
-tooltip stack works.", "[color=9ec4e6][b][u]See next tooltip.[/u][/b][/color]"])
+tooltip_strings = Array[String](["This tooltip is infinitely recursive, so you can get
+an idea of how the tooltip stack works.
+[color=9ec4e6][b][url=example_infinite]See next tooltip.[/url][/b][/color]"])
 
 [node name="Spacer2" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/LockingExample/HBoxContainer/Panel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(128, 0)

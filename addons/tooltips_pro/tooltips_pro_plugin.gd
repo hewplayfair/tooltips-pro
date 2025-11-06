@@ -3,11 +3,13 @@ extends EditorPlugin
 
 const MANAGER = "TooltipManager"
 const PLACEHOLDER_VARIABLES = "TooltipPlaceholderVariables"
+const LINK_DATA = "TooltipLinkData"
 
 
 func _enable_plugin() -> void:
 	add_autoload_singleton(MANAGER, "res://addons/tooltips_pro/scripts/tooltip_manager.gd")
 	add_autoload_singleton(PLACEHOLDER_VARIABLES, "res://addons/tooltips_pro/scripts/tooltip_placeholder_variables.gd")
+	add_autoload_singleton(LINK_DATA, "res://addons/tooltips_pro/scripts/tooltip_link_data.gd")
 	
 	var primary_key = InputEventKey.new()
 	primary_key.physical_keycode = KEY_T
@@ -39,6 +41,7 @@ func _enable_plugin() -> void:
 func _disable_plugin() -> void:
 	remove_autoload_singleton(MANAGER)
 	remove_autoload_singleton(PLACEHOLDER_VARIABLES)
+	remove_autoload_singleton(LINK_DATA)
 	
 	ProjectSettings.set_setting("input/lock_tooltip", null)
 	ProjectSettings.set_setting("input/pin_tooltip", null)
