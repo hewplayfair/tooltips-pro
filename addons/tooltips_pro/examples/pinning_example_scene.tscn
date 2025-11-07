@@ -96,14 +96,14 @@ horizontal_alignment = 1
 layout_mode = 2
 text = "Hold Shift to Pin Tooltip"
 script = ExtResource("4_1fagb")
-tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_pinning_example.tscn"
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
 tooltip_alignment = 2
 origin = 1
 remote_element_node = NodePath("../../../RemoteAnchor")
 overflow_mode = 1
-tooltip_strings = Array[String](["In order to trigger this nested tooltip 
-link before it closes, you may need to 
-Pin the tooltip.", "[color=9ec4e6][b][u]Nested Tooltip Link[/u][/b][/color]"])
+tooltip_strings = Array[String](["In order to trigger this [tooltip=example_pinned]nested tooltip 
+link[/tooltip] before the tooltip closes, you may
+need to pin the tooltip."])
 
 [node name="Spacer2" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(128, 0)

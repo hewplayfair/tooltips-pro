@@ -15,7 +15,6 @@ offset_right = 130.0
 offset_bottom = 45.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-mouse_filter = 2
 theme_override_styles/panel = ExtResource("1_s5850")
 script = ExtResource("1_bnkh0")
 content_labels = [NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/RichTextLabel"), NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/RichTextLabel2")]
@@ -37,6 +36,7 @@ theme_override_constants/margin_bottom = 8
 
 [node name="Control" type="Control" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TimerLockTextureProgressBar" type="TextureProgressBar" parent="MarginContainer/Control"]
 custom_minimum_size = Vector2(28, 28)
@@ -63,6 +63,7 @@ mouse_filter = 2
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+mouse_filter = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -70,6 +71,7 @@ mouse_filter = 2
 
 [node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="PinnedTextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(16, 16)
@@ -110,6 +112,7 @@ expand_mode = 1
 [node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(2, 0)
 layout_mode = 2
+mouse_filter = 2
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -118,6 +121,7 @@ layout_mode = 2
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 bbcode_enabled = true
 text = "Lorem Ipsum"
 fit_content = true
@@ -134,6 +138,7 @@ origin = 3
 clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 1
 bbcode_enabled = true
 fit_content = true
 scroll_active = false

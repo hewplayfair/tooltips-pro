@@ -11,6 +11,9 @@ extends Node
 var tooltip_meta_dictionary: Dictionary[String, Array] = {
 	"example_nested":
 	["This is a nested tooltip."],
+	"example_pinned":
+	["Opening a nested tooltip will unpin the previous one,
+as only the top-most active tooltip can be pinned."],
 	"example_infinite":
 	["This tooltip is infinitely recursive, so you can get
 an idea of how the tooltip stack works.

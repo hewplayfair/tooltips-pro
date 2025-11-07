@@ -209,7 +209,6 @@ func set_content(tooltip_strings: Array[String]):
 			# TODO: Should use regex here
 			content_labels[i].text = content_labels[i].text.replace("[tooltip=", "{0}{2}{4}{6}{8}{10}{12}[url=")
 			content_labels[i].text = content_labels[i].text.replace("[/tooltip]", "[/url]{13}{11}{9}{7}{5}{3}{1}")
-			
 			content_labels[i].text = content_labels[i].text.format([
 				"[b]" if link_bold else "", "[/b]" if link_bold else "", 
 				"[i]" if link_italics else "", "[/i]" if link_italics else "",
