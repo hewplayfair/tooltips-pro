@@ -92,7 +92,8 @@ func _init(trigger_p: TooltipTrigger = null) -> void:
 		timer_lock_progress_bar.value = 0.0
 		
 	child_trigger_nodes = self.find_children("*", "TooltipTrigger", true, false)
-		
+	
+	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	state =  TooltipEnums.TooltipState.READY
 
 
@@ -152,6 +153,7 @@ func lock() -> void:
 	for trigger in child_trigger_nodes:
 		trigger.mouse_filter = Control.MOUSE_FILTER_PASS
 	
+	self.mouse_filter = Control.MOUSE_FILTER_STOP
 	state =  TooltipEnums.TooltipState.LOCKED
 	
 
@@ -167,6 +169,7 @@ func unlock() -> void:
 	for trigger in child_trigger_nodes:
 		trigger.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
+	self.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	state =  TooltipEnums.TooltipState.READY
 
 
