@@ -10,3 +10,6 @@ func _process(delta: float) -> void:
 		
 	if Input.is_action_just_released("pin_tooltip"):
 		TooltipManager.pin_tooltip_input.emit(false)
+		
+	if Input.is_action_just_pressed("dismiss_tooltip"):
+		TooltipManager.dismiss_tooltip_input.emit()

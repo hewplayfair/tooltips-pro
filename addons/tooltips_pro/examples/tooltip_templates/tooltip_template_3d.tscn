@@ -11,6 +11,7 @@ offset_bottom = 39.0
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("1_55kgy")
 script = ExtResource("1_uw7af")
+can_lock = false
 content_labels = [NodePath("MarginContainer/RichTextLabel")]
 use_tween_in = true
 

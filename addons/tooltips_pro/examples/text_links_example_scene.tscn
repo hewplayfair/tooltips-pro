@@ -1,11 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://1b05q8u8k6w6"]
+[gd_scene load_steps=8 format=3 uid="uid://opcax531ksyi"]
 
-[ext_resource type="StyleBox" uid="uid://d2esi4ulp5w30" path="res://addons/tooltips_pro/examples/resources/styles/PanelStyleBoxFlat.tres" id="2_4b0ja"]
-[ext_resource type="StyleBox" uid="uid://nkoaeghwqefd" path="res://addons/tooltips_pro/examples/resources/styles/PanelInsetStyleBoxFlat.tres" id="3_4xtv5"]
-[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="4_1fagb"]
-[ext_resource type="FontFile" uid="uid://dtt2d32rueqpm" path="res://addons/tooltips_pro/examples/resources/fonts/JetBrainsMonoNL-SemiBold.ttf" id="5_gg88q"]
-[ext_resource type="Script" uid="uid://beg0gmkmyjp2g" path="res://addons/tooltips_pro/examples/scripts/example_focus_settings.gd" id="6_uq0vd"]
-[ext_resource type="Script" uid="uid://o4l2kbmriymr" path="res://addons/tooltips_pro/examples/scripts/example_input_manager.gd" id="8_83esg"]
+[ext_resource type="StyleBox" uid="uid://d2esi4ulp5w30" path="res://addons/tooltips_pro/examples/resources/styles/PanelStyleBoxFlat.tres" id="1_tfngt"]
+[ext_resource type="StyleBox" uid="uid://nkoaeghwqefd" path="res://addons/tooltips_pro/examples/resources/styles/PanelInsetStyleBoxFlat.tres" id="2_fgdq2"]
+[ext_resource type="Script" uid="uid://coqwnstoj346c" path="res://addons/tooltips_pro/scripts/tooltip_trigger.gd" id="3_w1frh"]
+[ext_resource type="FontFile" uid="uid://dtt2d32rueqpm" path="res://addons/tooltips_pro/examples/resources/fonts/JetBrainsMonoNL-SemiBold.ttf" id="4_okhou"]
+[ext_resource type="Script" uid="uid://beg0gmkmyjp2g" path="res://addons/tooltips_pro/examples/scripts/example_focus_settings.gd" id="5_ai3l8"]
+[ext_resource type="Script" uid="uid://o4l2kbmriymr" path="res://addons/tooltips_pro/examples/scripts/example_input_manager.gd" id="6_y2cp4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xs4m1"]
 content_margin_left = 0.0
@@ -50,7 +50,7 @@ metadata/_edit_group_ = true
 [node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample"]
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/panel = ExtResource("2_4b0ja")
+theme_override_styles/panel = ExtResource("1_tfngt")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample"]
 layout_mode = 2
@@ -58,7 +58,7 @@ layout_mode = 2
 [node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer"]
 custom_minimum_size = Vector2(512, 0)
 layout_mode = 2
-theme_override_styles/panel = ExtResource("3_4xtv5")
+theme_override_styles/panel = ExtResource("2_fgdq2")
 
 [node name="MarginContainer" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel"]
 layout_mode = 1
@@ -82,28 +82,57 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 0
+size_flags_vertical = 4
 theme_override_constants/separation = 12
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Button5" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-bbcode_enabled = true
-text = "[b]Open a remote tooltip:[/b]"
-fit_content = true
-horizontal_alignment = 1
-
-[node name="Button4" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer" node_paths=PackedStringArray("remote_element_node")]
-layout_mode = 2
-text = "Hold Shift to Pin Tooltip"
-script = ExtResource("4_1fagb")
+text = "Single Text Link"
+script = ExtResource("3_w1frh")
 tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
+trigger_mode = 1
 tooltip_alignment = 2
-origin = 1
-remote_element_node = NodePath("../../../RemoteAnchor")
+origin = 3
 overflow_mode = 1
-tooltip_strings = Array[String](["In order to trigger this [tooltip=example_pinned]nested tooltip 
-link[/tooltip] before the tooltip closes, you may
-need to pin the tooltip."])
+tooltip_strings = Array[String](["The text link in this tooltip is styled from [tooltip=example_settings]Text Link
+settings[/tooltip] on the [b]TooltipTemplate[/b]. "])
+
+[node name="Button6" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Multiple Text Links"
+script = ExtResource("3_w1frh")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
+trigger_mode = 1
+tooltip_alignment = 2
+origin = 3
+overflow_mode = 1
+tooltip_strings = Array[String](["Only one [b]TooltipTrigger[/b] on the [tooltip=example_rtl]RichTextLabel[/tooltip] is 
+needed for multiple text links, since they are 
+created through [tooltip=example_url][lb]tooltip[rb][/tooltip] tags."])
+
+[node name="Button7" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Multiple Strings"
+script = ExtResource("3_w1frh")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
+trigger_mode = 1
+tooltip_alignment = 2
+origin = 3
+overflow_mode = 1
+tooltip_strings = Array[String](["[b]Multiple Strings[/b]", "You can pass a [tooltip=example_strings]string of content[/tooltip] to a text link's tooltip
+for each [b]RichTextLabel[/b] that the [b]TooltipTemplate[/b] has
+set up."])
+
+[node name="Button8" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "BBCode Image Links"
+script = ExtResource("3_w1frh")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
+trigger_mode = 1
+tooltip_alignment = 2
+origin = 3
+overflow_mode = 1
+tooltip_strings = Array[String](["Hover over this pin icon [tooltip=example_nested][img=24x24]res://addons/tooltips_pro/examples/resources/styles/PinTexture.png[/img][/tooltip] to see a tooltip."])
 
 [node name="Spacer2" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(128, 0)
@@ -119,26 +148,22 @@ custom_minimum_size = Vector2(384, 128)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme_override_fonts/mono_font = ExtResource("5_gg88q")
+theme_override_fonts/mono_font = ExtResource("4_okhou")
 bbcode_enabled = true
-text = "[b]Pinned Tooltip Example[/b]
+text = "[b]Text Link Example[/b]
 
 [ul]
-[b]Pinning[/b] a tooltip is a feature used to allow moving the mouse to a distant tooltip without it closing. A pinned tooltip will not close until the [b]Pin Modifier Key[/b] ([bgcolor=242424][color=9ec4e6]Shift[/color][/bgcolor], by default) is released.
+Tooltip [b]Text Links[/b] are created by adding a [b]TooltipTrigger[/b] to a [b]RichTextLabel[/b], and then using the meta tag [lb]tooltip[rb] around the link text.
 [/ul]
 
 [ul]
-When a tooltip is pinned, only its nested tooltip triggers will be active. In other words, the pinned tooltip and its contents take focus, and you cannot open other tooltips.
+The Autoload script [i]tooltip_link_data.gd[/i] contains a dictionary of every text link tooltip meta tag identifier and content string.
 [/ul]
 
 [ul]
-The pinned tooltip will unpin once a nested tooltip is triggered, even if you're still holding [bgcolor=242424][color=9ec4e6]Shift[/color][/bgcolor]. This is by design, as only the top-most tooltip in a stack of nested tooltips should ever be allowed to be pinned.
+For example, a text link is created like so: [code]\"[lb]tooltip=my_link_id[rb]my text link[lb]/tooltip[rb]\"[/code]. In the [i]tooltip_link_data.gd[/i] dictionary add a new entry for \"[code]my_link_id[/code]\" with the string(s) you want to apply to the tooltip.
 [/ul]"
 fit_content = true
-
-[node name="Spacer3" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer"]
-custom_minimum_size = Vector2(0, 512)
-layout_mode = 2
 
 [node name="VBoxContainerRight" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer"]
 custom_minimum_size = Vector2(768, 0)
@@ -154,7 +179,7 @@ theme_override_constants/margin_bottom = 16
 
 [node name="Panel" type="Panel" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings"]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("2_4b0ja")
+theme_override_styles/panel = ExtResource("1_tfngt")
 
 [node name="MarginContainer" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings"]
 layout_mode = 2
@@ -175,7 +200,7 @@ custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.45
-theme_override_styles/panel = ExtResource("3_4xtv5")
+theme_override_styles/panel = ExtResource("2_fgdq2")
 
 [node name="MarginContainer" type="MarginContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2"]
 custom_minimum_size = Vector2(0, 128)
@@ -201,7 +226,7 @@ horizontal_alignment = 1
 [node name="SettingsContainer" type="VBoxContainer" parent="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer" node_paths=PackedStringArray("lock_mode_option_button", "open_delay_slider", "open_delay_value", "timer_lock_delay_slider", "timer_lock_delay_value", "unlock_delay_slider", "unlock_delay_value")]
 layout_mode = 2
 theme_override_constants/separation = 8
-script = ExtResource("6_uq0vd")
+script = ExtResource("5_ai3l8")
 lock_mode_option_button = NodePath("LockModeContainer/LockModeOptionButton")
 open_delay_slider = NodePath("OpenDelayContainer/OpenDelayHSlider")
 open_delay_value = NodePath("OpenDelayContainer/ValueLabel")
@@ -237,7 +262,7 @@ popup/item_2/text = "Action Lock"
 popup/item_2/id = 2
 popup/item_3/text = "Auto Lock"
 popup/item_3/id = 3
-script = ExtResource("4_1fagb")
+script = ExtResource("3_w1frh")
 tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
 trigger_mode = 2
 tooltip_alignment = 4
@@ -274,7 +299,7 @@ focus_next = NodePath("../../TimerLockDelayContainer/TimerLockDelayHSlider")
 focus_previous = NodePath("../../LockModeContainer/LockModeOptionButton")
 max_value = 1.0
 step = 0.05
-script = ExtResource("4_1fagb")
+script = ExtResource("3_w1frh")
 tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
 trigger_mode = 2
 tooltip_alignment = 4
@@ -311,7 +336,7 @@ focus_next = NodePath("../../UnlockDelayContainer/UnlockDelayHSlider")
 focus_previous = NodePath("../../OpenDelayContainer/OpenDelayHSlider")
 max_value = 3.0
 step = 0.05
-script = ExtResource("4_1fagb")
+script = ExtResource("3_w1frh")
 tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
 trigger_mode = 2
 tooltip_alignment = 4
@@ -348,7 +373,7 @@ focus_next = NodePath("../../ResetToDefaultButton")
 focus_previous = NodePath("../../TimerLockDelayContainer/TimerLockDelayHSlider")
 max_value = 1.0
 step = 0.05
-script = ExtResource("4_1fagb")
+script = ExtResource("3_w1frh")
 tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_settings.tscn"
 trigger_mode = 2
 tooltip_alignment = 4
@@ -383,7 +408,7 @@ size_flags_stretch_ratio = 1.45
 theme_override_styles/panel = SubResource("StyleBoxFlat_xs4m1")
 
 [node name="InputManager" type="Node" parent="."]
-script = ExtResource("8_83esg")
+script = ExtResource("6_y2cp4")
 
 [connection signal="item_selected" from="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/LockModeContainer/LockModeOptionButton" to="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer" method="_on_lock_mode_option_button_item_selected"]
 [connection signal="value_changed" from="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer/OpenDelayContainer/OpenDelayHSlider" to="UICanvasLayer/HBoxContainer/VBoxContainerRight/MarginContainerSettings/MarginContainer/VBoxContainer/HBoxContainer/TooltipPanel2/MarginContainer/VBoxContainer/SettingsContainer" method="_on_open_delay_slider_value_changed"]
