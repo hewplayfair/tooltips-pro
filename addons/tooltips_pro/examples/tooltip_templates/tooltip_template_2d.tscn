@@ -13,6 +13,7 @@ size_flags_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = ExtResource("1_ubxsd")
 script = ExtResource("2_bs5gj")
+can_lock = false
 content_labels = [NodePath("MarginContainer/RichTextLabel")]
 use_tween_in = true
 
