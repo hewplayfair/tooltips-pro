@@ -63,6 +63,7 @@ var tween: Tween
 @export var link_background_color: Color
 @export var link_bold: bool = true
 @export var link_italics: bool = false
+@export var link_underline: bool = false
 @export var link_font: Font
 @export var link_font_size: int
 
@@ -205,9 +206,9 @@ func set_content(tooltip_strings: Array[String]):
 			
 			content_labels[i].text = tr(tooltip_strings[i]).format(placeholder_dictionaries[i])
 			
-			# TODO: Should use regex here?
-			content_labels[i].text = content_labels[i].text.replace("[tooltip=", "{0}{2}{4}{6}{8}{10}[url=")
-			content_labels[i].text = content_labels[i].text.replace("[/tooltip]", "[/url]{11}{9}{7}{5}{3}{1}")
+			# TODO: Should use regex here
+			content_labels[i].text = content_labels[i].text.replace("[tooltip=", "{0}{2}{4}{6}{8}{10}{12}[url=")
+			content_labels[i].text = content_labels[i].text.replace("[/tooltip]", "[/url]{13}{11}{9}{7}{5}{3}{1}")
 			
 			content_labels[i].text = content_labels[i].text.format([
 				"[b]" if link_bold else "", "[/b]" if link_bold else "", 
@@ -216,9 +217,8 @@ func set_content(tooltip_strings: Array[String]):
 				"[font_size=" + str(link_font_size) + "]" if link_font_size else "", "[/font_size]" if link_font_size else "",
 				"[color=" + link_color.to_html() + "]" if link_color else "", "[/color]" if link_color else "",
 				"[bgcolor=" + link_background_color.to_html() + "]" if link_background_color else "", "[/bgcolor]" if link_background_color else "",
+				"[u]" if link_underline else "", "[/u]" if link_underline else "",
 			])
-			
-			
 		else:
 			printerr(name, " has fewer RichTextLabels than there are content strings on trigger ", trigger.name)
 

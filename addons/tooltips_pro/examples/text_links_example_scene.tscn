@@ -123,6 +123,17 @@ tooltip_strings = Array[String](["[b]Multiple Strings[/b]", "You can pass a [too
 for each [b]RichTextLabel[/b] that the [b]TooltipTemplate[/b] has
 set up."])
 
+[node name="Button8" type="Button" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "BBCode Image Links"
+script = ExtResource("3_w1frh")
+tooltip_template_path = "res://addons/tooltips_pro/examples/tooltip_templates/tooltip_template_nesting_example.tscn"
+trigger_mode = 1
+tooltip_alignment = 2
+origin = 3
+overflow_mode = 1
+tooltip_strings = Array[String](["Hover over this pin icon [tooltip=example_nested][img=24x24]res://addons/tooltips_pro/examples/resources/styles/PinTexture.png[/img][/tooltip] to see a tooltip."])
+
 [node name="Spacer2" type="Control" parent="UICanvasLayer/HBoxContainer/VBoxContainerLeft/PinningExample/HBoxContainer/Panel/MarginContainer/HBoxContainer"]
 custom_minimum_size = Vector2(128, 0)
 layout_mode = 2

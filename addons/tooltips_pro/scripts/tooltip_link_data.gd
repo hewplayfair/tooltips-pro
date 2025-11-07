@@ -20,7 +20,7 @@ an idea of how the tooltip stack works.
 [i]Mouse > Filter[/i] is not set to [bgcolor=21262e][color=e8a3a5][code]Ignore[/code][/color][/bgcolor] or being stopped by other 
 UI elements."],
 	"example_settings":
-	["The link settings you can change are: bold, italic, color, 
+	["The link settings you can change are: bold, italic, underline, color, 
 background color, font, and font size"],
 	"example_url":
 	["The [lb]url[rb] tag is also known as a [b]meta tag[/b]. Mousing 
