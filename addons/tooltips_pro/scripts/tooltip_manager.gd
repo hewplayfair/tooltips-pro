@@ -30,12 +30,14 @@ var mouse_tooltips_parent: Node
 
 signal action_lock_input
 signal pin_tooltip_input
+signal dismiss_tooltip_input
 
 var stack_coroutine_manager = TooltipStackCoroutineManager.new()
 
 func _ready() -> void:
 	action_lock_input.connect(on_action_lock_input)
 	pin_tooltip_input.connect(on_pin_tooltip_input)
+	dismiss_tooltip_input.connect(on_dismiss_tooltip_input)
 	load_tooltip_templates()
 	
 	var canvas_layer = CanvasLayer.new()
@@ -80,14 +82,13 @@ func on_action_lock_input() -> void:
 
 
 func on_pin_tooltip_input(toggle: bool) -> void:
+	has_pinned_tooltip = false
 	if mouse_tooltip_stack.size() > 0:
 		if toggle and mouse_tooltip_stack[0].can_lock:
 			has_pinned_tooltip = true
 			mouse_tooltip_stack[0].pin()
 		else:
-			has_pinned_tooltip = false
 			mouse_tooltip_stack[0].unpin()
-			
 			if not last_mouse_entered_tooltip:
 				if not last_mouse_entered_trigger:
 					collapse_tooltip_stack()
@@ -95,6 +96,12 @@ func on_pin_tooltip_input(toggle: bool) -> void:
 				if last_mouse_entered_trigger and last_mouse_entered_trigger.active_tooltip:
 					return
 				collapse_tooltip_stack(TooltipManager.mouse_tooltip_stack.find(last_mouse_entered_tooltip))
+
+
+func on_dismiss_tooltip_input() -> void:
+	if mouse_tooltip_stack.size() > 0:
+		remove_tooltip(mouse_tooltip_stack[0])
+		has_pinned_tooltip = false
 
 
 func init_tooltip(tooltip_trigger: TooltipTrigger, screen_pos: Vector2) -> Tooltip:

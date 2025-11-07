@@ -35,6 +35,17 @@ func _enable_plugin() -> void:
 	}
 	ProjectSettings.set_setting("input/pin_tooltip", input)
 	
+	primary_key = InputEventMouseButton.new()
+	primary_key.device = -1
+	primary_key.button_index = MOUSE_BUTTON_RIGHT
+	input = {
+		"deadzone": 0.2,
+		"events": [
+			primary_key
+		]
+	}
+	ProjectSettings.set_setting("input/dismiss_tooltip", input)
+	
 	ProjectSettings.save()
 
 
@@ -45,4 +56,5 @@ func _disable_plugin() -> void:
 	
 	ProjectSettings.set_setting("input/lock_tooltip", null)
 	ProjectSettings.set_setting("input/pin_tooltip", null)
+	ProjectSettings.set_setting("input/dismiss_tooltip", null)
 	ProjectSettings.save()
