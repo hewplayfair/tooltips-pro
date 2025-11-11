@@ -131,7 +131,7 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, screen_pos: Vector2) -> Toolt
 			"\" found. Using default template for Trigger ", tooltip_trigger.name, ".")
 	var new_tooltip := template.instantiate() as Tooltip
 	
-	new_tooltip._init(tooltip_trigger)
+	new_tooltip._initialize(tooltip_trigger)
 	if tooltip_trigger.trigger_mode == TooltipEnums.TriggerMode.FOCUS_ONLY:
 		focus_tooltip_stack.push_front(new_tooltip)
 	else:
