@@ -75,6 +75,9 @@ var placeholder_dictionaries: Array[Dictionary]
 
 func _init(trigger_p: TooltipTrigger = null) -> void:
 	trigger = trigger_p
+	
+	self.mouse_entered.connect(_on_mouse_entered)
+	self.mouse_exited.connect(_on_mouse_exited)
 			
 	for element in locked_elements:
 		element.hide()
