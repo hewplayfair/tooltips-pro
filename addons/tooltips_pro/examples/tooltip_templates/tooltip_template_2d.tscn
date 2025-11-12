@@ -10,7 +10,6 @@ offset_right = 64.0
 offset_bottom = 38.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
-mouse_filter = 2
 theme_override_styles/panel = ExtResource("1_ubxsd")
 script = ExtResource("2_bs5gj")
 can_lock = false
@@ -34,6 +33,3 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 horizontal_alignment = 1
-
-[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

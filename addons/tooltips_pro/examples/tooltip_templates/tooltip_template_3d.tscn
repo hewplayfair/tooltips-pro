@@ -8,7 +8,6 @@ z_index = 1
 custom_minimum_size = Vector2(180, 0)
 offset_right = 180.0
 offset_bottom = 39.0
-mouse_filter = 2
 theme_override_styles/panel = ExtResource("1_55kgy")
 script = ExtResource("1_uw7af")
 can_lock = false

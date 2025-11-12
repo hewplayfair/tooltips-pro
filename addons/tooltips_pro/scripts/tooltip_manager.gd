@@ -50,7 +50,11 @@ func _ready() -> void:
 func load_tooltip_templates() -> void:
 	var resources := ResourceLoader.list_directory(tooltip_settings.tooltip_template_dir_path)
 	for resource in resources:
-		tooltip_templates.set(tooltip_settings.tooltip_template_dir_path + resource, load(tooltip_settings.tooltip_template_dir_path + resource))
+		var res = load(tooltip_settings.tooltip_template_dir_path + resource)
+		if res as PackedScene:
+			tooltip_templates.set(tooltip_settings.tooltip_template_dir_path + resource, res)
+		else:
+			print_debug("Unable to load ", resource, " as Tooltip Template. ", tooltip_settings.tooltip_template_dir_path, " should only contain .tscn objects.")
 
 
 func _input(event):
@@ -127,7 +131,7 @@ func init_tooltip(tooltip_trigger: TooltipTrigger, screen_pos: Vector2) -> Toolt
 			"\" found. Using default template for Trigger ", tooltip_trigger.name, ".")
 	var new_tooltip := template.instantiate() as Tooltip
 	
-	new_tooltip._init(tooltip_trigger)
+	new_tooltip._initialize(tooltip_trigger)
 	if tooltip_trigger.trigger_mode == TooltipEnums.TriggerMode.FOCUS_ONLY:
 		focus_tooltip_stack.push_front(new_tooltip)
 	else:

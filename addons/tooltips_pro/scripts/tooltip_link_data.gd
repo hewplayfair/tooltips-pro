@@ -26,8 +26,9 @@ UI elements."],
 	["The link settings you can change are: bold, italic, underline, color, 
 background color, font, and font size"],
 	"example_url":
-	["The [lb]url[rb] tag is also known as a [b]meta tag[/b]. Mousing 
-over it triggers the [color=c6e3fd][code]meta_hover_started[/code][/color] signal on the [b]TooltipTrigger[/b]."],
+	["The [lb]tooltip[rb] tag will be converted into [lb]url[rb] and other styling BBCode.
+[lb]url[rb] is also known as a [b]meta tag[/b]. Mousing over it triggers the
+[color=c6e3fd][code]meta_hover_started[/code][/color] signal on the [b]TooltipTrigger[/b]."],
 	"example_strings":
 	["[b]Multiple RichTextLabels[/b]", 
 	"The above title string and this one are on different [b]RichTextLabels[/b].
