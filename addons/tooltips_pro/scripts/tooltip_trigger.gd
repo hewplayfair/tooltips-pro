@@ -7,9 +7,6 @@ extends Node
 ## tooltip and position it according to the settings on the [TooltipTrigger].
 ## The content defined in [b]Tooltip Strings[/b] is then sent to the [Tooltip] 
 ## Template to be set on its [RichTextLabel](s).
-## [br][br]
-## Global Tooltip Settings, such as [b]Lock Mode[/b] or [b]Open Delay[/b], can 
-## also be optionally overidden on the [TooltipTrigger].
 
 ## The [Tooltip] Template path to use for the instantiated [Tooltip]. If empty, 
 ## the default [Tooltip] Template (first one in the directory) will be used.
