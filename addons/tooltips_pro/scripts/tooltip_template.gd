@@ -137,6 +137,8 @@ func begin_lock_delay() -> void:
 		t += get_process_delta_time()
 		if timer_lock_progress_bar:
 			timer_lock_progress_bar.value = 1.0 - (lock_delay - t) / lock_delay
+		if not is_instance_valid(self) or not is_inside_tree():
+			return;
 		await get_tree().process_frame
 	
 	lock()
@@ -278,7 +280,7 @@ func tween_in():
 
 
 func tween_out():
-	if not use_tween_out:
+	if not use_tween_out or not is_inside_tree():
 		return
 	
 	if tween:

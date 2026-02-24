@@ -61,6 +61,7 @@ func _input(event):
 	if not mouse_tooltip_stack:
 		return
 	if (
+		not mouse_tooltip_stack[0] or
 		mouse_tooltip_stack[0].state == TooltipEnums.TooltipState.LOCKED
 		or mouse_tooltip_stack[0].state == TooltipEnums.TooltipState.UNLOCKING
 	):
